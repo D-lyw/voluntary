@@ -1,0 +1,33 @@
+{
+	"code": 0,
+	"msg": "",
+	"count": 1,
+	"data": [{
+		"date": "2017-7-11",
+		"time": "08:12:24",
+		"id": "U2017001F",
+		"name": "刘君临",
+		"status": 1,
+		"type": "前端",
+		"position": "本科生",
+		"operator": "刘君临"
+	},{
+		"date": "2017-7-12",
+		"time": "08:12:24",
+		"id": "U2017001F",
+		"name": "刘君临",
+		"status": 1,
+		"type": "前端",
+		"position": "本科生",
+		"operator": "刘君临"
+	},{
+		"date": "2017-7-13",
+		"time": "08:12:24",
+		"id": "U2017001F",
+		"name": "刘君临",
+		"status": 1,
+		"type": "前端",
+		"position": "本科生",
+		"operator": "刘君临"
+	}]
+}
