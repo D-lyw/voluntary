@@ -55,7 +55,7 @@
 				  	</div>
 				  	
 				</div>
-				<table class="table table-bordered table-hover ">
+				<table class="table table-bordered table-hover table-condensed ">
 					<!-- <input type="file"  @change="importFile($event)" class="inportFILE"> -->
 			
 					<thead>
@@ -317,41 +317,5 @@
 <style type="text/css">
 
 	@import '../../static/css/operationrecord.css';
-	.el-select .el-input {
-	    width: 130px;
-	}
-	.input-with-select .el-input-group__prepend {
-	    background-color: #fff;
-	}
-	.navigoto{
-		margin-top: 10px;
-		display: inline-block;
-		/*background-color: red;*/
-		margin-bottom: 5px;
-	}
-	#OC_main{
-		width: 100%;
-		height: auto;
-		min-height: 60%;
-		/*border:1px solid black;*/
-	}
-	.OC_header_introduce{
-		width: 100%;
-		height: 60px;
-		background: #E8edf0;
-	}
-	.OC_content{
-		width: 100%;
-		height: auto;
-		min-height: 550px;
-		border: 1px solid #ffd;
-		background-color: white;
-		padding: 8px;
-	}
-	.btn_group{
-		width: 100%;
-		height: 35px;
-		border:1px solid orange;
 
-	}
 </style>

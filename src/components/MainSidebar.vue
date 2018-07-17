@@ -33,8 +33,8 @@
 	            </span>
 	          </a>
 	          <ul class="treeview-menu">
-	            <li class="active"><a href="ManagerList.html"><i class="fa fa-users"></i> 管理员名单</a></li>
-	            <li><a href="Record.html"><i class="fa fa-list-alt" aria-hidden="true"></i> 操作记录</a></li>
+	            <li class="active"><a href="ManagerList.html"><i class="fa fa-users"></i> 人员权限</a></li>
+	            <li><a href="Record.html"><i class="fa fa-list-alt" aria-hidden="true"></i> 操作日志</a></li>
 	          </ul>
 	        </li>
 	      </ul>

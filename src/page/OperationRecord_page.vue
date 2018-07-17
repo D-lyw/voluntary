@@ -1,11 +1,11 @@
 <!-- operationRecord Part -->
 <template>
-	 <div>
-          <MainHeader></MainHeader>
-          <MainSidebar></MainSidebar>
-          <OperationRecord></OperationRecord>
-          <!-- <MainFooter></MainFooter> -->
-      </div> 
+	<div>
+        <MainHeader></MainHeader>
+        <MainSidebar></MainSidebar>
+        <OperationRecord></OperationRecord>
+        <!-- <MainFooter></MainFooter> -->
+    </div> 
 </template>
 
 <script>
