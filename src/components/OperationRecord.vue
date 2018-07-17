@@ -1,21 +1,18 @@
 <template>
-<<<<<<< HEAD
 	<div class="content-wrapper" style="height:400px;overflow-y:auto;overflow-x:hidden;" id="operationR">
 		<span class="layui-breadcrumb navigoto " >
 		  <i class="fa fa-home" style="opacity:0.8;color:#333;font-size:16px;"></i>&nbsp;
 		  <router-link to="/">&nbsp;&nbsp;主页</router-link>
-=======
+
 	<div class="content-wrapper" style="background-color: #f1f4f6;border:1.5px solid #ffd; padding:0 20px;border:1px solid red;" id="operationR">
 		<span class="layui-breadcrumb navigoto " lay-separator=">" >
 		  <i class="fa fa-home" style="opacity:0.8;color:#333;font-size:16px;"></i>&nbsp;
 		  <router-link to="/">主页</router-link>
->>>>>>> 82d1b78b6c70f1b0a2e82b9e9cf1f980d10b58f0
 		  <router-link to="">系统操作</router-link>
 		  <router-link to=""><cite>操作日志</cite></router-link>
 		</span>
 		
 		<div id="OC_main">
-<<<<<<< HEAD
 
 			<div class="OC_header_introduce">
 				
@@ -64,7 +61,7 @@
 				  	
 				</div>
 				<table class="table table-bordered table-hover ">
-=======
+
 			<div class="OC_header_introduce"></div>
 			<div class="OC_content">
 				<div class="btn_group">
@@ -72,7 +69,6 @@
 					<button></button>
 				</div>
 				<table class="table">
->>>>>>> 82d1b78b6c70f1b0a2e82b9e9cf1f980d10b58f0
 					<thead>
 						<tr>
 							<td><input type="checkbox"></td>
@@ -83,7 +79,6 @@
 							<td>操作类型</td>
 						</tr>
 					</thead>
-<<<<<<< HEAD
 					<tbody class="table-condensed">
 						
 						<tr>
@@ -190,40 +185,37 @@
 							<td>游客</td>
 							<td>20180928 12：00</td>
 							<td>创建活动</td>
-=======
 					<tbody>
 						<tr>
 							<td></td>
->>>>>>> 82d1b78b6c70f1b0a2e82b9e9cf1f980d10b58f0
 						</tr>
 					</tbody>
 				</table>
 			</div>
-<<<<<<< HEAD
 
-=======
->>>>>>> 82d1b78b6c70f1b0a2e82b9e9cf1f980d10b58f0
+
+
 		</div>
 
 
 
-<<<<<<< HEAD
-		<!-- <MainFooter></MainFooter> -->
-=======
 
->>>>>>> 82d1b78b6c70f1b0a2e82b9e9cf1f980d10b58f0
+		<!-- <MainFooter></MainFooter> -->
+
+
+
  	</div>
 </template>
 
 <script type="text/javascript">
-<<<<<<< HEAD
+
 	import MainFooter from '@/components/MainFooter';  	
 	import xlsx from 'xlsx';				//引入xlsx插件
 	import TableExport from 'tableexport';	// tableexport插件
 	import FileSaver from 'file-saverjs'
-=======
+
 	let xlsx = require('xlsx');    	//引入xlsx插件
->>>>>>> 82d1b78b6c70f1b0a2e82b9e9cf1f980d10b58f0
+
 
 	export default{
 		name:'OperationRecord',
@@ -231,7 +223,6 @@
 			return{
 				wb:'',				// 读取完成的数据
 				rABS: false,		// 是否将文件读取为二进制字符串
-<<<<<<< HEAD
 				currentPage1: 5,
 		        currentPage2: 5,
 		        currentPage3: 5,
@@ -243,10 +234,9 @@
 		components:{
 			'MainFooter':MainFooter
 		},
-=======
+
 			}
 		},
->>>>>>> 82d1b78b6c70f1b0a2e82b9e9cf1f980d10b58f0
 		methods:{
 			importFile: function (event){
 				if(!event.target.files){
@@ -285,7 +275,7 @@
 					o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w, l * w + w)));
                 o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w)));
                 return o;
-<<<<<<< HEAD
+
 			},
 
 			// 利用tableexport插件导出文件
@@ -339,22 +329,20 @@
 		    handleCurrentChange(val) {
 		        console.log(`当前页: ${val}`);
 		    }
-=======
 			}
->>>>>>> 82d1b78b6c70f1b0a2e82b9e9cf1f980d10b58f0
 		}
 	}
 </script>
 
 <style type="text/css">
-<<<<<<< HEAD
+
 	@import '../../static/css/operationrecord.css';
 	.el-select .el-input {
 	    width: 130px;
 	}
 	.input-with-select .el-input-group__prepend {
 	    background-color: #fff;
-=======
+
 	.navigoto{
 		margin-top: 10px;
 		display: inline-block;
@@ -384,6 +372,6 @@
 		width: 100%;
 		height: 35px;
 		border:1px solid orange;
->>>>>>> 82d1b78b6c70f1b0a2e82b9e9cf1f980d10b58f0
+
 	}
 </style>
