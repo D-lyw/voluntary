@@ -3,11 +3,6 @@
 		<span class="layui-breadcrumb navigoto " >
 		  <i class="fa fa-home" style="opacity:0.8;color:#333;font-size:16px;"></i>&nbsp;
 		  <router-link to="/">&nbsp;&nbsp;主页</router-link>
-
-	<div class="content-wrapper" style="background-color: #f1f4f6;border:1.5px solid #ffd; padding:0 20px;border:1px solid red;" id="operationR">
-		<span class="layui-breadcrumb navigoto " lay-separator=">" >
-		  <i class="fa fa-home" style="opacity:0.8;color:#333;font-size:16px;"></i>&nbsp;
-		  <router-link to="/">主页</router-link>
 		  <router-link to="">系统操作</router-link>
 		  <router-link to=""><cite>操作日志</cite></router-link>
 		</span>
@@ -61,14 +56,8 @@
 				  	
 				</div>
 				<table class="table table-bordered table-hover ">
-
-			<div class="OC_header_introduce"></div>
-			<div class="OC_content">
-				<div class="btn_group">
-					<input type="file"  @change="importFile($event)" class="inportFILE">
-					<button></button>
-				</div>
-				<table class="table">
+					<!-- <input type="file"  @change="importFile($event)" class="inportFILE"> -->
+			
 					<thead>
 						<tr>
 							<td><input type="checkbox"></td>
@@ -80,7 +69,6 @@
 						</tr>
 					</thead>
 					<tbody class="table-condensed">
-						
 						<tr>
 							<td><input type="checkbox" name=""></td>
 							<td>dlyw</td>
@@ -185,9 +173,6 @@
 							<td>游客</td>
 							<td>20180928 12：00</td>
 							<td>创建活动</td>
-					<tbody>
-						<tr>
-							<td></td>
 						</tr>
 					</tbody>
 				</table>
@@ -212,10 +197,9 @@
 	import MainFooter from '@/components/MainFooter';  	
 	import xlsx from 'xlsx';				//引入xlsx插件
 	import TableExport from 'tableexport';	// tableexport插件
-	import FileSaver from 'file-saverjs'
+	import FileSaver from 'file-saverjs';
 
-	let xlsx = require('xlsx');    	//引入xlsx插件
-
+	// const xlsx = require('xlsx');    	//引入xlsx插件
 
 	export default{
 		name:'OperationRecord',
@@ -233,9 +217,6 @@
 		},
 		components:{
 			'MainFooter':MainFooter
-		},
-
-			}
 		},
 		methods:{
 			importFile: function (event){
@@ -329,7 +310,6 @@
 		    handleCurrentChange(val) {
 		        console.log(`当前页: ${val}`);
 		    }
-			}
 		}
 	}
 </script>
@@ -342,7 +322,7 @@
 	}
 	.input-with-select .el-input-group__prepend {
 	    background-color: #fff;
-
+	}
 	.navigoto{
 		margin-top: 10px;
 		display: inline-block;
