@@ -1,0 +1,23 @@
+/*设置主题内容部分的内边距*/
+.content-wrapper{
+	padding: 10px;
+	background: #f1f4f6;
+}	
+
+/*导航条部分*/
+.navigoto{
+	display: inline-block;
+	/*border:1px solid red;*/
+
+}
+/*主题内容*/
+.contenter{
+	margin-top: 10px;
+	width: 100%;
+	height: auto;
+	min-height: 70%;
+}
+
+.panel_heading{
+	background: #e8edf0;
+}
