@@ -9,11 +9,14 @@
 	        <div class="layui-card-body" id="right_part">
 	          <table class="table table-striped ">
 	          	<tbody>
+	          		<tr><td>----- 届别 -----</td><td>2018&nbsp;<span class="layui-badge layui-bg-green">进行中</span></td></tr>
+	          		<tr><td>本届负责人</td><td>张三</td></tr>
 	          		<tr><td>本月志愿活动</td><td>9</td></tr>
 	          		<tr><td>本届青队志愿活动</td><td>137</td></tr>
-	          		<tr><td>青队志愿活动总数</td><td>1520</td></tr>
-	          		<tr><td>志愿活动班级</td><td>25</td></tr>
+	          		
+	          		<tr><td>本届累计工时</td><td>25</td></tr>
 	          		<tr><td>现阶段志愿者总数</td><td>1125</td></tr>
+	          		<tr><td>青队志愿活动总数</td><td>1520</td></tr>
 	          		<tr><td></td></tr>
 	          	</tbody>
 	          </table>

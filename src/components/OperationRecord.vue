@@ -61,11 +61,11 @@
 					<thead>
 						<tr>
 							<td><input type="checkbox"></td>
-							<td>操作人</td>
+							<td>操作人员</td>
 							<td>学号</td>
-							<td>权限</td>
+							<td>职务权限</td>
 							<td>操作时间</td>
-							<td>操作类型</td>
+							<td>操作类别</td>
 						</tr>
 					</thead>
 					<tbody class="table-condensed">

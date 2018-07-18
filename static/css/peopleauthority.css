@@ -21,3 +21,22 @@
 .panel_heading{
 	background: #e8edf0;
 }
+
+
+table{
+	text-align: center;
+	margin-top: 20px;
+}
+
+table thead{
+	font-weight: 700;
+	color: #333;
+	font-size: 13px;
+}
+
+.table_buttom_msg{
+	color: #333;
+	font-size: 13px;
+	font-weight: 400;
+}
+
