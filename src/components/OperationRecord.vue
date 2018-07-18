@@ -11,7 +11,7 @@
 
 			<div class="OC_header_introduce">
 				
-				  <div style="red;width:60%;display:inline-block;">
+				  <div style="width:60%;display:inline-block;">
 				  <el-input placeholder="请选择关键字进行搜索" v-model="input_value" class="input-with-select"  id="input_name_S" size="small">
 				    <el-select v-model="select" slot="prepend" placeholder="请选择">
 				      <el-option label="姓名" value="1"></el-option>

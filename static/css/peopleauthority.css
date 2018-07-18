@@ -40,3 +40,19 @@ table thead{
 	font-weight: 400;
 }
 
+/*自定义elementUI样式 -- 刷新*/
+.el-notification{
+	color:red;
+	width: 200px;
+}
+
+/*自定义elementUI样式 --savePerson
+*/
+.user_style_savePerson{
+	min-width: 180px ;
+	top:55px;
+	background-color: #18bc9c;
+	color: white;
+}
+
+

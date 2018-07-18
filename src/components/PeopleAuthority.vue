@@ -17,7 +17,7 @@
 					<button class="btn btn-sm btn_refresh" style="background:#1a242f;" title="刷新" @click="refresh" >
 						<i class="fa fa-refresh" aria-hidden="true" style="color:white;"></i> 
 					</button>
-					<button class="btn btn-sm" style="background:#18bc9c; color:white;" @click='addManager'>
+					<button class="btn btn-sm" style="background:#18bc9c; color:white;" @click="dialogFormVisible = true">
 						<i class="fa fa-plus" aria-hidden="true"></i> 
 						添加
 					</button>
@@ -48,10 +48,53 @@
 						</div>
 					</div>
 				</div>
+				
+				<!-- 添加管理员对话框 -->
+				<el-dialog title="添加用户角色" :visible.sync="dialogFormVisible" style="width:80%;margin:auto;" @closed="savePerson">
+				  <el-form :model="form">
+					<div style="display:inline-block; width:100%;">
+					    <el-input placeholder="请根据姓名或学号查询" v-model="input_key" class="input-with-select" >
+						    <el-select v-model="select" slot="prepend" placeholder="请选择" style="width:100px;">
+						      <el-option label="学号" value="1"></el-option>
+						      <el-option label="姓名" value="2"></el-option>
+						    </el-select>
+						    <el-button slot="append" icon="el-icon-search" @click="search_person_toadd"></el-button>
+						</el-input>
+					</div>
+					<table class="find_person_msg table table-condensed table-hover ">
+						<tbody v-if="show_search_result">
+							<tr>
+								<td><el-checkbox v-model="find_person_checked"></el-checkbox></td>
+								<td>
+									<el-tag
+									  type="success" size="mini" color="#f1f4f5" >
+									  20161316023
+									</el-tag>
+								</td>
+								<td>刘元旺</td>
+								<td>网络1601</td>
+								<td>计算机科学与技术学院</td>
+							</tr>
+						</tbody>
+					</table>
+				    <el-form-item label="授予权限" :label-width="formLabelWidth">
+				      <el-select v-model="form.region" placeholder="请选择授予权限类别">
+				        <el-option label="学院管理员" value="1" disabled></el-option>
+				        <el-option label="工时管理员" value="2"></el-option>
+				      </el-select>
+				    </el-form-item>
+
+				  </el-form>
+				  <div slot="footer" class="dialog-footer">
+				    <el-button @click="dialogFormVisible = false">取 消</el-button>
+				    <el-button type="primary" @click="dialogFormVisible = false" >确 定</el-button>
+				  </div>
+				</el-dialog>
+
 				<table class="table table-bordered table-hover">
 					<thead>
 						<tr>
-							<td><input type="checkbox"></td>
+							<td><el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange"></el-checkbox></td>
 							<td>ID</td>
 							<td>姓名</td>
 							<td>学号</td>
@@ -64,7 +107,7 @@
 					</thead>
 					<tbody>
 						<tr>
-							<td><input type="checkbox"></td>
+							<td><el-checkbox></el-checkbox></td>
 							<td>1</td>
 							<td>李四</td>
 							<td>201613136023</td>
@@ -83,7 +126,7 @@
 							</td>
 						</tr>
 						<tr>
-							<td><input type="checkbox"></td>
+							<td><el-checkbox></el-checkbox></td>
 							<td>1</td>
 							<td>李四</td>
 							<td>201613136023</td>
@@ -102,7 +145,7 @@
 							</td>
 						</tr>
 						<tr>
-							<td><input type="checkbox"></td>
+							<td><el-checkbox></el-checkbox></td>
 							<td>1</td>
 							<td>李四</td>
 							<td>201613136023</td>
@@ -121,7 +164,7 @@
 							</td>
 						</tr>
 						<tr>
-							<td><input type="checkbox"></td>
+							<td><el-checkbox></el-checkbox></td>
 							<td>1</td>
 							<td>李四</td>
 							<td>201613136023</td>
@@ -140,7 +183,7 @@
 							</td>
 						</tr>
 						<tr>
-							<td><input type="checkbox"></td>
+							<td><el-checkbox></el-checkbox></td>
 							<td>1</td>
 							<td>李四</td>
 							<td>201613136023</td>
@@ -159,7 +202,7 @@
 							</td>
 						</tr>
 						<tr>
-							<td><input type="checkbox"></td>
+							<td><el-checkbox></el-checkbox></td>
 							<td>1</td>
 							<td>李四</td>
 							<td>201613136023</td>
@@ -194,7 +237,31 @@
 		name: 'PeopleAuthority',
 		data () {
 			return {
-				input_search:''
+				input_search:'',
+				dialogTableVisible: false,
+		        dialogFormVisible: false,
+		        form: {
+		          name: '',
+		          region: '',
+		          date1: '',
+		          date2: '',
+		          delivery: false,
+		          type: [],
+		          resource: '',
+		          desc: ''
+				},
+				select:"",
+				input_key:'',
+
+				checkAll: false,
+				find_person_checked: false,
+
+				formLabelWidth:'14%',
+
+				isIndeterminate: "",
+				change:"",
+
+				show_search_result:false,
 			}
 		},
 		methods:{
@@ -202,33 +269,33 @@
 				alert("show");
 			},
 			refresh: function(){
-				// alert("refresh");
-				// layer.msg('hello');
-				// layer.open({
-				// 	type: 0,
-				// 	title: false,
-				// 	content: '刷新成功',
-				// 	offset: 'rt',
-				// 	icon: 1
-				// });
-				// layer.alert("刷新成功",{icon: 1})
-				this.$notify({
+				this.$notify({      			//刷新提示框
 		          type: 'success',
 		          message: '刷新成功！',
-		          duration: 0,
-		          customClass:'el-notification'
+		          duration: 2000,
+		          customClass:'el-notification',
+		          offset:40
 		        });
+			},
+			savePerson: function(){			 // 在赋予人员权限，点击确实后触发
+				this.$message({
+		          message: '<i class="fa fa-check"></i>&nbsp;添加管理员操作成功！',
+		          dangerouslyUseHTMLString: true,
+		          iconClass: 'fa fa-right',
+		          duration: 2000,
+		          showClose: true,
+		          customClass: 'user_style_savePerson'
+		        });
+			},
+			handleCheckAllChange: function(){
+
+			},
+			search_person_toadd: function(){		// 显示搜索出的结果
+				this.show_search_result = true;
 			}
 		}
 	}
 </script>
-
-<style type="text/css" scoped>
+<style>
 	@import '../../static/css/peopleauthority.css'
-	.el-notification{
-		color: red;
-		top:40px !important;
-		width: 200px;
-		top: 52px;
-	}
 </style>
