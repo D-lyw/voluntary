@@ -1,6 +1,6 @@
 <template>
 	<div class="content-wrapper" style="height:400px;overflow-y:auto;overflow-x:hidden;">	
-		<span class="layui-breadcrumb navigoto "  style="">
+		<span class="layui-breadcrumb navigoto " >
 		  <i class="fa fa-home" style="opacity:0.8;color:#333;font-size:16px;"></i>&nbsp;
 		  <router-link to="/">&nbsp;&nbsp;主页</router-link>
 		  <router-link to="">系统操作</router-link>
@@ -40,10 +40,10 @@
 						    <span class="caret"></span>
 						    <span class="sr-only">Toggle Dropdown</span>
 						  </button>
-						  <ul class="dropdown-menu">
-						    <li><a href="#">JSON</a></li>
-						    <li><a href="#">XLSX</a></li>
-						    <li><a href="#">TXT</a></li>
+						  <ul class="dropdown-menu dropdown-menu-right" style="width:70%;padding:3px 10px;">
+						    <li><a href="#">JSON格式</a></li>
+						    <li><a href="#">XLSX格式</a></li>
+						    <li><a href="#">TXT格式</a></li>
 						  </ul>
 						</div>
 					</div>

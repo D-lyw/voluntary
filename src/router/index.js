@@ -7,6 +7,7 @@ import Mainheader from '@/components/MainHeader'
 import Learn from '@/page/learn'
 import OperationRecord from '@/page/OperationRecord_page'
 import PeopleAuthority from '@/page/PeopleAuthority_page'
+import ActivityList from '@/page/ActivityList_page'
 
 Vue.use(Router)
 
@@ -32,6 +33,11 @@ export default new Router({
       path: '/peopleauthority',
       name: 'peopleauthority',
       component: PeopleAuthority
+    },
+    {
+      path: '/activitylist',
+      name: 'activitylist',
+      component: ActivityList
     }
 
   ]
