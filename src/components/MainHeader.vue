@@ -5,9 +5,9 @@
 	<header class="main-header">
     <a href="#" class="logo">
       <span class="logo-mini"><b>Wust</b></span>
-      <span class="logo-lg animated swing"  style="font-family: 楷体;"><b>志愿活动管理平台</b></span>
+      <span class="logo-lg animated jello"  style="font-family: 楷体;"><b>志愿活动管理平台</b></span>
     </a>
-
+    <!-- 标题使用animate 样式 jello jackInTheBox  -->
     <nav class="navbar navbar-static-top" role="navigation">
 
       <!-- Sidebar toggle button-->

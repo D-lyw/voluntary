@@ -16,6 +16,7 @@
 		</el-radio-group> -->
 		<div class="panel panel-default">
 			<div class="panel-heading">
+				<br>
 				<div class="btn-group" style="width:100%;">
 					<button class="layui-btn layui-btn-sm" style="background:#2c3e50;" title="刷新" @click="refresh" >
 						<i class="fa fa-refresh" aria-hidden="true" style="color:white;"></i> 
@@ -52,7 +53,7 @@
 			<div class="panel-body">
 				<el-tabs :tab-position="tabPosition" style="height: auto;min-height: 600px;">
 				    <el-tab-pane label="已认证活动">
-				    	<table class="table table-hover table-bordered" style="border:1px solid red;">
+				    	<table class="table table-hover table-bordered" style="border-top:1.5px solid red;">
 								<thead>
 									<tr>
 										<td><input type="checkbox"></td>
@@ -280,16 +281,19 @@
 							</table>
 				    </el-tab-pane>
 				    <el-tab-pane >	
-				    	<el-badge is-dot style="border:1px solid red; padding:0px;" class="item" slot="label">未认证活动</el-badge>
+				    	<!-- <span ></span> -->
+				    	<el-badge is-dot class="item" slot="label" style="height:30px;line-height:30px;">未认证活动</el-badge>
 				    </el-tab-pane>
-				    <el-tab-pane>
-				    	<span slot="label">待处理活动</span>
+				    <el-tab-pane style="margin-top:10px;">
+				    	<el-badge :value="100" :max="10" class="item" slot="label" style="padding-right:7px;margin-right:10px;">
+						 	 待处理
+						</el-badge>
 				    </el-tab-pane>
 					    <!-- <el-tab-pane label="定时任务补偿">
 					    	
 					    </el-tab-pane> -->
 				</el-tabs>
-
+				<el-button :plain="true" @click="show_edit_ok"  id="btn_for_show_msg"></el-button>
 
 				<!-- 分页 -->
 				<div id="Page_bottom"></div>
@@ -306,17 +310,43 @@
 </template>
 
 <script type="text/javascript" >
+import {Edit_act_name} from '../../static/js/activitylist.js'
 	export default {
 		name: "ActivityList",
 		data () {
 			return {
 				tabPosition:'left',
 				search_content_header:'',
-				activity_Edit_name: '',
-
+				Edit_act_name: '',
+				V_If_Show: [],
+				V_edit_tips: [],
       		}
 		},
+		watch:{
+			Edit_act_name (val, oldval){
+				if(V_If_Show[0] != true){
+					V_If_Show[0] = true;
+				}
+				if(this.Edit_act_name != ''){
+					V_edit_tips[0] = true;
+				}else{
+					V_edit_tips[0] = false;
+				}
+				console.log(this.V_If_Show);
+				console.log(this.Edit_act_name);
+				console.log(val);
+			}
+		},
 		methods:{
+			Edit_act_name: function(){
+
+				if($('.input_edit_name').val() != ''){
+					V_edit_tips[0] = true;
+					$("#node_edit_name_ok").css('display','block');
+				}else{
+					V_edit_tips[0] = false;
+				}
+			},
 			btn_Delete: function(){
 				// 判断是否是已经认证的活动
 
@@ -341,17 +371,18 @@
 			  		shadeClose: false, //开启遮罩关闭
 			  		btn: ['确定&保存', "取消"],
 			  		title: '[ 编辑 ] - 志愿活动',
-			  		content: '<div style="border:1px solid red;padding:20px;">\
+			  		content: '<div style="padding:20px;">\
 									<div class="row" >\
-										<div class="col-md-3" style="text-align:right;">活动名称</div>\
-										<div class="col-md-6"><input class="form-control" v-model="activity_Edit_name" placeholder="请输入活动名称" clearable></input></div>\
+										<div class="col-md-3" style="text-align:right;">活动名称:</div>\
+										<div class="col-md-6"><input class=" form-control input_edit_name" onfocus='+Edit_act_name()+' placeholder="请输入活动名称" ></input></div>\
+										<div class="col-md-3 col-tips" id="node_edit_name_ok" style="display:none;"><i class="glyphicon glyphicon-ok"></i>&nbsp;输入OK</div>\
 									</div>\
 									<div class="row" >\
-										<div class="col-md-3" style="text-align:right;">活动名称</div>\
+										<div class="col-md-3" style="text-align:right;">活动地点:</div>\
 										<div class="col-md-6"><input type="text" class="form-control" placeholder="请输入活动地点"/></div>\
 									</div>\
 									<div class="row">						\
-										<div class="col-md-3" style="text-align:right;">活动时间</div>\
+										<div class="col-md-3" style="text-align:right;">活动时间:</div>\
 										<div class="col-md-6" id="">\
 											  	<div class="layui-input-inline">\
 										        <input type="text" class="layui-input" id="test1" placeholder="YYYY-MM-DD" size="small">\
@@ -359,28 +390,55 @@
 										</div>\
 									</div>\
 									<div class="row" >\
-										<div class="col-md-3" style="text-align:right;">活动所属组织</div>\
-										<div class="col-md-6"><input type="text" class="form-control" placeholder="请输入所属组织"/></div>\
+										<div class="col-md-3" style="text-align:right;">活动所属组织:</div>\
+										<div class="col-md-6">\
+												<select class="form-control">\
+													<option>请选择所属组织</option>\
+													<option>计算机科学与技术学院</option>\
+													<option>........</option>\
+												</select>\
+										</div>\
 									</div>\
 									<div class="row" >\
-										<div class="col-md-3" style="text-align:right;">活动人数</div>\
+										<div class="col-md-3" style="text-align:right;">活动总工时:</div>\
+										<div class="col-md-6"><input type="text" class="form-control" placeholder="请输入活动总工时"/></div>\
+									</div>\
+									<div class="row" >\
+										<div class="col-md-3" style="text-align:right;">活动人数:</div>\
 										<div class="col-md-6"><input type="text" class="form-control" placeholder="请输入活动人数"/></div>\
 									</div>\
 									<div class="row" >\
-										<div class="col-md-3" style="text-align:right;">活动发起人</div>\
+										<div class="col-md-3" style="text-align:right;">活动发起人:</div>\
 										<div class="col-md-6"><input type="text" class="form-control" placeholder="请输入活动发起人"/></div>\
 									</div>\
 									<div class="row" >\
-										<div class="col-md-3" style="text-align:right;">活动认证人</div>\
+										<div class="col-md-3" style="text-align:right;">活动认证人:</div>\
 										<div class="col-md-6"><input type="text" class="form-control" placeholder="请输入活动认证人"/></div>\
 									</div>\
 							</div>',
 			  		area: ['800px','600px'],
+			  		function(index, layero){
+			  			layer.close(index);
+			  			var index = layer.load(0, {time: 2*1000});
+			  			
+			  			$("#btn_for_show_msg").click();
+			  		},
+			  		function(index, layero){
+			  			// 取消按钮回调
+			  		}
 				});
 				window.layui.laydate.render({
 			   	 		elem: '#test1'
 			  	});
-			}
+
+				
+			},
+				show_edit_ok: function(){
+			  		this.$message({
+			  				message:"xiugaichg",
+			  				type: "success"
+			  			});
+			  	}
 
 		},
 		mounted(){			

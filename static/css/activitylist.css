@@ -28,3 +28,13 @@
 	.col-md-3{
 		text-align:right;
 	}
+
+	.row{
+		/*border:1px solid red;*/
+		margin-bottom: 10px;
+		line-height: 38px;
+	}
+
+	.col-tips{
+		text-align: left;
+	}
