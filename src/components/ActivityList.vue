@@ -18,7 +18,7 @@
 						<i class="fa fa-plus" aria-hidden="true" ></i> 
 						添加活动
 					</button>
-					<button class="layui-btn layui-btn-sm">
+					<button class="layui-btn layui-btn-sm" @click="dialogVisible = true">
 						<i class="fa fa-plus" aria-hidden="true"></i> 
 						添加人员
 					</button>					
@@ -362,7 +362,126 @@
 					    </el-tab-pane>
 						
 						<el-tab-pane label="添加活动人员" v-if="show_add_activityperson_page" id="Node_add_act_person"  name="four">
-								<button>ADD</button>
+								<div style="padding: 20px; background-color: #F2F2F2;">
+									  	<div class="layui-row layui-col-space15">
+
+											    <div class="layui-col-md12">
+													     <div class="layui-card">
+
+														        <div class="layui-card-header" @mouseover="showAnimateHeader">
+														        			<i class="fa fa-free-code-camp" style="font-size: 18px;" id="header_icon_color"></i>
+														        			&nbsp;&nbsp;
+														        			<em style="font-size: 18px;" id="header_activity_name">志愿迎新活动</em>
+														        			<div style="display: inline-block;float: right;width: 30%;" >
+														        					<span style="margin-left: 20%;">活动时间:</span>
+																        			<span><em>2018年8月30日</em></span>&nbsp;&nbsp;&nbsp;
+																        			<span>发起组织:</span>
+																        			<span><em>计算机学院青队</em></span>
+														        			</div>
+	       			
+														        </div>
+
+														        <!-- 尚未添加人员时的提示框内容  -->
+														        <div class="layui-card-body" v-if="tip_show_none_list">
+														        		<span style="display: block;padding-left: 35%;">本活动尚未添加活动成员呢 : (<br>
+																				        		<span style="padding-left: 10%;">点击上方
+																				        		<button class="layui-btn layui-btn-xs">
+																				        				<i class="fa fa-plus" aria-hidden="true"></i> 
+																										添加人员
+																								</button>			
+																								或
+																								<button class="layui-btn layui-btn-xs" style="background-color:#e74c3c" >
+																								<i class="fa fa-upload"></i> 
+																								导入
+																								</button>
+																								进行批量导入添加吧 ：）</span>
+																		</span>
+														        </div>
+
+														        <div class="layui-card-body" v-if="tip_show_person_list">
+														          			<table class="table" style="text-align: center;">
+														          				 	<thead>
+														          				 			<tr>
+															          				 				<td><input type="checkbox" name=""></td>
+															          				 				<td>ID</td>
+															          				 				<td>学号</td>
+															          				 				<td>姓名</td>
+															          				 				<td>工时</td>
+															          				 				<td>班级</td>
+															          				 				<td>职位</td>
+															          				 				<td>操作</td>
+														          				 			</tr>
+														          				 	</thead>
+														          				 	<tbody>
+														          				 			<tr>
+														          				 					<td><input type="checkbox" name=""></td>
+														          				 					<td>2</td>
+															          				 				<td>201613136023</td>
+															          				 				<td>田七</td>
+															          				 				<td>2.5</td>
+															          				 				<td>网络1801</td>
+															          				 				<td>志愿者</td>
+															          				 				<td><button>删除</button></td>
+														          				 			</tr>
+														          				 	</tbody>
+														          			</table>
+
+																		  <el-pagination
+																	      @size-change="handleSizeChange"
+																	      @current-change="handleCurrentChange"
+																	      :current-page.sync="currentPage1"
+																	      :page-size="100"
+																	      layout="slot, prev, pager, next"
+																	      :total="1000">
+																	      		<slot >
+																	      			<span style="font-weight: 400;">
+																	      			# 本活动共42人参与，现显示1到10条数据</span></slot>
+																	    </el-pagination>														          			
+														        </div>
+													     </div>
+											    </div>
+									    </div>
+								 </div> 
+
+								<!-- 添加活动人员对话框 -->
+								 <el-dialog
+										  title="添加活动人员"
+										  :visible.sync="dialogVisible"
+										  width="50%"
+										  @close="handleClose">
+   										 <el-input placeholder="请输入内容" v-model="add_person_search_id">
+										   		 <template slot="append" ><i class="fa fa-search"  @click="btn_search_add_id" style="padding: 10px;" ></i></template>
+										  </el-input>
+
+										 <div v-if="show_search_error_result">搜索的学号不存在或已加入表中 : (</div>
+										
+										<div v-if="show_search_success_result">
+												<span style="font-size: 15px;"><em>匹配结果如下:</em></span>
+
+												<table class="table table-bordered">
+														<tbody>
+																<tr>
+																	<td>201613136023</td>
+																	<td>张三</td>
+																	<td>网络1801</td>
+																	<td>志愿者</td>
+																	<td>15272058782</td>
+																</tr>
+														</tbody>
+												</table>
+
+										</div>
+										
+										
+										<el-input placeholder="请输入工时" v-model="add_person_work_time" style="margin-top: 10px;"></el-input>
+
+										  <span slot="footer" class="dialog-footer">
+											    <el-button @click="dialogVisible = false">取 消</el-button>
+											    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+										  </span>
+
+								</el-dialog>
+
 						</el-tab-pane>
 
 
@@ -389,12 +508,20 @@
 				V_If_Show: [],
 				V_edit_tips: [],
 				show_add_activityperson_page: false,
-				activiTab: 'first'
+				activiTab: 'first',
+				tip_show_person_list: true,
+				tip_show_none_list: false,
+				currentPage1: 1,
+				dialogVisible: false,
+				add_person_search_id: '',
+				add_person_work_time: '',
+				show_search_error_result: false,
+				show_search_success_result: false,
       		}
 		},
 		watch: {
 			activiTab: function (val, oldval){
-					console.log(val+oldval);
+					// console.log(val+oldval);
 					if(val != "four"){
 							this.show_add_activityperson_page = false;
 					}
@@ -608,7 +735,39 @@
 			AddActivityPerson: function(){
 					this.show_add_activityperson_page = true;
 					this.activiTab = "four";
-			}
+			},
+
+			showAnimateHeader: function () {
+					// alert("dsfsdfdsf");
+					$("#header_activity_name").addClass("animated lightSpeedIn");
+			},
+
+			 handleSizeChange(val) {
+		        	console.log(`每页 ${val} 条`);
+		      },
+
+		      handleCurrentChange(val) {
+		        	console.log(`当前页: ${val}`);
+		      },
+
+		      handleClose(){											//添加人员对哈话框关闭之后的回调函数
+		      		console.log("test OK");
+		      		// console.log(this.add_person_search_id + " " + this.add_person_work_time);
+		      		this.add_person_work_time = '';
+		      		this.add_person_search_id = '';
+
+		      		this.$message({
+		      				message: '&nbsp;&nbsp;添加成功',
+		      				dangerouslyUseHTMLString: true,
+		      				customClass: "user_style_for_ok_add",
+		      				iconClass: 'fa fa-check',
+		      				showClose: true
+		      		});
+		      },
+
+		      btn_search_add_id(){
+		      		this.show_search_error_result = true;
+		      }
 		},
 		mounted(){			
 			window.layui.use(['laypage', 'layer', 'laydate'], function(){
@@ -621,7 +780,7 @@
 					    ,count: 100
 					    ,layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
 					    ,jump: function(obj){
-					      console.log(obj)
+					      // console.log(obj)
 					    }
 					});
 				});

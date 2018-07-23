@@ -38,3 +38,14 @@
 	.col-tips{
 		text-align: left;
 	}
+
+	.layui-card-header:hover i{
+		color:  red;
+	}
+	
+	.user_style_for_ok_add{
+		min-width: 200px;
+		margin-top: 30px;
+		background-color: #18bc9c;
+		color: white;
+	}
