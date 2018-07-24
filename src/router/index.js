@@ -8,6 +8,8 @@ import Learn from '@/page/learn'
 import OperationRecord from '@/page/OperationRecord_page'
 import PeopleAuthority from '@/page/PeopleAuthority_page'
 import ActivityList from '@/page/ActivityList_page'
+import Volunteerlist from '@/page/Volunteerlist_page'
+import VolunteerOperation from '@/page/VolunteerOperation_page'
 
 Vue.use(Router)
 
@@ -38,6 +40,16 @@ export default new Router({
       path: '/activitylist',
       name: 'activitylist',
       component: ActivityList
+    },
+    {
+      path: '/volunteerlist',
+      name: 'volunteerlist',
+      component: Volunteerlist
+    },
+    {
+      path: '/volunteeroperation',
+      name: 'volunteeroperation',
+      component: VolunteerOperation
     }
 
   ]
