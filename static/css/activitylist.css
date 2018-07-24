@@ -49,3 +49,16 @@
 		background-color: #18bc9c;
 		color: white;
 	}
+	
+
+	#Need_do_thinglist li div{
+		padding-left: 10px;
+		margin-left: 20px;
+		padding-top: 5px;
+		margin-right: 20px;
+		margin-top: -20px;
+	}
+	#Need_do_thinglist li .layui-text:hover{
+		box-shadow: 5px 5px 10px  #ccc;
+		border: 1px solid #eee;
+	}

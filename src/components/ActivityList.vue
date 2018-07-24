@@ -280,7 +280,7 @@
 					    <el-tab-pane  name="second">	
 					    		<el-badge is-dot class="item" slot="label" style="height:30px;line-height:30px;">未认证活动</el-badge>
 								
-								<table class="table table-hover table-bordered" style="border-top:1.5px solid orange;">
+								<table class="table table-hover table-bordered" style="border-top:1.5px solid #009688;">
 									<thead>
 										<tr>
 											<td><input type="checkbox"></td>
@@ -355,10 +355,69 @@
 					    </el-tab-pane>
 
 					    <!-- 待处理 Part -->
-					    <el-tab-pane style="margin-top:10px;" name="third">
-					    	<el-badge :value="100" :max="10" class="item" slot="label" style="padding-right:7px;margin-right:10px;">
-							 	 待处理
-							</el-badge>
+					    <el-tab-pane style="margin-top:10px;margin-left: 10px;" name="third" >
+						    	<el-badge :value="100" :max="10" class="item" slot="label" style="padding-right:7px;margin-right:10px;">
+								 	 待处理
+								</el-badge>
+
+								<ul class="layui-timeline" id="Need_do_thinglist">
+									  <li class="layui-timeline-item" v-show="this.show_one_msg" >
+											<i class="fa fa-gg"></i>
+										    <div class="layui-timeline-content layui-text" >
+										     		<h3 class="layui-timeline-title">2018/09/27 11:23:41</h3>
+										     		
+										     		<fieldset class="layui-elem-field layui-field-title" style="width: 80%;">
+													  <legend>
+													  		<h3><em>活动认证成功通知</em><span style="font-size: 14px;float: right;">处理人： 总队 田七</span></h3>
+													  	</legend>
+													  <div class="layui-field-box">
+													   			你学院申请对 志愿迎新活动 的认证，经总队审核，符合流程要求，已认证成功，祝活动举办圆满成功！
+													   			<div style="margin-top: 8px;">    
+													   					<el-tooltip class="item" effect="dark" content="点击按钮，则表示已阅读该消息"  placement="right">
+													   						<button class="layui-btn  layui-btn-xs"  style="float: right;"><i class="fa fa-check-square-o" @click="hide_one_msg"></i>已查看</button>
+													   					</el-tooltip>
+																</div>
+													  </div>
+													</fieldset>
+
+										    </div>
+									  </li>
+
+									  <li class="layui-timeline-item">
+											<i class="layui-icon layui-icon-fire"></i>   
+										    <div class="layui-timeline-content layui-text">
+											      <h3 class="layui-timeline-title">8月16日</h3>
+											      <p>杜甫的思想核心是儒家的仁政思想，他有<em>“致君尧舜上，再使风俗淳”</em>的宏伟抱负。个人最爱的名篇有：</p>
+											      <ul>
+											        <li>《登高》</li>
+											        <li>《茅屋为秋风所破歌》</li>
+											      </ul>
+										    </div>
+									  </li>
+
+									  <li class="layui-timeline-item">
+										    <i class="fa fa-commenting-o"></i>
+										    <div class="layui-timeline-content layui-text">
+										      <h3 class="layui-timeline-title">8月15日</h3>
+										      <p>
+										        中国人民抗日战争胜利日
+										        <br>常常在想，尽管对这个国家有这样那样的抱怨，但我们的确生在了最好的时代
+										        <br>铭记、感恩
+										        <br>所有为中华民族浴血奋战的英雄将士
+										        <br>永垂不朽
+										      </p>
+										    </div>
+									  </li>
+
+									  <li class="layui-timeline-item">
+										    <i class="layui-icon layui-timeline-axis"></i>
+										    <div class="layui-timeline-content layui-text">
+										      <div class="layui-timeline-title">过去</div>
+										    </div>
+									  </li>
+
+									</ul>  
+
 					    </el-tab-pane>
 						
 						<el-tab-pane label="添加活动人员" v-if="show_add_activityperson_page" id="Node_add_act_person"  name="four">
@@ -517,6 +576,8 @@
 				add_person_work_time: '',
 				show_search_error_result: false,
 				show_search_success_result: false,
+
+				show_one_msg: true,
       		}
 		},
 		watch: {
@@ -767,6 +828,11 @@
 
 		      btn_search_add_id(){
 		      		this.show_search_error_result = true;
+		      },
+
+		      hide_one_msg: function(){
+		      		this.show_one_msg = false;
+		      		console.log(this.show_one_msg);
 		      }
 		},
 		mounted(){			
