@@ -361,18 +361,18 @@
 								</el-badge>
 
 								<ul class="layui-timeline" id="Need_do_thinglist">
-									  <li class="layui-timeline-item" v-show="this.show_one_msg" >
+									  <li class="layui-timeline-item" v-show="this.show_one_msg"  >
 											<i class="fa fa-gg"></i>
 										    <div class="layui-timeline-content layui-text" >
 										     		<h3 class="layui-timeline-title">2018/09/27 11:23:41</h3>
 										     		
-										     		<fieldset class="layui-elem-field layui-field-title" style="width: 80%;">
-													  <legend>
-													  		<h3><em>活动认证成功通知</em><span style="font-size: 14px;float: right;">处理人： 总队 田七</span></h3>
+										     		<fieldset class="layui-elem-field layui-field-title" style="width: 80%;border:1px solid #e8e8e8;" >
+													  <legend style=" display: inline-block;padding: 0px 5px;width: auto;">
+													  		<span ><em>活动认证成功通知</em><i class="layui-icon layui-icon-face-smile"></i></span>
 													  	</legend>
-													  <div class="layui-field-box">
-													   			你学院申请对 志愿迎新活动 的认证，经总队审核，符合流程要求，已认证成功，祝活动举办圆满成功！
-													   			<div style="margin-top: 8px;">    
+													  <div class="layui-field-box" >
+													   			<div style="margin-top:1px;text-align: center;">你学院申请对 志愿迎新活动 的认证，经总队审核，符合流程要求，已认证成功，祝活动举办圆满成功！</div>
+													   			<div style="margin-top: 0px;padding-bottom: 1px;">    
 													   					<el-tooltip class="item" effect="dark" content="点击按钮，则表示已阅读该消息"  placement="right">
 													   						<button class="layui-btn  layui-btn-xs"  style="float: right;"><i class="fa fa-check-square-o" @click="hide_one_msg"></i>已查看</button>
 													   					</el-tooltip>
@@ -398,14 +398,20 @@
 									  <li class="layui-timeline-item">
 										    <i class="fa fa-commenting-o"></i>
 										    <div class="layui-timeline-content layui-text">
-										      <h3 class="layui-timeline-title">8月15日</h3>
-										      <p>
-										        中国人民抗日战争胜利日
-										        <br>常常在想，尽管对这个国家有这样那样的抱怨，但我们的确生在了最好的时代
-										        <br>铭记、感恩
-										        <br>所有为中华民族浴血奋战的英雄将士
-										        <br>永垂不朽
-										      </p>
+											     	 <h3 class="layui-timeline-title">2018/09/12 15:03:24</h3>
+											     	<fieldset class="layui-elem-field layui-field-title" style="width: 80%;border:1px solid #e8e8e8;" >
+													  <legend style=" display: inline-block;padding: 0px 5px;width: auto;">
+													  		<span ><em>活动认证成功通知</em><i class="layui-icon layui-icon-face-smile"></i></span>
+													  	</legend>
+													  <div class="layui-field-box" >
+													   			<div style="margin-top:1px;text-align: center;">你学院申请对 志愿迎新活动 的认证，经总队审核，符合流程要求，已认证成功，祝活动举办圆满成功！</div>
+													   			<div style="margin-top: 0px;padding-bottom: 1px;">    
+													   					<el-tooltip class="item" effect="dark" content="点击按钮，则表示已阅读该消息"  placement="right">
+													   						<button class="layui-btn  layui-btn-xs"  style="float: right;"><i class="fa fa-check-square-o" @click="hide_one_msg"></i>已查看</button>
+													   					</el-tooltip>
+																</div>
+													  </div>
+													</fieldset>
 										    </div>
 									  </li>
 
