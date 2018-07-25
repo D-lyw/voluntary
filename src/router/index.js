@@ -10,6 +10,7 @@ import PeopleAuthority from '@/page/PeopleAuthority_page'
 import ActivityList from '@/page/ActivityList_page'
 import Volunteerlist from '@/page/Volunteerlist_page'
 import VolunteerOperation from '@/page/VolunteerOperation_page'
+import PersonerCenter from '@/page/PersonerCenter_page'
 
 Vue.use(Router)
 
@@ -50,6 +51,11 @@ export default new Router({
       path: '/volunteeroperation',
       name: 'volunteeroperation',
       component: VolunteerOperation
+    },
+    {
+      path: '/personercenter',
+      name: 'personercenter',
+      component: PersonerCenter
     }
 
   ]

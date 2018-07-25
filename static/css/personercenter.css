@@ -1,0 +1,17 @@
+.content-wrapper{
+	 background: #f1f4f6;
+	 padding: 15px 20px;
+}
+
+#form_group_btn{
+	text-align:right;
+}
+
+.col-md-2{
+	text-align: right;
+	line-height: 35px;
+}
+
+#personerCenterTable{
+	align: center;
+}
