@@ -151,9 +151,30 @@ import qs from 'qs'
 								i_check_new_pw: '',
 						}
 				},
+				mounted(){
+					// 判断是否已登陆
+					this.axios.post('/api/WustVolunteer/college/checkLogin.do')
+							.then((data) => {
+								console.log(data);
+								if(data.data.status == 1){
+									this.$router.push({path: '/login'});
+								}
+
+					})
+
+				},
 				methods:{
 						// -----修改密码-----
 						UpdatePW: function(){
+
+
+							this.axios.post('/api/WustVolunteer/college/checkLogin.do')
+							.then((data) => {
+								console.log(data);
+							})
+
+
+
 							// 判断两次输入的新密码是否相同
 							if(this.i_new_pw != this.i_check_new_pw){
 								return ;

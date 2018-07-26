@@ -563,6 +563,8 @@
 </template>
 
 <script type="text/javascript" >
+import qs from 'qs';		// 将穿给后台的数据拼成url字符串
+
 	export default {
 		name: "ActivityList",
 		data () {
@@ -584,6 +586,10 @@
 				show_search_success_result: false,
 
 				show_one_msg: true,
+
+				ac_activity_list:[
+
+				]
       		}
 		},
 		watch: {
@@ -608,24 +614,18 @@
 			}
 		},
 		methods:{
-			refresh: function(){
+															
+			refresh: function(){											// 刷新页面，更新数据
+					
+			},
+			
+			clickSearch: function(){										// 点击按钮触发 搜索事件
 
 			},
-			clickSearch: function(){
 
-			},
-			// Edit_act_name: function(){
-
-			// 	if($('.input_edit_name').val() != ''){
-			// 		V_edit_tips[0] = true;
-			// 		$("#node_edit_name_ok").css('display','block');
-			// 	}else{
-			// 		V_edit_tips[0] = false;
-			// 	}
-			// },
-			btn_Delete: function(){
+			btn_Delete: function(){											// 删除活动按钮
 				// 判断是否是已经认证的活动
-				this.$notify({      			//刷新提示框
+				this.$notify({      			
 		          type: 'error',
 		          title: '禁止删除',
 		          message: '已认证的活动，该账户无权限删除',
@@ -718,7 +718,7 @@
 
 				
 			},
-			createNewAct: function(){
+			createNewAct: function(){									// 创建新活动
 				layer.open({
 				  	type: 1,
 				  	skin: 'layui-layer-molv', //样式类名
@@ -839,9 +839,47 @@
 		      hide_one_msg: function(){
 		      		this.show_one_msg = false;
 		      		console.log(this.show_one_msg);
+		      },
+
+
+
+		      // ----------交互JavaScript部分---------------
+		      // 
+		      /**
+		       * [getA_act_list 获取已认证的活动列表]
+		       * @param  {[type]} level    [届别]
+		       * @param  {[type]} pageSize [页面行数]
+		       * @param  {[type]} pageNum  [当前页数]
+		       * @return {[type]}          [null]
+		       */
+		      getA_act_list: function(level, pageSize, pageNum){
+		      		let data = {
+		      			level: level,
+		      			pageSize: pageSize,
+		      			pageNum: pageNum
+		      		};
+		      		this.axios.post('/api/WustVolunteer/college/login.do',{
+		      			headers:{
+							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+						}
+		      		}).then((data) => {
+
+					}).cache((err) => {
+
+					})
+		      		
+
 		      }
 		},
-		mounted(){			
+		mounted(){		
+			// 获取已认证活动列表
+			this.axios.post('/api/WustVolunteer/college/login.do',{})
+			.then((data) => {
+
+			}).cache((err) => {
+
+			})
+
 			window.layui.use(['laypage', 'layer', 'laydate'], function(){
 				var laypage = layui.laypage
 				   ,layer = layui.layer
