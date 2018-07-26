@@ -15,3 +15,9 @@
 #personerCenterTable{
 	align: center;
 }
+
+#personBox{
+	background: white;
+	border-top: 2.5px solid #00a65a;
+	border-radius: 4px;
+}

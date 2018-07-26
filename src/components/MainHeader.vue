@@ -35,7 +35,7 @@
                         <!-- hidden-xs hides the username on small devices so only the image appears. -->
                         <span class="hidden-xs" id="LoginName">Admin</span>
                     </a>
-                    <div class="dropdown-menu" style="width: 60px;" id="logOut">
+                    <div class="dropdown-menu" style="width: 60px;" id="logOut" @click="userlogout">
                         &nbsp;&nbsp;&nbsp;<a href="#" class="btn  btn-flat"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>&nbsp;&nbsp;退出/切换账号</a>
                     </div>
 
@@ -53,7 +53,23 @@
 
 <script type="text/javascript">
 	export default {
-		name: 'Mainheader'
+		name: 'Mainheader',
+    methods:{
+        userlogout: function(){
+            this.axios.post('/api/WustVolunteer/college/logout.do',{
+                 headers:{
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                }
+            }).then(
+              (data) => {
+                  if(data.data.status == 0){
+                    alert("logout");
+                    this.$router.push({path: '/login'})
+                  }
+              }
+            )
+        }
+    }
 	}
 </script>
 

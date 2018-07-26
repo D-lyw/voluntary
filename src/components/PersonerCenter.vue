@@ -8,9 +8,9 @@
 				</span>
 			</div>
 			<br>
-			<div class="row animated fadeInRight">
+			<div class="row animated fadeInRight" >
 						<div class="col-md-1"></div>
-						<div class="box box-success col-md-4" >
+						<div class=" col-md-4 " id="personBox">
 					            <div class="panel-heading" >
 					               <em> # 个人基本信息 #</em>           
 					            </div>
@@ -58,7 +58,7 @@
 					                            <input type="text" class="form-control" value="计科1801班">
 					                        </div>
 					                        <div class="form-group" id="form_group_btn">
-						                            <button  class="btn btn-success" @click="EditPassW">修改密码</button>
+						                            <button  class="btn btn-success" @click="dialogVisible = true">修改密码</button>
 						                            <el-popover
 														  placement="buttom-start"
 														  width="500"
@@ -71,63 +71,59 @@
 											
 					                    </div>
 					                </div>
-           						 </div>
+           						</div>
         				</div>
-						
 						
 
         				<div class="col-md-6" style="padding: 10px 20px;background: white;margin-left: 30px;">
-						        
-						            	 <el-tabs  >
-											    <el-tab-pane label="最近操作记录" name="first" style="background: white;">
-											    		<table class="table table-bordered table-hover" id="personerCenterTable" >
-											    				<thead  align="center">
-											    						<tr>
-											    							<th>ID</th>
-											    							<th>操作人</th>
-											    							<th>操作时间</th>
-											    							<th>操作类型</th>
-											    						</tr>
-											    				</thead>
-											    				<tbody>
-											    						<tr>
-											    							<td>7</td>
-											    							<td>张三</td>
-											    							<td>2018-10-12 19:34:09</td>
-											    							<td>活动认证申请</td>
-											    						</tr>
-											    				</tbody>
-											    		</table>
+			        
+			            	 <el-tabs  >
+								    <el-tab-pane label="最近操作记录" name="first" style="background: white;">
+								    		<table class="table table-bordered table-hover" id="personerCenterTable" >
+								    				<thead  align="center">
+								    						<tr>
+								    							<th>ID</th>
+								    							<th>操作人</th>
+								    							<th>操作时间</th>
+								    							<th>操作类型</th>
+								    						</tr>
+								    				</thead>
+								    				<tbody>
+								    						<tr>
+								    							<td>7</td>
+								    							<td>张三</td>
+								    							<td>2018-10-12 19:34:09</td>
+								    							<td>活动认证申请</td>
+								    						</tr>
+								    				</tbody>
+								    		</table>
 
-											    		<span># 共展示最近7条操作记录</span>
-											    </el-tab-pane>
-										  </el-tabs>
-						        
+								    		<span># 共展示最近7条操作记录</span>
+								    </el-tab-pane>
+							  </el-tabs>
+			        
 						</div>
-						
-						
-
 			</div>
 
-			<el-dialog title="修改密码"  :visible.sync="dialogVisible"  width="30%"  :before-close="handleClose">
+			<el-dialog title="修改密码"  :visible.sync="dialogVisible"  width="35%" >
 							  
 							<div class="row"> 
 									<div class="col-md-2">原密码:</div>
 									<div class="col-md-8"><input text="text" class="form-control"></div>
-									<div class="col-md-2">
+									<div class="col-md-2" v-show="show_old_pw">
 											<span><i class="fa fa-check"></i></span>
 											<span><i class="fa fa-error"></i></span>
 									</div>
 							</div><br/>
 							<div class="row"> 
-									<div class="col-md-2">原密码:</div>
-									<div class="col-md-8"><input text="text" class="form-control"></div>
-									<div class="col-md-2" style="text-align:left;">牢记密码</div>
+									<div class="col-md-2">新密码:</div>
+									<div class="col-md-8"><input text="text" class="form-control" v-model="i_new_pw"></div>
+									
 							</div><br/>
 							<div class="row"> 
-									<div class="col-md-2">确认密码:</div>
-									<div class="col-md-8"><input text="text" class="form-control"></div>
-									<div class="col-md-2">
+									<div class="col-md-2" style="width:100px;margin-left:-12px;">确认密码:</div>
+									<div class="col-md-8"><input text="text" class="form-control" v-model="i_check_new_pw"></div>
+									<div class="col-md-2" v-show="check_new_pw">
 											<span><i class="fa fa-check"></i></span>
 											<span><i class="fa fa-error"></i></span>
 									</div>
@@ -135,7 +131,7 @@
 
 							  <span slot="footer" class="dialog-footer">
 							    <el-button @click="dialogVisible = false">取 消</el-button>
-							    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+							    <el-button type="primary" @click="UpdatePW">确 定</el-button>
 							  </span>
 			</el-dialog>
 
@@ -143,25 +139,64 @@
 </template>
 
 <script type="text/javascript">
+import qs from 'qs'
 		export default{
 				name: 'PersonerCenter',
 				data () {
 						return {
 								dialogVisible: false,
+								show_old_pw: false,
+								check_new_pw: false,
+								i_new_pw: '',
+								i_check_new_pw: '',
 						}
 				},
 				methods:{
-						EditPassW: function () {
-								this.dialogVisible = true;
-						},
+						// -----修改密码-----
+						UpdatePW: function(){
+							// 判断两次输入的新密码是否相同
+							if(this.i_new_pw != this.i_check_new_pw){
+								return ;
+							}
 
-						 handleClose(done) {
-					        this.$confirm('确认修改？')
-					          .then(_ => {
-					            done();
-					          })
-					          .catch(_ => {});
-					    }
+							// 确认框，确认是否删除？
+							this.$confirm('确认修改此密码？', '提示', {
+					          confirmButtonText: '确定',
+					          cancelButtonText: '取消',
+					          type: 'warning'
+					        }).then(() => {					//确认删除的回调
+						        	this.dialogVisible = false;    // 将操作面板隐藏
+
+						        	// 将更新后的密码传给后台
+						        	var data = {
+						        		passwordNew: this.i_new_pw
+						        	}
+						        	this.axios.post('/api/WustVolunteer/college/resetPassword.do',qs.stringify(data),{
+						        		headers:{
+											'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+										}
+						        	}).then((data) =>{
+						        		console.log(data);
+						        		if(data.data.status == 0){
+						        			this.$message({
+									            type: 'success',
+									            message: '删除成功!'
+									        });
+						        		}else{
+						        			this.$message({
+									            type: 'error',
+									            message: '修改失败!'
+									        });
+						        		}
+						        	})
+					          	
+					        }).catch(() => {				//取消的回调
+					          this.$message({
+					            type: 'info',
+					            message: '已取消修改'
+					          });          
+					        });
+						}
 				}
 		}
 </script>

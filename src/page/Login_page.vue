@@ -25,12 +25,18 @@
 								<input type="checkbox" lay-skin="primary" > <span style="font-size:12px;">记住密码</span>
 							</div>
 							<!-- 错误类型提示 -->
-							<div v-show='loginErr'>
+							<!-- <div v-show='loginErr'>
 								<span id="show_err_msg" >
 									<i class="layui-icon layui-icon-face-cry" style="font-size: 26px; color: red;"></i> &nbsp;{{show_err_msg}}
 								</span>
-							</div>
-
+							</div> -->
+							 <el-alert 
+							 	v-show='loginErr'
+							    :title = 'show_err_msg'
+							    type="error"
+							    center
+							    show-icon>
+							 </el-alert>
 							<div id="btn_login">
 								<el-button type="success"  size='small' style="width:80px;" @click='userlogin'>Login</el-button>
 								<el-button  size='small' @click="resetAll">重置</el-button>
@@ -84,6 +90,7 @@ import qs from 'qs';
 				userid: '',
 				userpw: '',
 				loginErr: false,
+				show_err_msg: ''
 			}
 		},
 		methods:{
@@ -110,6 +117,7 @@ import qs from 'qs';
 				.then((data) =>{
 					if(data.data.status == 0){
 						alert("Login_Ok");
+						this.$router.push({path: '/'})
 					}else if(data.data.status == 1){
 						this.show_err_msg = "用户名不存在";
 						this.animate_err();

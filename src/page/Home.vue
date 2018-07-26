@@ -3,7 +3,7 @@
       <div>
           <MainHeader></MainHeader>
           <MainSidebar></MainSidebar>
-          <Index-cont></Index-cont>
+          <router-view></router-view>
           <MainFooter></MainFooter>
       </div>   
 </template>
@@ -13,16 +13,14 @@
 import Mainheader from '@/components/MainHeader'
 import MainSidebar from '@/components/MainSidebar'
 import MainFooter from '@/components/MainFooter'
-import Index_cont from '@/components/Index'
 
 
 export default {   
-  name: 'Index',
+  name: 'Home',
   components:{
     'MainHeader':Mainheader,
     'MainSidebar':MainSidebar,
-    'MainFooter': MainFooter,
-    'Index-cont': Index_cont
+    'MainFooter': MainFooter
   }
 }
 

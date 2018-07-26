@@ -20,9 +20,9 @@
 	            </span>
 	          </a>
 	          <ul class="treeview-menu">
-	          	<li class="active"><router-link to="/"><span class="glyphicon glyphicon-fire" aria-hidden="true" ></span> 首页</router-link></li>
-	            <li><router-link to="/activitylist"><span class="glyphicon glyphicon-fire" aria-hidden="true" ></span> 志愿活动</router-link></li>
-	            <li><router-link to="/personercenter"><span class="glyphicon glyphicon-fire" aria-hidden="true" ></span> 个人中心</router-link></li>
+	          	<li ><router-link to="/home/index"><span class="glyphicon glyphicon-fire" aria-hidden="true" ></span> 首页</router-link></li>
+	            <li><router-link to="/home/activitylist"><span class="glyphicon glyphicon-fire" aria-hidden="true" ></span> 志愿活动</router-link></li>
+	            <li><router-link to="/home/personercenter"><span class="glyphicon glyphicon-fire" aria-hidden="true" ></span> 个人中心</router-link></li>
 	          </ul>
 
 	        </li>
@@ -36,8 +36,8 @@
 			            </span>
 		          </a>
 		          <ul class="treeview-menu">
-			            <li><router-link to="/volunteerlist"><span class="glyphicon glyphicon-fire" aria-hidden="true" ></span> 志愿者信息</router-link></li>
-			            <li><router-link to="/volunteeroperation"><i class="fa fa-odnoklassniki" aria-hidden="true"></i> 志愿者操作</router-link></li>
+			            <li><router-link to="/home/volunteerlist"><span class="glyphicon glyphicon-fire" aria-hidden="true" ></span> 志愿者信息</router-link></li>
+			            <li><router-link to="/home/volunteeroperation"><i class="fa fa-odnoklassniki" aria-hidden="true"></i> 志愿者操作</router-link></li>
 		          </ul>
 	        </li>
 
@@ -50,8 +50,8 @@
 	            </span>
 	          </a>
 	          <ul class="treeview-menu">
-	            <li class="active"><router-link to="/peopleauthority"><i class="fa fa-users"></i> 人员权限</router-link></li>
-	            <li><router-link to="/operationrecord"><i class="fa fa-list-alt" aria-hidden="true"></i> 操作日志</router-link></li>
+	            <li class="active"><router-link to="/home/peopleauthority"><i class="fa fa-users"></i> 人员权限</router-link></li>
+	            <li><router-link to="/home/operationrecord"><i class="fa fa-list-alt" aria-hidden="true"></i> 操作日志</router-link></li>
 	          </ul>
 	        </li>
 	      </ul>
