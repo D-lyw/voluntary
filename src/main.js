@@ -11,6 +11,8 @@ Vue.use(elementui);
 const xlsx = require('xlsx');
 const axios = require('axios');
 
+Vue.prototype.axios = axios;		//将axios放置vue实例的原型链上，每个组件均可使用axios
+
 Vue.config.productionTip = false;
 
 /* eslint-disable no-new */
@@ -21,5 +23,4 @@ new Vue({
   template: '<App/>'
 })
 
-
-// console.log(xlsx);
+// console.log(axios);

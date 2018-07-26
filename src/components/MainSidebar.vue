@@ -9,20 +9,22 @@
 	    <section class="sidebar">
 
 	      <!-- Sidebar Menu -->
-	      <ul class="sidebar-menu">
+	      <ul class="sidebar-menu " >
 
-	        <li class="treeview">
+	        <li class="treeview active">
 	          <a href="#">
 	              <i class="fa fa-university" aria-hidden="true"></i>
-	            <span>志愿活动</span>
+	            <span>控制台</span>
 	            <span class="pull-right-container">
 	              <i class="fa fa-angle-left pull-right"></i>
 	            </span>
 	          </a>
 	          <ul class="treeview-menu">
-	            <li><a href="../index.html"><span class="glyphicon glyphicon-fire" aria-hidden="true" ></span> 活动信息</a></li>
-	<!--             <li><a href="VolunteerDetail.html"><i class="fa fa-odnoklassniki" aria-hidden="true"></i> 志愿者信息</a></li> -->
+	          	<li class="active"><router-link to="/"><span class="glyphicon glyphicon-fire" aria-hidden="true" ></span> 首页</router-link></li>
+	            <li><router-link to="/activitylist"><span class="glyphicon glyphicon-fire" aria-hidden="true" ></span> 志愿活动</router-link></li>
+	            <li><router-link to="/personercenter"><span class="glyphicon glyphicon-fire" aria-hidden="true" ></span> 个人中心</router-link></li>
 	          </ul>
+
 	        </li>
 
 	        <li class="treeview">
@@ -34,12 +36,12 @@
 			            </span>
 		          </a>
 		          <ul class="treeview-menu">
-			            <li><a href="#"><span class="glyphicon glyphicon-fire" aria-hidden="true" ></span> 志愿者信息</a></li>
-			            <li><a href="VolunteerDetail.html"><i class="fa fa-odnoklassniki" aria-hidden="true"></i> 志愿者操作</a></li>
+			            <li><router-link to="/volunteerlist"><span class="glyphicon glyphicon-fire" aria-hidden="true" ></span> 志愿者信息</router-link></li>
+			            <li><router-link to="/volunteeroperation"><i class="fa fa-odnoklassniki" aria-hidden="true"></i> 志愿者操作</router-link></li>
 		          </ul>
 	        </li>
 
-	        <li class="treeview  active">
+	        <li class="treeview">
 	          <a href="#">
 	              <i class="fa fa-cog" aria-hidden="true"></i>
 	            <span>系统记录</span>
@@ -48,8 +50,8 @@
 	            </span>
 	          </a>
 	          <ul class="treeview-menu">
-	            <li class="active"><a href="ManagerList.html"><i class="fa fa-users"></i> 人员权限</a></li>
-	            <li><a href="Record.html"><i class="fa fa-list-alt" aria-hidden="true"></i> 操作日志</a></li>
+	            <li class="active"><router-link to="/peopleauthority"><i class="fa fa-users"></i> 人员权限</router-link></li>
+	            <li><router-link to="/operationrecord"><i class="fa fa-list-alt" aria-hidden="true"></i> 操作日志</router-link></li>
 	          </ul>
 	        </li>
 	      </ul>

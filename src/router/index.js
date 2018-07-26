@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Index from '@/page/Index'
 import List from '@/components/List'
-import Login from '@/components/Login'
 import Mainheader from '@/components/MainHeader'
 import Learn from '@/page/learn'
 import OperationRecord from '@/page/OperationRecord_page'
@@ -11,6 +10,8 @@ import ActivityList from '@/page/ActivityList_page'
 import Volunteerlist from '@/page/Volunteerlist_page'
 import VolunteerOperation from '@/page/VolunteerOperation_page'
 import PersonerCenter from '@/page/PersonerCenter_page'
+import Login from '@/page/Login_page'
+
 
 Vue.use(Router)
 
