@@ -8,10 +8,15 @@ import 'element-ui/lib/theme-chalk/index.css'
 
 Vue.use(elementui);
 
+
+
 const xlsx = require('xlsx');
-const axios = require('axios');
+import axios from 'axios'
+
+axios.defaults.withCredentials=true;
 
 Vue.prototype.axios = axios;		//将axios放置vue实例的原型链上，每个组件均可使用axios
+
 
 Vue.config.productionTip = false;
 

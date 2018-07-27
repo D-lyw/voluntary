@@ -116,6 +116,7 @@ import qs from 'qs';
 				})
 				.then((data) =>{
 					if(data.data.status == 0){
+						console.log(data);
 						alert("Login_Ok");
 						this.$router.push({path: '/'})
 					}else if(data.data.status == 1){

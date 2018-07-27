@@ -845,41 +845,380 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 
 		      // ----------交互JavaScript部分---------------
 		      // 
+		     
+
 		      /**
-		       * [getA_act_list 获取已认证的活动列表]
+		       * [getOrganizationInfo 获取组织信息接口]
+		       * @enum 		{5}
+		       * @return {[type]} [null]
+		       * @url  url+getOrganizationInfo.do
+		       */
+		      getOrganizationInfo: function(){
+		      		this.axios.post('/api/WustVolunteer/college/getOrganizationInfo.do',{
+		      			headers:{
+							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+						}
+		      		}).then((data) => {
+		      			console.log(data);
+		      		}).catch((err) => {
+						console.log(err);
+					})
+		      },
+
+		      /**
+		       * [getClassesBylevel 获取学院组织班级列表]
+		       * @enum 		{7}
+		       * @param  {[type]} level [届别]
+		       * @return {[type]}       [null]
+		       */
+		      getClassesBylevel: function(level){
+		      	   let data = {
+		      	   		level: level
+		      	   };
+
+		      	   this.axios.post('/api/WustVolunteer/college/getClassesBylevel.do',qs.stringify(data),{
+		      			headers:{
+							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+						}
+		      		}).then((data) => {
+		      			console.log(data);
+		      		}).catch((err) => {
+						console.log(err);
+					})
+		      },
+
+		      /**
+		       * [getVolunteerByClassName 获取班级志愿者]
+		       * @enum {[type]}  [8]
+		       * @param  {[type]} className [班级名称]
+		       * @param  {[type]} pageSize  [页面行数 default 15]
+		       * @param  {[type]} pageNum   [页数]
+		       * @return {[type]}           [null]
+		       */
+		      getVolunteerByClassName: function(className, pageSize, pageNum){
+		      		let data = {
+		      			className: className,
+		      			pageSize: pageSize,
+		      			pageNum: pageNum
+		      		}
+		      		
+		      		this.axios.post('/api/WustVolunteer/college/getVolunteerByClassName.do',qs.stringify(data),{
+		      			headers:{
+							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+						}
+		      		}).then((data) => {
+		      			console.log(data);
+		      		}).catch((err) => {
+						console.log(err);
+					})
+
+		      		return ;
+		      },
+
+		      /**
+		       * [getAmdinList 获取管理员列表]
+		       * @enum {[type]}   【9】
+		       * @return {[type]} [null]
+		       */
+		      getAmdinList: function(){
+		      		 this.axios.post('/api/WustVolunteer/college/getAmdinList.do',{
+		      			headers:{
+							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+						}
+		      		}).then((data) => {
+		      			console.log(data);
+		      		}).catch((err) => {
+						console.log(err);
+					})
+		      		return ;
+		      },
+
+		      /**
+		       * [getUnauActivity 获取未认证活动列表]
+		       * @enum {[type]}		[10]
+		       * @param  {[type]} statu    [活动状态]	<1-未认证   2- 认证中   3-认证驳回>
+		       * @param  {[type]} pageNum  [当前页数]
+		       * @param  {[type]} pageSize [当前行数]
+		       * @return {[type]}          [description]
+		       */
+		      getUnauActivity: function(statu, pageNum, pageSize){
+		      		let data = {
+		      			statu: statu,
+		      			pageNum: pageNum,
+		      			pageSize: pageSize
+		      		};
+
+		      		this.axios.post('/api/WustVolunteer/college/getUnauActivity.do',qs.stringify(data),{
+		      			headers:{
+							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+						}
+		      		}).then((data) => {
+		      			console.log(data);
+		      		}).catch((err) => {
+						console.log(err);
+					})
+
+		      		return ;
+		      },
+
+		       /**
+		       * [getAuActivity 获取已认证的活动列表]
+		       * @enum { }		[11]
 		       * @param  {[type]} level    [届别]
 		       * @param  {[type]} pageSize [页面行数]
 		       * @param  {[type]} pageNum  [当前页数]
 		       * @return {[type]}          [null]
 		       */
-		      getA_act_list: function(level, pageSize, pageNum){
+		      getAuActivity: function(level, pageSize, pageNum){
 		      		let data = {
 		      			level: level,
 		      			pageSize: pageSize,
 		      			pageNum: pageNum
 		      		};
-		      		this.axios.post('/api/WustVolunteer/college/login.do',{
+
+		      		this.axios.post('/api/WustVolunteer/college/getAuActivity.do',qs.stringify(data),{
 		      			headers:{
 							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 						}
 		      		}).then((data) => {
-
-					}).cache((err) => {
-
+		      			console.log(data);
+					}).catch((err) => {
+						console.log(err);
 					})
 		      		
 
+		      },
+
+
+		      /**
+		       * [getActivityMember 获取活动参与人员]
+		       * @enum {[type]}		[12]
+		       * @param  {[type]} activityId [活动id]
+		       * @param  {[type]} pageNum    [当前页数]
+		       * @param  {[type]} pageSize   [页面行数]
+		       * @return {[type]}            [description]
+		       */
+		      getActivityMember: function(activityId, pageNum, pageSize){
+		      		let data = {
+		      			activityId: activityId,
+		      			pageNum: pageNum,
+		      			pageSize: pageSize
+		      		}
+
+		      		this.axios.post('/api/WustVolunteer/college/getActivityMember.do',qs.stringify(data),{
+		      			headers:{
+							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+						}
+		      		}).then((data) => {
+		      			console.log(data);
+					}).catch((err) => {
+						console.log(err);
+					})
+		      		
+
+
+
+		      		return ;
+		      },
+
+		      /**
+		       * [getClassInfo 获取学院班级信息列表]
+		       * @enum {[type]}		[13]
+		       * @param  {[type]} level [届别]
+		       * @return {[type]}       [description]
+		       */
+		      getClassInfo: function(level){
+		      		let data = {
+		      	   		level: level
+		      	   };
+
+		      	   this.axios.post('/api/WustVolunteer/college/getClassInfo.do',qs.stringify(data),{
+		      			headers:{
+							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+						}
+		      		}).then((data) => {
+		      			console.log(data);
+		      		}).catch((err) => {
+						console.log(err);
+					})
+		      },
+
+
+		      /**
+		       * [getOperationRecord 获取操作记录]
+		       * @enum {[type]} [14]
+		       * @param  {[type]} pageNum  [当前页数]
+		       * @param  {[type]} pageSize [当前行数]
+		       * @return {[type]}          [description]
+		       */
+		      getOperationRecord: function(pageNum, pageSize){
+		      		let data = {
+		      			pageNum: pageNum,
+		      			pageSize: pageSize
+		      		};
+
+		      		this.axios.post('/api/WustVolunteer/college/getOperationRecord.do',qs.stringify(data),{
+		      			headers:{
+							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+						}
+		      		}).then((data) => {
+		      			console.log(data);
+		      		}).catch((err) => {
+						console.log(err);
+					})
+
+		      		return ;
+		      },
+
+		     /**
+		      * [getActivityDetail 获取志愿者详情]
+		      * @enum {[type]}   [15]
+		      * @param  {[type]} stuNum   [学号]
+		      * @param  {[type]} pageSize [description]
+		      * @param  {[type]} pageNum  [description]
+		      * @return {[type]}          [description]
+		      */
+		      getActivityDetail: function(stuNum, pageSize, pageNum){
+		      		let data = {
+		      			stuNum: stuNum,
+		      			pageNum: pageNum,
+		      			pageSize: pageSize
+		      		};
+
+		      		this.axios.post('/api/WustVolunteer/college/getActivityDetail.do',qs.stringify(data),{
+		      			headers:{
+							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+						}
+		      		}).then((data) => {
+		      			console.log(data);
+		      		}).catch((err) => {
+						console.log(err);
+					})
+		      },
+
+		      /**
+		       * [addClass 添加志愿班级]
+		       * @enum {[type]}   【16】
+		       * @param {[type]} level     [届别]
+		       * @param {[type]} className [description]
+		       */
+		      addClass: function(level, className){
+		      		let data = {
+		      			level: level,
+		      			className: className
+		      		};
+
+		      		this.axios.post('/api/WustVolunteer/college/addClass.do',qs.stringify(data),{
+		      			headers:{
+							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+						}
+		      		}).then((data) => {
+		      			console.log(data);
+		      		}).catch((err) => {
+						console.log(err);
+					})
+		      },
+
+		      /**
+		       * [deleteClass 删除志愿班级]
+		       * @enum {[type]}  [17]
+		       * @param  {[type]} className [班级名称]
+		       * @return {[type]}           [description]
+		       */
+		      deleteClass: function(className){
+		      		let data = {
+		      			className: className
+		      		};
+
+		      		this.axios.post('/api/WustVolunteer/college/deleteClass.do',qs.stringify(data),{
+		      			headers:{
+							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+						}
+		      		}).then((data) => {
+		      			console.log(data);
+		      		}).catch((err) => {
+						console.log(err);
+					})
+		      },
+
+		      /**
+		       * [addAdmin 添加管理员]
+		       * @enum {[type]} 	【18】
+		       * @param {[type]} stuNum [description]
+		       */
+		      addAdmin: function(stuNum){
+		      		let data = {
+		      			stuNum: stuNum
+		      		};
+
+		      		this.axios.post('/api/WustVolunteer/college/addAdmin.do',qs.stringify(data),{
+		      			headers:{
+							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+						}
+		      		}).then((data) => {
+		      			console.log(data);
+		      		}).catch((err) => {
+						console.log(err);
+					})
+
+		      },
+
+		      /**
+		       * [deleteAdmin 删除管理员]
+		       * ＠enum  [19]
+		       * @param  {[type]} adminId [管理员ID]
+		       * @return {[type]}         [description]
+		       */
+		      deleteAdmin: function(adminId){
+		      		let data = {
+		      			adminId: adminId
+		      		};
+
+		      		this.axios.post('/api/WustVolunteer/college/deleteAdmin.do',qs.stringify(data),{
+		      			headers:{
+							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+						}
+		      		}).then((data) => {
+		      			console.log(data);
+		      		}).catch((err) => {
+						console.log(err);
+					})
+		      },
+
+		      /**
+		       * [addVolunteer 添加志愿者]
+		       * @enum { }	 [20]
+		       * @param {[type]} stuNum    [学号]
+		       * @param {[type]} stuName   [姓名]
+		       * @param {[type]} className [班级名称]
+		       * @param {[type]} phone     [手机号]
+		       * @param {[type]} roll      [权限级别 ]
+		       */
+		      addVolunteer: function(stuNum, stuName, className, phone, roll){
+		      		let data = {
+		      			stuNum: stuNum,
+		      			stuName: stuName,
+		      			className: className,
+		      			phone: phone,
+		      			roll:roll
+		      		};
+
+		      		this.axios.post('/api/WustVolunteer/college/addVolunteer.do',qs.stringify(data),{
+		      			headers:{
+							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+						}
+		      		}).then((data) => {
+		      			console.log(data);
+		      		}).catch((err) => {
+						console.log(err);
+					})
+
 		      }
+
 		},
 		mounted(){		
 			// 获取已认证活动列表
-			this.axios.post('/api/WustVolunteer/college/login.do',{})
-			.then((data) => {
-
-			}).cache((err) => {
-
-			})
-
+			this.getOrganizationInfo();
 			window.layui.use(['laypage', 'layer', 'laydate'], function(){
 				var laypage = layui.laypage
 				   ,layer = layui.layer
