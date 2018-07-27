@@ -1213,7 +1213,266 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 						console.log(err);
 					})
 
+		      },
+
+		      /**
+		       * [alterVolunteer 修改志愿者信息]
+		       * @enum { }		[21]
+		       * @param  {[type]} stu       [学号]
+		       * @param  {[type]} stuName   [姓名]
+		       * @param  {[type]} className [班级]
+		       * @param  {[type]} phone     [手机号]
+		       * @param  {[type]} roll      [权限级别]
+		       * @return {[type]}           [description]
+		       */
+		      alterVolunteer: function(stu, stuName, className, phone, roll){
+		      		let data = {
+		      			stuNum: stuNum,
+		      			stuName: stuName,
+		      			className: className,
+		      			phone: phone,
+		      			roll:roll
+		      		};
+
+		      		this.axios.post('/api/WustVolunteer/college/alterVolunteer.do',qs.stringify(data),{
+		      			headers:{
+							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+						}
+		      		}).then((data) => {
+		      			console.log(data);
+		      		}).catch((err) => {
+						console.log(err);
+					})
+		      },
+
+		      /**
+		       * [deleteVolunteer 删除志愿者]
+		       * @enum {[type]} 【22】
+		       * @param  {[type]} stuNum [学号]
+		       * @return {[type]}        [description]
+		       */
+		      deleteVolunteer: function(stuNum){
+		      		let data = {
+		      			stuNum: stuNum
+		      		};
+		      		this.axios.post('/api/WustVolunteer/college/deleteVolunteer.do',qs.stringify(data),{
+		      			headers:{
+							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+						}
+		      		}).then((data) => {
+		      			console.log(data);
+		      		}).catch((err) => {
+						console.log(err);
+					})
+
+		      },
+
+		      /**
+		       * [addActivity 创建新活动]
+		       * @enum [23]
+		       * @param {[type]} name     [活动名称]
+		       * @param {[type]} time     [时间]
+		       * @param {[type]} address  [地点]
+		       * @param {[type]} category [类别]
+		       */
+		      addActivity: function(name, time, address, category){
+		      		let data = {
+		      			name: name,
+		      			time: time,
+		      			address:address,
+		      			category: category
+		      		};
+
+		      		this.axios.post('/api/WustVolunteer/college/addActivity.do',qs.stringify(data),{
+		      			headers:{
+							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+						}
+		      		}).then((data) => {
+		      			console.log(data);
+		      		}).catch((err) => {
+						console.log(err);
+					})
+
+		      },
+
+		      /**
+		       * [deleteActivity 删除未认证活动]
+		       * @enum {[type]} 【24】
+		       * @param  {[type]} activityId [活动ID]
+		       * @return {[type]}            [description]
+		       */
+		      deleteActivity: function(activityId){
+		      		let data = {
+		      			activityId: activityId
+		      		};
+
+		      		this.axios.post('/api/WustVolunteer/college/deleteActivity.do',qs.stringify(data),{
+		      			headers:{
+							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+						}
+		      		}).then((data) => {
+		      			console.log(data);
+		      		}).catch((err) => {
+						console.log(err);
+					})
+		      },
+
+
+		      /**
+		       * [alterActivity 修改未认证或认证驳回的活动]
+		       * @enum {[type]} 25
+		       * @param  {[type]} activityId [活动ID]
+		       * @param  {[type]} name       [活动名称]
+		       * @param  {[type]} time       [活动时间]
+		       * @param  {[type]} address    [活动地点]
+		       * @param  {[type]} category   [活动类别]
+		       * @return {[type]}            [null]
+		       */
+		      alterActivity: function(activityId, name, time, address, category){
+		      		let data = {
+		      			activityId: activityId,
+		      			name: name,
+		      			time: time,
+		      			address: address,
+		      			category: category
+		      		};
+
+		      		this.axios.post('/api/WustVolunteer/college/alterActivity.do',qs.stringify(data),{
+		      			headers:{
+							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+						}
+		      		}).then((data) => {
+		      			console.log(data);
+		      		}).catch((err) => {
+						console.log(err);
+					})
+
+		      		return ;
+		      },
+
+
+		      /**
+		       * [addActivityMember 添加活动人员]
+		       * @enum {[type]}  【26】
+		       * @param {[type]} activityId    [活动ID]
+		       * @param {[type]} stuNum        [学号]
+		       * @param {[type]} volunteerTime [工时数]
+		       */
+		      addActivityMember: function(activityId, stuNum, volunteerTime){
+		      		let data = {
+		      			activityId: activityId,
+		      			stuNum: stuNum,
+		      			volunteerTime: volunteerTime
+		      		};
+
+		      		this.axios.post('/api/WustVolunteer/college/addActivityMember.do',qs.stringify(data),{
+		      			headers:{
+							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+						}
+		      		}).then((data) => {
+		      			console.log(data);
+		      		}).catch((err) => {
+						console.log(err);
+					})
+
+
+		      		return ;
+		      },
+
+		      /**
+		       * [deleteActivityMember 删除活动参与人员]
+		       * @enum {[type]}  [27]
+		       * @param  {[type]} activityId [活动id]
+		       * @param  {[type]} stuNum     [学号]
+		       * @return {[type]}            [description]
+		       */
+		      deleteActivityMember: function(activityId, stuNum){
+		      		let data = {
+		      			activityId: activityId,
+		      			stuNum: stuNum
+		      		};
+
+		      		this.axios.post('/api/WustVolunteer/college/deleteActivityMember.do',qs.stringify(data),{
+		      			headers:{
+							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+						}
+		      		}).then((data) => {
+		      			console.log(data);
+		      		}).catch((err) => {
+						console.log(err);
+					})
+		      },
+
+		      /**
+		       * [cancelSubmit 取消活动认证]
+		       * @enum   [28]
+		       * @param  {[type]} activityId [活动id]
+		       * @return {[type]}            [description]
+		       */
+		      cancelSubmit: function(activityId){
+		      		let data = {
+		      			activityId: activityId
+		      		};
+
+		      		this.axios.post('/api/WustVolunteer/college/cancelSubmit.do',qs.stringify(data),{
+		      			headers:{
+							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+						}
+		      		}).then((data) => {
+		      			console.log(data);
+		      		}).catch((err) => {
+						console.log(err);
+					})
+
+		      },
+
+		      /**
+		       * [searchStudent 模糊查询志愿者]
+		       * @enum {[type]}  【29】
+		       * @param  {[type]} msg [查询字段(学号或姓名)只可查询本学院志愿者]
+		       * @return {[type]}     [description]
+		       */
+		      searchStudent: function(msg){
+		      		let data = {
+		      			msg: msg
+		      		};
+
+		      		this.axios.post('/api/WustVolunteer/college/searchStudent.do',qs.stringify(data),{
+		      			headers:{
+							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+						}
+		      		}).then((data) => {
+		      			console.log(data);
+		      		}).catch((err) => {
+						console.log(err);
+					})
+
+		      },
+
+		      /**
+		       * [getUnMsg 获取活动驳回原因]
+		       * @enum [30]
+		       * @param  {[type]} activityId [活动id]
+		       * @return {[type]}            [description]
+		       */
+		      getUnMsg: function(activityId){
+		      		let data = {
+		      			activityId: activityId
+		      		};
+
+		      		this.axios.post('/api/WustVolunteer/college/getUnMsg.do',qs.stringify(data),{
+		      			headers:{
+							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+						}
+		      		}).then((data) => {
+		      			console.log(data);
+		      		}).catch((err) => {
+						console.log(err);
+					})
 		      }
+
+
+
 
 		},
 		mounted(){		
