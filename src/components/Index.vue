@@ -91,9 +91,9 @@ import General from '@/part/general';
 			console.log("afterRouteEnter");
 			
 		},
-		beforeRouteEnter:function(to, from, next) {
-			console.log("beforeRouteEnter")
-		},
+		// beforeRouteEnter:function(to, from, next) {
+		// 	console.log("beforeRouteEnter")
+		// },
 		methods: {
 			test: function () {
 				layui.use('layer', function(){    //加载layer模块，触发回调函数

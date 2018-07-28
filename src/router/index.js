@@ -53,8 +53,8 @@ export default new Router({
          name: 'personercenter',
          component: PersonerCenter
       },{
-         path: 'index',                   // 平台首页
-         name: 'index',
+         path: 'introduce',                   // 平台首页
+         name: 'introduce',
          component: Index
       }]
     }

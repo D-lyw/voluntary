@@ -116,19 +116,18 @@ import qs from 'qs';
 				})
 				.then((data) =>{
 					if(data.data.status == 0){
-						console.log(data);
 						alert("Login_Ok");
-						this.$router.push({path: '/'})
-					}else if(data.data.status == 1){
+						this.$router.push({path: '/home/introduce'});
+					}else if(data.data.msg == "用户名不存在"){
 						this.show_err_msg = "用户名不存在";
 						this.animate_err();
-					}else if(data.data.status == 2){
+					}else if(data.data.msg == "无权限"){
 						this.show_err_msg = "无权限";
 						this.animate_err();
-					}else if(data.data.status == 3){
+					}else if(data.data.msg == '密码错误'){
 						this.show_err_msg = "密码错误";
 						this.animate_err();
-					}else if(data.data.status == 4){
+					}else if(data.data.msg == '系统错误'){
 						this.show_err_msg = "系统暂时出错，快去通知管理员！";
 						this.animate_err();
 					}

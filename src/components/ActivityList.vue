@@ -1,13 +1,14 @@
 <template>
-	<div class="content-wrapper" style="height:700px;overflow-y:auto;overflow-x:hidden;">
+	<div class="content-wrapper" style="min-height:500px;height:auto; overflow-y:auto;overflow-x:hidden;">
 		
-		<el-breadcrumb separator="/">
-		  <el-breadcrumb-item :to="{ path: '/' }"><i class="fa fa-home" style="opacity:0.8;color:#333;font-size:16px;"></i>&nbsp;首页</el-breadcrumb-item>
-		  <el-breadcrumb-item><a href="/">志愿活动</a></el-breadcrumb-item>
-		  <el-breadcrumb-item>活动列表</el-breadcrumb-item>
-		</el-breadcrumb>
+		<span class="layui-breadcrumb navigoto " >
+		  <i class="fa fa-home" style="opacity:0.8;color:#333;font-size:16px;"></i>&nbsp;
+		  <router-link to="/">&nbsp;&nbsp;主页</router-link>
+		  <!-- <router-link to="">志愿活动</router-link> -->
+		  <router-link to=""><cite>活动列表</cite></router-link>
+		</span>
 		
-		<div class="panel panel-default">
+		<div class="panel panel-default" style=" height:auto;margin-top:10px;margin-bottom:50px;">
 			<div class="panel-heading">
 				<br>
 				<div class="btn-group" style="width:100%;">
@@ -44,7 +45,7 @@
 			</div>
 
 			<div class="panel-body">
-					<el-tabs :tab-position="tabPosition" style="height: auto;min-height: 800px;" v-model="activiTab">
+					<el-tabs :tab-position="tabPosition" style="height: auto;min-height: 500px;" v-model="activiTab">
 
 						<!-- 已认证活动 Part -->
 					    <el-tab-pane label="已认证活动" name="first">
@@ -57,223 +58,58 @@
 											<td>时间</td>
 											<td>地点</td>
 											<td>总工时</td>
-											<td>人数</td>
+											<td >人数</td>
 											<td>所属组织</td>
-											<td>所属届别</td>
+											<td> 
+												<el-dropdown>
+												<span class="el-dropdown-link">
+												    选择届别<i class="el-icon-arrow-down el-icon--right"></i>
+												  </span>
+												  <el-dropdown-menu slot="dropdown">
+													    <el-dropdown-item 
+													    	v-for = '(item, index) in levellist.data' 
+													    	:key = 'levellist.data.id'>
+													    	<span style="padding:10px 20px;" v-on:click="currentLevel=index">{{item.level}}</span>
+													    </el-dropdown-item>					    
+												  </el-dropdown-menu>
+												  </el-dropdown>
+											</td>
 											<td>发起人</td>
 											<td>认证人</td>
 											<td>操作</td>
 										</tr>
 									</thead>
 									<tbody>
-										<tr>
+										<tr v-for="(item, index) in AuActivitylist">
 											<td><input type="checkbox" name=""></td>
-											<td>7</td>
-											<td>校园自行车整治</td>
-											<td>2018-07-30</td>
-											<td>武科大黄家湖校区</td>
-											<td>3</td>
-											<td>30</td>
-											<td>计算机院队</td>
-											<td>2018届</td>
-											<td>王五</td>
+											<td>{{item.id}}</td>
+											<td>{{item.name}}</td>
+											<td>{{item.time}}</td>
+											<td>{{item.address}}</td>
+											<td>{{item.vulunteerTime}}</td>
+											<td>{{item.nums}}</td>
+											<td>{{item.organizationId}}</td>
+											<td>{{item.level}}届</td>
+											<td>{{item.creater}}</td>
 											<td>赵六</td>
 											<td>
 												<button class="layui-btn layui-btn-xs" @click="activityMsg">编辑</button>
 												<button class="layui-btn layui-btn-warm layui-btn-xs" @click="btn_Delete">删除</button>
 											</td>
 										</tr>
-										<tr>
-											<td><input type="checkbox" name=""></td>
-											<td>7</td>
-											<td>校园自行车整治</td>
-											<td>2018-07-30</td>
-											<td>武科大黄家湖校区</td>
-											<td>3</td>
-											<td>30</td>
-											<td>计算机院队</td>
-											<td>2018届</td>
-											<td>王五</td>
-											<td>赵六</td>
-											<td>
-												<button class="layui-btn layui-btn-xs" @click="activityMsg">编辑</button>
-												<button class="layui-btn layui-btn-warm layui-btn-xs" @click="btn_Delete">删除</button>
-											</td>
-										</tr>
-										<tr>
-											<td><input type="checkbox" name=""></td>
-											<td>7</td>
-											<td>校园自行车整治</td>
-											<td>2018-07-30</td>
-											<td>武科大黄家湖校区</td>
-											<td>3</td>
-											<td>30</td>
-											<td>计算机院队</td>
-											<td>2018届</td>
-											<td>王五</td>
-											<td>赵六</td>
-											<td>
-												<button class="layui-btn layui-btn-xs" @click="activityMsg">编辑</button>
-												<button class="layui-btn layui-btn-warm layui-btn-xs" @click="btn_Delete">删除</button>
-											</td>
-										</tr>
-										<tr>
-											<td><input type="checkbox" name=""></td>
-											<td>7</td>
-											<td>校园自行车整治</td>
-											<td>2018-07-30</td>
-											<td>武科大黄家湖校区</td>
-											<td>3</td>
-											<td>30</td>
-											<td>计算机院队</td>
-											<td>2018届</td>
-											<td>王五</td>
-											<td>赵六</td>
-											<td>
-												<button class="layui-btn layui-btn-xs" @click="activityMsg">编辑</button>
-												<button class="layui-btn layui-btn-warm layui-btn-xs" @click="btn_Delete">删除</button>
-											</td>
-										</tr>
-										<tr>
-											<td><input type="checkbox" name=""></td>
-											<td>7</td>
-											<td>校园自行车整治</td>
-											<td>2018-07-30</td>
-											<td>武科大黄家湖校区</td>
-											<td>3</td>
-											<td>30</td>
-											<td>计算机院队</td>
-											<td>2018届</td>
-											<td>王五</td>
-											<td>赵六</td>
-											<td>
-												<button class="layui-btn layui-btn-xs" @click="activityMsg">编辑</button>
-												<button class="layui-btn layui-btn-warm layui-btn-xs" @click="btn_Delete">删除</button>
-											</td>
-										</tr>
-										<tr>
-											<td><input type="checkbox" name=""></td>
-											<td>7</td>
-											<td>校园自行车整治</td>
-											<td>2018-07-30</td>
-											<td>武科大黄家湖校区</td>
-											<td>3</td>
-											<td>30</td>
-											<td>计算机院队</td>
-											<td>2018届</td>
-											<td>王五</td>
-											<td>赵六</td>
-											<td>
-												<button class="layui-btn layui-btn-xs" @click="activityMsg">编辑</button>
-												<button class="layui-btn layui-btn-warm layui-btn-xs" @click="btn_Delete">删除</button>
-											</td>
-										</tr>
-										<tr>
-											<td><input type="checkbox" name=""></td>
-											<td>7</td>
-											<td>校园自行车整治</td>
-											<td>2018-07-30</td>
-											<td>武科大黄家湖校区</td>
-											<td>3</td>
-											<td>30</td>
-											<td>计算机院队</td>
-											<td>2018届</td>
-											<td>王五</td>
-											<td>赵六</td>
-											<td>
-												<button class="layui-btn layui-btn-xs" @click="activityMsg">编辑</button>
-												<button class="layui-btn layui-btn-warm layui-btn-xs" @click="btn_Delete">删除</button>
-											</td>
-										</tr>
-										<tr>
-											<td><input type="checkbox" name=""></td>
-											<td>7</td>
-											<td>校园自行车整治</td>
-											<td>2018-07-30</td>
-											<td>武科大黄家湖校区</td>
-											<td>3</td>
-											<td>30</td>
-											<td>计算机院队</td>
-											<td>2018届</td>
-											<td>王五</td>
-											<td>赵六</td>
-											<td>
-												<button class="layui-btn layui-btn-xs" @click="activityMsg">编辑</button>
-												<button class="layui-btn layui-btn-warm layui-btn-xs" @click="btn_Delete">删除</button>
-											</td>
-										</tr>
-										<tr>
-											<td><input type="checkbox" name=""></td>
-											<td>7</td>
-											<td>校园自行车整治</td>
-											<td>2018-07-30</td>
-											<td>武科大黄家湖校区</td>
-											<td>3</td>
-											<td>30</td>
-											<td>计算机院队</td>
-											<td>2018届</td>
-											<td>王五</td>
-											<td>赵六</td>
-											<td>
-												<button class="layui-btn layui-btn-xs" @click="activityMsg">编辑</button>
-												<button class="layui-btn layui-btn-warm layui-btn-xs" @click="btn_Delete">删除</button>
-											</td>
-										</tr>
-										<tr>
-											<td><input type="checkbox" name=""></td>
-											<td>7</td>
-											<td>校园自行车整治</td>
-											<td>2018-07-30</td>
-											<td>武科大黄家湖校区</td>
-											<td>3</td>
-											<td>30</td>
-											<td>计算机院队</td>
-											<td>2018届</td>
-											<td>王五</td>
-											<td>赵六</td>
-											<td>
-												<button class="layui-btn layui-btn-xs" @click="activityMsg">编辑</button>
-												<button class="layui-btn layui-btn-warm layui-btn-xs" @click="btn_Delete">删除</button>
-											</td>
-										</tr>
-
-										<tr>
-											<td><input type="checkbox" name=""></td>
-											<td>7</td>
-											<td>校园自行车整治</td>
-											<td>2018-07-30</td>
-											<td>武科大黄家湖校区</td>
-											<td>3</td>
-											<td>30</td>
-											<td>计算机院队</td>
-											<td>2018届</td>
-											<td>王五</td>
-											<td>赵六</td>
-											<td>
-												<button class="layui-btn layui-btn-xs" @click="activityMsg">编辑</button>
-												<button class="layui-btn layui-btn-warm layui-btn-xs" @click="btn_Delete">删除</button>
-											</td>
-										</tr>
-										<tr>
-											<td><input type="checkbox" name=""></td>
-											<td>7</td>
-											<td>校园自行车整治</td>
-											<td>2018-07-30</td>
-											<td>武科大黄家湖校区</td>
-											<td>3</td>
-											<td>30</td>
-											<td>计算机院队</td>
-											<td>2018届</td>
-											<td>王五</td>
-											<td>赵六</td>
-											<td>
-												<button class="layui-btn layui-btn-xs" @click="activityMsg">编辑</button>
-												<button class="layui-btn layui-btn-warm layui-btn-xs" @click="btn_Delete">删除</button>
-											</td>
-										</tr>
+										
 									</tbody>
 									
 								</table>
+								
+								 <el-pagination
+							      :current-page="currentPage"
+							      :page-sizes="[12]"
+							      :page-size="100"
+							      layout="total, sizes, prev, pager, next, jumper"
+							      :total="totalPage">
+							    </el-pagination>
+
 					    </el-tab-pane>
 
 						<!-- 未认证活动 Part  -->
@@ -315,38 +151,42 @@
 												<button class="layui-btn layui-btn-warm layui-btn-xs" >删除</button>
 											</td>
 										</tr>
-										<tr>
+										<!-- 未认证的活动循环列表 -->
+										<tr v-for='(item, index) in UnauActivitylist'>
 											<td><input type="checkbox" name=""></td>
-											<td>7</td>
-											<td>志愿迎新活动   </td>
-											<td>2018-08-30</td>
-											<td>武科大黄家湖校区</td>
-											<td>3</td>
-											<td>30</td>
-											<td>计算机院队</td>
-											<td>2018届</td>
-											<td>王五</td>
+											<td>{{item.id}}</td>
+											<td>{{item.name}}   </td>
+											<td>{{item.time}}</td>
+											<td>{{item.address}}</td>
+											<td>{{item.volunteerTime}}</td>
+											<td>{{item.nums}}</td>
+											<td>{{item.organization}}</td>
+											<td>{{item.level}}届</td>
+											<td>{{item.creater}}</td>
 											<td>赵六</td>
 											<td>
-												<button class="layui-btn layui-btn-xs" @click="">去添加</button>
-												<button class="layui-btn layui-btn-warm layui-btn-xs" @click="">删除</button>
+												<button class="layui-btn layui-btn-xs" @click="AddActivityPerson">去添加</button>
+												<button class="layui-btn layui-btn-warm layui-btn-xs" @click="deleteActivity(item.id)">删除</button>
 											</td>
 										</tr>
-										<tr>
+										<!-- 待处理的活动 -->
+										<tr v-for='(item, index) in WaitingActivitylist'>
 											<td><input type="checkbox" name=""></td>
-											<td>7</td>
-											<td>志愿迎新活动</td>
-											<td>2018-08-30</td>
-											<td>武科大黄家湖校区</td>
-											<td>3</td>
-											<td>30</td>
-											<td>计算机院队</td>
-											<td>2018届</td>
-											<td>王五</td>
+											<td>{{item.id}}</td>
+											<td>{{item.name}}   </td>
+											<td>{{item.time}}</td>
+											<td>{{item.address}}</td>
+											<td>{{item.volunteerTime}}</td>
+											<td>{{item.nums}}</td>
+											<td>{{item.organization}}</td>
+											<td>{{item.level}}届</td>
+											<td>{{item.creater}}</td>
 											<td>赵六</td>
 											<td>
-												<button class="layui-btn layui-btn-xs" @click="">去添加</button>
-												<button class="layui-btn layui-btn-warm layui-btn-xs" @click="">删除</button>
+												<!-- <button class="layui-btn layui-btn-xs" @click="AddActivityPerson">去添加</button>
+												<button class="layui-btn layui-btn-warm layui-btn-xs" @click="">删除</button> -->
+
+												<span class="layui-badge">认证中..</span>
 											</td>
 										</tr>
 									</tbody>
@@ -426,6 +266,9 @@
 
 					    </el-tab-pane>
 						
+
+						
+
 						<el-tab-pane label="添加活动人员" v-if="show_add_activityperson_page" id="Node_add_act_person"  name="four">
 								<div style="padding: 20px; background-color: #F2F2F2;">
 									  	<div class="layui-row layui-col-space15">
@@ -549,11 +392,10 @@
 
 						</el-tab-pane>
 
+						
 
 					</el-tabs>
 
-					<!-- 分页 -->
-					<div id="Page_bottom"></div>
 				
 			</div>		
 		</div>
@@ -572,8 +414,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 				tabPosition:'left',
 				search_content_header:'',
 				Edit_act_name: '',
-				V_If_Show: [],
-				V_edit_tips: [],
+				
 				show_add_activityperson_page: false,
 				activiTab: 'first',
 				tip_show_person_list: true,
@@ -589,7 +430,33 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 
 				ac_activity_list:[
 
-				]
+				],
+				// 分页参数
+				currentPage: 1,
+				totalPage: 100,
+
+				levellist: '',   	// 届别列表
+				currentLevel: '',	// 当前被选中的届别
+
+
+				//已认证的活动信息列表
+				AuActivitylist: [],
+
+				//未认证的活动信息列表
+				UnauActivitylist: [],
+
+				//认证中的活动信息列表
+				WaitingActivitylist: [],
+
+
+				// 添加活动所需信息
+				addActMsg:{
+					name: '',
+					address: '',
+					time: '',
+					creater: '',
+					category: ''
+				}
       		}
 		},
 		watch: {
@@ -613,8 +480,36 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 				console.log(val);
 			}
 		},
+		mounted(){		
+			// 获取届别类别
+			this.getLevelList();
+
+			// 获取已认证活动列表
+			this.getAuActivity(2016,12, 1);
+			
+			this.getOrganizationInfo();
+
+			//添加志愿班级
+			// this.addClass(2018,'网络工程1801');
+			// 
+			// 添加管理员
+			// this.addAdmin(201613136023);
+			// 添加志愿者
+			// this.addVolunteer('201613136023', '刘元旺', '网络1801', '15272058782', '0');
+			
+			//添加活动
+			// this.addActivity('add_test', '2018-11-22', '武科大', 0);
+			// 
+			// 获取未认证的活动(获取最新一届的未认证的活动)（状态，页数，行数）
+			this.getUnauActivity(2, 1, 12);
+			this.getUnauActivity(1, 1, 12);
+
+
+		},
 		methods:{
-															
+			tests: function (id) {
+			
+			},									
 			refresh: function(){											// 刷新页面，更新数据
 					
 			},
@@ -719,6 +614,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 				
 			},
 			createNewAct: function(){									// 创建新活动
+				var that = this;
 				layer.open({
 				  	type: 1,
 				  	skin: 'layui-layer-molv', //样式类名
@@ -730,12 +626,12 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 			  		content: '<div style="padding:20px;">\
 									<div class="row" >\
 										<div class="col-md-3" style="text-align:right;">活动名称:</div>\
-										<div class="col-md-6"><input class=" form-control input_edit_name" placeholder="请输入活动名称" ></input></div>\
+										<div class="col-md-6"><input class=" form-control input_edit_name" placeholder="请输入活动名称" id="input_act_name"></input></div>\
 										<div class="col-md-3 col-tips" id="node_edit_name_ok" style="display:none;"><i class="glyphicon glyphicon-ok"></i>&nbsp;输入OK</div>\
 									</div>\
 									<div class="row" >\
 										<div class="col-md-3" style="text-align:right;">活动地点:</div>\
-										<div class="col-md-6"><input type="text" class="form-control" placeholder="请输入活动地点"/></div>\
+										<div class="col-md-6"><input type="text" class="form-control" placeholder="请输入活动地点" id="input_act_place"/></div>\
 									</div>\
 									<div class="row">						\
 										<div class="col-md-3" style="text-align:right;">活动时间:</div>\
@@ -746,12 +642,11 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 										</div>\
 									</div>\
 									<div class="row" >\
-										<div class="col-md-3" style="text-align:right;">活动所属组织:</div>\
+										<div class="col-md-3" style="text-align:right;">活动类型:</div>\
 										<div class="col-md-6">\
-												<select class="form-control">\
-													<option>请选择所属组织</option>\
-													<option>计算机科学与技术学院</option>\
-													<option>........</option>\
+												<select class="form-control" placeholder="请选择活动类型" id="selectActType">\
+													<option value="0">学院活动</option>\
+													<option value="1">班级活动</option>\
 												</select>\
 										</div>\
 									</div>\
@@ -774,17 +669,32 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 							</div>',
 			  		area: ['800px','600px'],
 			  		yes: function(index, layero){
-			  			layer.close(index);
 
-			  			setTimeout(function(){					//延迟弹出保存成功提示框
+			  			//判断是否填写完整
+			  			if($("#input_act_name").val() == '' || $("#input_act_place").val() == '' || $("#selectActType").val() == ''){
+
+
 			  				that.$message({
-			  					message: 'Edit Save Successful!',
-			  					type: "success",
-			  					duration: 2000,
-			  					offset: 50,
-			  					showClose: true
-			  			})
-			  			},  1000);
+			  					type: 'error',
+			  					message: '填写活动信息不完整！'
+			  				})
+			  				layer.close(index);	
+			  				return ;
+			  			}
+
+			  			//获取值 (因为上方使用的都是字符串形式，v-model等方式无法识别，暂不知如何解决)
+			  			that.addActMsg.name = $("#input_act_name").val();
+			  			that.addActMsg.address = $("#input_act_place").val();
+			  			that.addActMsg.time = $("#createNew_date").val();
+			  			that.addActMsg.category = $("#selectActType").val();
+
+
+			  			// 关闭弹出框
+			  						
+
+			  			// 将数据传给后台（addNewact）
+			  			that.addActivity(that.addActMsg.name, that.addActMsg.time, that.addActMsg.address, that.addActMsg.category);
+
 			  			
 			  		},
 			  		btn2: function(index, layero){
@@ -792,7 +702,6 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 			  			console.log("error callback!");
 			  		}
 				});
-
 				window.layui.laydate.render({
 			   	 		elem: '#createNew_date'
 			  	});
@@ -865,6 +774,24 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 					})
 		      },
 
+		      /**
+		       * [getLevelList 获届别列表接口]
+		       * @enum [6]
+		       * @return {[type]} [description]
+		       */
+		      getLevelList:function(){
+
+		      		this.axios.post('/api/WustVolunteer/college/getLevelList.do',{
+		      			headers:{
+							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+						}
+		      		}).then((data) => {
+		      			this.levellist = data.data;      // 将获取的届别参数赋值给变量
+		      			// console.log(this.levellist.data[0].level);
+		      		}).catch(err => {
+						console.log(err);
+					})
+		      },
 		      /**
 		       * [getClassesBylevel 获取学院组织班级列表]
 		       * @enum 		{7}
@@ -952,8 +879,12 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 		      			headers:{
 							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 						}
-		      		}).then((data) => {
-		      			console.log(data);
+		      		}).then(data => {
+		      			if(statu == 1){                  // 未认证状态
+		      				this.UnauActivitylist = data.data.data.list;
+		      			}else if(statu == 2){            // 待处理状态
+		      				this.WaitingActivitylist = data.data.data.list;
+		      			}
 		      		}).catch((err) => {
 						console.log(err);
 					})
@@ -981,7 +912,9 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 						}
 		      		}).then((data) => {
-		      			console.log(data);
+
+		      			this.AuActivitylist = data.data.data.list;
+
 					}).catch((err) => {
 						console.log(err);
 					})
@@ -1288,6 +1221,17 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 						}
 		      		}).then((data) => {
+		      			if(data.data.status == 0){
+		      				// 成功信息提示
+			  				this.$message({
+			  					message: 'Add New Save Successful!',
+			  					type: "success",
+			  					duration: 2000,
+			  					offset: 50,
+			  					showClose: true
+			  				})
+
+		      			}
 		      			console.log(data);
 		      		}).catch((err) => {
 						console.log(err);
@@ -1302,19 +1246,51 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 		       * @return {[type]}            [description]
 		       */
 		      deleteActivity: function(activityId){
-		      		let data = {
-		      			activityId: activityId
-		      		};
 
-		      		this.axios.post('/api/WustVolunteer/college/deleteActivity.do',qs.stringify(data),{
-		      			headers:{
-							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-						}
-		      		}).then((data) => {
-		      			console.log(data);
-		      		}).catch((err) => {
-						console.log(err);
-					})
+
+		      		// 判断是否有权限
+
+
+
+		      		// 确认删除框
+		      		 this.$confirm('此操作将永久删除该活动, 是否继续?', '提示', {
+					          confirmButtonText: '确定',
+					          cancelButtonText: '取消',
+					          type: 'warning'
+				        }).then(() => {
+
+				        		// 已确认执行删除操作
+				        		let data = {
+					      			activityId: activityId
+					      		};
+					      		this.axios.post('/api/WustVolunteer/college/deleteActivity.do',qs.stringify(data),{
+					      			headers:{
+										'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+									}
+					      		}).then((data) => {
+					      			console.log(data);
+					      			// 删除成功提示
+					      			if(data.data.status == 0){
+					      				  this.$message({
+								            type: 'success',
+								            message: '删除成功!'
+								          });
+								          this.getUnauActivity(1, 1, 12);  // 重新获取数据
+					      			}else{
+					      				alert("删除失败");
+					      			}
+					      		}).catch((err) => {
+									alert("删除程序出错！");
+								})
+
+				        }).catch(() => {
+					          this.$message({
+					            type: 'info',
+					            message: '已取消删除'
+					          });          
+				        });
+
+		      		
 		      },
 
 
@@ -1469,30 +1445,15 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 		      		}).catch((err) => {
 						console.log(err);
 					})
-		      }
+		      },
+
+		     
 
 
 
 
 		},
-		mounted(){		
-			// 获取已认证活动列表
-			this.getOrganizationInfo();
-			window.layui.use(['laypage', 'layer', 'laydate'], function(){
-				var laypage = layui.laypage
-				   ,layer = layui.layer
-				   ,laydate = layui.laydate;
-
-					laypage.render({
-					    elem: 'Page_bottom'
-					    ,count: 100
-					    ,layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
-					    ,jump: function(obj){
-					      // console.log(obj)
-					    }
-					});
-				});
-		}
+		
 	}
 
 

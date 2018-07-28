@@ -167,11 +167,11 @@ import qs from 'qs'
 						// -----修改密码-----
 						UpdatePW: function(){
 
-
-							this.axios.post('/api/WustVolunteer/college/checkLogin.do')
-							.then((data) => {
-								console.log(data);
-							})
+							// 核对原密码是否正确     （接口暂未提供）
+							// this.axios.post('/api/WustVolunteer/college/checkLogin.do')
+							// .then((data) => {
+							// 	console.log(data);
+							// })
 
 
 
@@ -193,7 +193,7 @@ import qs from 'qs'
 						        		passwordNew: this.i_new_pw
 						        	}
 						        	this.axios.post('/api/WustVolunteer/college/resetPassword.do',qs.stringify(data),{
-						        		headers:{
+						        		headers:{	
 											'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 										}
 						        	}).then((data) =>{
