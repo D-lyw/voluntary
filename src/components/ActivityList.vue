@@ -165,7 +165,7 @@
 											<td>{{item.creater}}</td>
 											<td>赵六</td>
 											<td>
-												<button class="layui-btn layui-btn-xs" @click="AddActivityPerson">去添加</button>
+												<button class="layui-btn layui-btn-xs" @click="AddActivityPerson(item.id)">去添加</button>
 												<button class="layui-btn layui-btn-warm layui-btn-xs" @click="deleteActivity(item.id)">删除</button>
 											</td>
 										</tr>
@@ -314,22 +314,20 @@
 															          				 				<td>ID</td>
 															          				 				<td>学号</td>
 															          				 				<td>姓名</td>
-															          				 				<td>工时</td>
+															          				 				<td>本次工时</td>
 															          				 				<td>班级</td>
-															          				 				<td>职位</td>
 															          				 				<td>操作</td>
 														          				 			</tr>
 														          				 	</thead>
 														          				 	<tbody>
-														          				 			<tr>
-														          				 					<td><input type="checkbox" name=""></td>
-														          				 					<td>2</td>
-															          				 				<td>201613136023</td>
-															          				 				<td>田七</td>
-															          				 				<td>2.5</td>
-															          				 				<td>网络1801</td>
-															          				 				<td>志愿者</td>
-															          				 				<td><button>删除</button></td>
+														          				 			<tr v-for='(item, index) in getActivityMemberList'>
+															          				 				<td><input type="checkbox" name=""></td>
+															          				 				<td>{{item.activityId}}</td>
+															          				 				<td>{{item.stuNum}}</td>
+															          				 				<td>{{item.name}}</td>
+															          				 				<td>{{item.volunteerTime}}</td>
+															          				 				<td>{{item.className}}</td>
+															          				 				<td> <button class="layui-btn layui-btn-danger layui-btn-xs" >删除</button></td>
 														          				 			</tr>
 														          				 	</tbody>
 														          			</table>
@@ -357,23 +355,24 @@
 										  :visible.sync="dialogVisible"
 										  width="50%"
 										  @close="handleClose">
-   										 <el-input placeholder="请输入内容" v-model="add_person_search_id">
-										   		 <template slot="append" ><i class="fa fa-search"  @click="btn_search_add_id" style="padding: 10px;" ></i></template>
+   										 <el-input placeholder="请根据学号进行添加" v-model="add_person_search_id">
+										   		 <template slot="append" ><i class="fa fa-search" id="add_search_id"  @click="btn_search_add_act_number" style="padding: 10px;" ></i></template>
 										  </el-input>
 
-										 <div v-if="show_search_error_result">搜索的学号不存在或已加入表中 : (</div>
+										 <div v-show="show_search_error_result" >搜索的学号不存在或已加入表中 : (</div>
 										
-										<div v-if="show_search_success_result">
+										 <div v-show="show_search_success_result">
 												<span style="font-size: 15px;"><em>匹配结果如下:</em></span>
 
 												<table class="table table-bordered">
 														<tbody>
-																<tr>
-																	<td>201613136023</td>
-																	<td>张三</td>
-																	<td>网络1801</td>
-																	<td>志愿者</td>
-																	<td>15272058782</td>
+																<tr v-for="item in result_search_act_num">
+																	<td>{{item.studentNum}}</td>
+																	<td>{{item.name}}</td>
+																	<td>{{item.className}}</td>
+																	<td>{{item.collegeName}}</td>
+																	<td>{{item.level}}</td>
+																	<td><span class="layui-badge">可添加</span></td>
 																</tr>
 														</tbody>
 												</table>
@@ -385,7 +384,7 @@
 
 										  <span slot="footer" class="dialog-footer">
 											    <el-button @click="dialogVisible = false">取 消</el-button>
-											    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+											    <el-button type="primary" @click="add_person_to_act">确 定</el-button>
 										  </span>
 
 								</el-dialog>
@@ -421,16 +420,19 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 				tip_show_none_list: false,
 				currentPage1: 1,
 				dialogVisible: false,
-				add_person_search_id: '',
-				add_person_work_time: '',
+				
+				
 				show_search_error_result: false,
 				show_search_success_result: false,
 
 				show_one_msg: true,
 
-				ac_activity_list:[
+				// 添加参与活动人员的查找学号
+				add_person_search_id: '',
+				// 添加参与活动人员的活动工时
+				add_person_work_time: '',
 
-				],
+
 				// 分页参数
 				currentPage: 1,
 				totalPage: 100,
@@ -456,7 +458,19 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 					time: '',
 					creater: '',
 					category: ''
-				}
+				},
+
+				// 存储某一待处理活动的已参与人员
+				getActivityMemberList:[
+
+				],
+
+				// 当前正在被编辑的活动的id
+				currentEditActId:'',
+
+				// 模糊查询结果
+				result_search_act_num: '',
+
       		}
 		},
 		watch: {
@@ -481,13 +495,20 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 			}
 		},
 		mounted(){		
+
+
+			// ******核对是否登陆********
+			// 登陆时限过后 cookie会失效
+			// 重新调到登陆页面
+			this.checkLogin();
+
 			// 获取届别类别
 			this.getLevelList();
 
 			// 获取已认证活动列表
 			this.getAuActivity(2016,12, 1);
 			
-			this.getOrganizationInfo();
+			// this.getOrganizationInfo();
 
 			//添加志愿班级
 			// this.addClass(2018,'网络工程1801');
@@ -509,12 +530,22 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 		methods:{
 			tests: function (id) {
 			
-			},									
-			refresh: function(){											// 刷新页面，更新数据
-					
+			},
+			/**
+			 * [refresh 刷新页面，获取更新后的数据]
+			 * @return {[type]} [description]
+			 */
+			refresh: function(){											
+					location.reload();
 			},
 			
-			clickSearch: function(){										// 点击按钮触发 搜索事件
+
+			/**
+			 * [clickSearch 活动搜索函数]
+			 * @param {[type]} [key] [搜索的关键字]
+			 * @return {[type]} [description]
+			 */
+			clickSearch: function(key){										// 点击按钮触发 搜索事件
 
 			},
 
@@ -613,7 +644,13 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 
 				
 			},
-			createNewAct: function(){									// 创建新活动
+
+
+			/**
+			 * [createNewAct 创建新志愿活动]
+			 * @return {[type]} [description]
+			 */
+			createNewAct: function(){								
 				var that = this;
 				layer.open({
 				  	type: 1,
@@ -708,53 +745,113 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 
 			},
 
-			AddActivityPerson: function(){
+			
+			/**
+			 * [AddActivityPerson 当点击  去添加 时，跳转到活动添加人员页面]
+			 * @param {[type]} actId [活动id]
+			 */
+			AddActivityPerson: function(actId){
+
+					// 获取该活动参与人员
+					this.getActivityMember(actId, 1, 12);
+					// 将当前的正在被编辑的活动id保存
+					this.currentEditActId = actId;
+					//将tab标签切换到 添加活动人员部分
 					this.show_add_activityperson_page = true;
 					this.activiTab = "four";
+
 			},
+
+			/**
+		       * [btn_search_add_act_number 在添加活动人员时，判断该学号是否存在，以及是否已经在该活动人员表中]
+		       * @return {[type]} [description]
+		       */
+	      	btn_search_add_act_number(){
+	      			// 对该学号进行模糊查询
+	      			this.searchStudent(this.add_person_search_id);
+
+	      			//判断result_search_act_num数组的值是否为空，不为空，则说明查找到了值
+	      			if(this.result_search_act_num.length >= 1){
+	      					this.show_search_success_result = true;
+	      					this.show_search_error_result = false;
+	      			}else if(this.result_search_act_num.length == 0){
+	      					this.show_search_error_result = true;
+	      					this.show_search_error_result = false;
+	      			}
+	      	},
+	      	/**
+	      	 * [add_person_to_act 将添加的数据人员添加到该活动]
+	      	 */
+	      	add_person_to_act: function(){
+	      			// 首相关闭弹出框
+	      			this.dialogVisible = false
+	      			// 判断是否获取到值以及是否已经填写工时值
+	      			if(this.show_search_success_result == true && this.add_person_work_time != ''){
+	      					this.addActivityMember(this.currentEditActId,this.add_person_search_id, this.add_person_work_time);
+	      			}else{
+	      				this.show_search_error_result = false;
+	      				this.show_search_success_result = true;
+	      				this.$message({
+	      					type:'error',
+	      					message: '添加失败'
+	      				})
+	      			}
+	      	},
 
 			showAnimateHeader: function () {
 					// alert("dsfsdfdsf");
 					$("#header_activity_name").addClass("animated lightSpeedIn");
 			},
 
-			 handleSizeChange(val) {
+			handleSizeChange(val) {
 		        	console.log(`每页 ${val} 条`);
-		      },
+		    },
 
-		      handleCurrentChange(val) {
+		    handleCurrentChange(val) {
 		        	console.log(`当前页: ${val}`);
-		      },
+		    },
 
-		      handleClose(){											//添加人员对哈话框关闭之后的回调函数
-		      		console.log("test OK");
-		      		// console.log(this.add_person_search_id + " " + this.add_person_work_time);
+		    /**
+		     * [handleClose 添加人员对哈话框关闭之后的回调函数]
+		     * @return {[type]} [description]
+		     */
+		    handleClose(){									
+		      		// 关闭对话框后，将一切回归原样
 		      		this.add_person_work_time = '';
 		      		this.add_person_search_id = '';
+		      		this.show_search_success_result = false;
+		      		this.show_search_error_result = false;
+		      		
+		    },
 
-		      		this.$message({
-		      				message: '&nbsp;&nbsp;添加成功',
-		      				dangerouslyUseHTMLString: true,
-		      				customClass: "user_style_for_ok_add",
-		      				iconClass: 'fa fa-check',
-		      				showClose: true
-		      		});
-		      },
-
-		      btn_search_add_id(){
-		      		this.show_search_error_result = true;
-		      },
-
-		      hide_one_msg: function(){
+		    hide_one_msg: function(){
 		      		this.show_one_msg = false;
 		      		console.log(this.show_one_msg);
-		      },
+		    },
 
 
 
 		      // ----------交互JavaScript部分---------------
 		      // 
 		     
+		      /**
+		       * [checkLogin 核对是否登陆]
+		       * @return {[type]} [description]
+		       */
+		      checkLogin: function(){
+		      		this.axios.post('/api/WustVolunteer/college/checkLogin.do',{
+		      			headers:{
+							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+						}
+		      		}).then((data) => {
+		      			// console.log(data);
+		      			if(data.data.status == 1){
+		      				this.$router.push({path: '/login'});			// 未登陆则调到登陆页面
+		      			}
+		      		}).catch((err) => {
+						console.log(err);
+					})
+		      },
 
 		      /**
 		       * [getOrganizationInfo 获取组织信息接口]
@@ -944,6 +1041,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 						}
 		      		}).then((data) => {
 		      			console.log(data);
+		      			this.getActivityMemberList = data.data.data.list;
 					}).catch((err) => {
 						console.log(err);
 					})
@@ -1278,6 +1376,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 								          this.getUnauActivity(1, 1, 12);  // 重新获取数据
 					      			}else{
 					      				alert("删除失败");
+					      				this.getUnauActivity(1, 1, 12);  // 重新获取数据
 					      			}
 					      		}).catch((err) => {
 									alert("删除程序出错！");
@@ -1346,7 +1445,19 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 						}
 		      		}).then((data) => {
-		      			console.log(data);
+		      			console.log(data.data.status);
+		      			if(data.data.status == 0){
+		      				this.$message({					// 成功提示
+			      				message: '&nbsp;&nbsp;添加成功',
+			      				dangerouslyUseHTMLString: true,
+			      				customClass: "user_style_for_ok_add",
+			      				iconClass: 'fa fa-check',
+			      				showClose: true
+		      				});
+		      			}else {
+		      				alert(data.data.msg);
+		      			}
+		      			
 		      		}).catch((err) => {
 						console.log(err);
 					})
@@ -1374,6 +1485,9 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 						}
 		      		}).then((data) => {
 		      			console.log(data);
+		      			if(data.data.status == 0){
+		      				
+		      			}
 		      		}).catch((err) => {
 						console.log(err);
 					})
@@ -1418,7 +1532,13 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 						}
 		      		}).then((data) => {
-		      			console.log(data);
+		      			console.log(data.data.data.length);
+		      			if(data.data.data.length >= 1){  					// 查询的结果不为空
+		      				this.result_search_act_num = '' ;      			// 先将变量清空，防止上次的搜索结果的干扰
+		      				this.result_search_act_num = data.data.data;
+		      				console.log(this.result_search_act_num.length);
+		      			}
+		      			
 		      		}).catch((err) => {
 						console.log(err);
 					})

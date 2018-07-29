@@ -62,3 +62,7 @@
 		box-shadow: 5px 5px 10px  #ccc;
 		border: 1px solid #eee;
 	}
+
+	#add_search_id:hover{
+		cursor: pointer ;
+	}
