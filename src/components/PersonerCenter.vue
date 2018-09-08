@@ -27,9 +27,9 @@
 					                            </el-tooltip>
 					                        </div>
 					                        
-					                        <h3 class="profile-username text-center"><span>张三</span>&nbsp;--&nbsp;<span>志愿者</span></h3>
+					                        <h3 class="profile-username text-center"><span>{{userName}}</span>&nbsp;--&nbsp;<span>{{authority}}</span></h3>
 
-					                        <p class="text-muted text-center">liuyuanwang4321@gmail.com</p>
+					                        <p class="text-muted text-center">{{connectWay}}</p>
 					                        <br>
 					                        <div class="row form-group ">
 					                        		<div class="col-md-6">
@@ -38,24 +38,24 @@
 					                        		</div>
 					                        		<div class="col-md-6">
 					                        				<label for="username" class="control-label">工时:</label>
-					                            			<input type="text" class="form-control"  value="13"  style="text-align: center;background: transparent;" readonly>
+					                            			<input type="text" class="form-control"  value="13"  style="text-align: center;background: transparent;" readonly v-model="userWorkTime">
 					                        		</div>
 					                        </div>
 					                        <div class="form-group has-success">
 					                            <label for="username" class="control-label">姓名:</label>
-					                            <input type="text" class="form-control" value="张三">
+					                            <input type="text" class="form-control" v-model="userName" style="background:transparent;" readonly>
 					                        </div>
 					                        <div class="form-group has-success">
 					                            <label for="email" class="control-label">联系方式:</label>
-					                            <input type="text" class="form-control" name="row[email]" value="liuyuanwang4321@gmail.com">
+					                            <input type="text" class="form-control" name="row[email]" value="liuyuanwang4321@gmail.com" v-model="connectWay" style="background:transparent;"  readonly>
 					                        </div>
 					                        <div class="form-group has-success">
 					                            <label for="nickname" class="control-label">所属学院:</label>
-					                            <input type="text" class="form-control" value="计算机科学与技术学院">
+					                            <input type="text" class="form-control" value="计算机科学与技术学院"  style="background:transparent;"  readonly v-model='userCollegeName'>
 					                        </div>
 					                        <div class="form-group has-success">
 					                            <label for="password" class="control-label">所属班级:</label>
-					                            <input type="text" class="form-control" value="计科1801班">
+					                            <input type="text" class="form-control" value="计科1801班" style="background:transparent;"  readonly v-model="userClassName">
 					                        </div>
 					                        <div class="form-group" id="form_group_btn">
 						                            <button  class="btn btn-success" @click="dialogVisible = true">修改密码</button>
@@ -78,7 +78,7 @@
         				<div class="col-md-6" style="padding: 10px 20px;background: white;margin-left: 30px;">
 			        
 			            	 <el-tabs  >
-								    <el-tab-pane label="最近操作记录" name="first" style="background: white;">
+								    <el-tab-pane label="近期操作记录" name="first" style="background: white;">
 								    		<table class="table table-bordered table-hover" id="personerCenterTable" >
 								    				<thead  align="center">
 								    						<tr>
@@ -89,16 +89,17 @@
 								    						</tr>
 								    				</thead>
 								    				<tbody>
-								    						<tr>
-								    							<td>7</td>
-								    							<td>张三</td>
-								    							<td>2018-10-12 19:34:09</td>
-								    							<td>活动认证申请</td>
+								    						<tr for="item in show_list_msg">
+								    							<td>{{item.id}}</td>
+								    							<td>{{item.stuName}}</td>
+								    							<td>{{item.time}}</td>
+								    							<td>{{item.operation}}</td>
 								    						</tr>
 								    				</tbody>
 								    		</table>
 
-								    		<span># 共展示最近7条操作记录</span>
+								    		<span id="show_recent_record"># 共展示 {{show_list_num}} 条你的操作记录 </span>
+								    		<span id="last_login">最近一次登陆：{{last_login}}</span>
 								    </el-tab-pane>
 							  </el-tabs>
 			        
@@ -109,20 +110,21 @@
 							  
 							<div class="row"> 
 									<div class="col-md-2">原密码:</div>
-									<div class="col-md-8"><input text="text" class="form-control"></div>
-									<div class="col-md-2" v-show="show_old_pw">
+									<div class="col-md-8"><input text="password" class="form-control" v-model='old_pw'></div>
+									<!-- 未提供判断原密码正确与否的接口，暂不能判断 -->
+									<!-- <div class="col-md-2" v-show="show_old_pw">
 											<span><i class="fa fa-check"></i></span>
 											<span><i class="fa fa-error"></i></span>
-									</div>
+									</div> -->
 							</div><br/>
 							<div class="row"> 
 									<div class="col-md-2">新密码:</div>
-									<div class="col-md-8"><input text="text" class="form-control" v-model="i_new_pw"></div>
+									<div class="col-md-8"><input text="password" class="form-control" v-model="i_new_pw"></div>
 									
 							</div><br/>
 							<div class="row"> 
 									<div class="col-md-2" style="width:100px;margin-left:-12px;">确认密码:</div>
-									<div class="col-md-8"><input text="text" class="form-control" v-model="i_check_new_pw"></div>
+									<div class="col-md-8"><input text="password" class="form-control" v-model="i_check_new_pw"></div>
 									<div class="col-md-2" v-show="check_new_pw">
 											<span><i class="fa fa-check"></i></span>
 											<span><i class="fa fa-error"></i></span>
@@ -149,6 +151,21 @@ import qs from 'qs'
 								check_new_pw: false,
 								i_new_pw: '',
 								i_check_new_pw: '',
+								old_pw: '',
+
+
+								last_login: '',
+								show_list_num: 0,
+								show_list_msg: [],
+
+								//基本信息
+								userName: '',
+								userNum: '',
+								authority: '',
+								connectWay: '',
+								userWorkTime: '',
+								userCollegeName: '',
+								userClassName: ''
 						}
 				},
 				mounted(){
@@ -156,16 +173,80 @@ import qs from 'qs'
 					this.axios.post('/api/WustVolunteer/college/checkLogin.do')
 							.then((data) => {
 								console.log(data);
+								// 转跳登陆页面
 								if(data.data.status == 1){
 									this.$router.push({path: '/login'});
 								}
 
+								if(data.data.data.roll == 1){
+									this.authority = "管理员"
+								}else if(data.data.data.roll == 2){
+									this.authority = "委员"
+								}else if(data.data.data.roll == 3){
+									this.authority = "志愿者"
+								}
+								this.last_login = data.data.data.lastLogin;
+
+								var sendmsg = {
+									msg: data.data.data.stuNum
+								}
+
+								// 获取该用户的详细信息
+								this.axios.post('/api/WustVolunteer/college/searchStudent.do', qs.stringify(sendmsg), {
+									headers:{
+										'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+									}
+								}).then((data) => {
+									console.log(data);
+									this.userName = data.data.data[0].name;
+									this.connectWay = data.data.data[0].phone;
+									this.userNum = data.data.data[0].studentNum;
+									this.userWorkTime = data.data.data[0].volunteerTime;
+									this.userCollegeName = data.data.data[0].collegeName;
+									this.userClassName = data.data.data[0].className;
+								})
+
+								// 获取用户的操作记录情况
+								var sendmsgRecord = {
+									pageNum: 1,
+									pageSize: 100
+								}
+								this.axios.post('/api/WustVolunteer/college/getOperationRecord.do', qs.stringify(sendmsgRecord),{
+									headers:{
+										'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+									}
+								}).then((data) => {
+									console.log(data);
+									for(var i = 0; i < data.data.data.list.length; i++){
+										if(data.data.data.list[i].stuNum == this.userNum){
+											this.show_list_num += 1;
+											data.data.data.list[i].id = i;
+											this.show_list_msg.push(data.data.data.list[i]);
+										}
+										if(this.show_list_num >= 7){
+											break ;
+										}
+									}
+								})
+
+
 					})
 
 				},
+
 				methods:{
 						// -----修改密码-----
 						UpdatePW: function(){
+
+							// 判断三个输入框是否填写完整
+							if(this.old_pw == '' || this.i_new_pw == '' || this.i_check_new_pw == ''){
+								this.dialogVisible = false;    // 将操作面板隐藏
+								this.$message({
+						            type: 'info',
+						            message: '请将信息填写完整！'
+						        }); 
+								return ;
+							}
 
 							// 核对原密码是否正确     （接口暂未提供）
 							// this.axios.post('/api/WustVolunteer/college/checkLogin.do')
@@ -175,8 +256,13 @@ import qs from 'qs'
 
 
 
-							// 判断两次输入的新密码是否相同
-							if(this.i_new_pw != this.i_check_new_pw){
+							// 判断两次输入的新密码是否相同  (时间有限判断新密码是否正确的小图标提示未实现 @9月7号)
+							if(this.i_check_new_pw != this.i_new_pw){
+								this.dialogVisible = false;    // 将操作面板隐藏
+								this.$message({
+						            type: 'error',
+						            message: '两次输入的密码不同！！'
+						        }); 
 								return ;
 							}
 
@@ -212,12 +298,14 @@ import qs from 'qs'
 						        	})
 					          	
 					        }).catch(() => {				//取消的回调
-					          this.$message({
-					            type: 'info',
-					            message: '已取消修改'
-					          });          
+					        	this.dialogVisible = false;
+						        this.$message({
+						            type: 'info',
+						            message: '已取消修改'
+						        });          
 					        });
-						}
+						},
+
 				}
 		}
 </script>

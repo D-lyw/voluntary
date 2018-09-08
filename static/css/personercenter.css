@@ -21,3 +21,14 @@
 	border-top: 2.5px solid #00a65a;
 	border-radius: 4px;
 }
+
+#show_recent_record{
+	font-size: 14px;
+}
+
+#last_login{
+	display: inline-block;
+	float: right;
+	margin-right: 0px;
+	font-size: 13px;
+}
