@@ -1,12 +1,12 @@
 <template>
 	<div class="content-wrapper" style="height:400px;overflow-y:auto;overflow-x:hidden;" id="operationR">
-		<span class="layui-breadcrumb navigoto " >
+		<span class="layui-breadcrumb navigoto" >
 		  <i class="fa fa-home" style="opacity:0.8;color:#333;font-size:16px;"></i>&nbsp;
 		  <router-link to="/">&nbsp;&nbsp;主页</router-link>
 		  <router-link to="">系统操作</router-link>
 		  <router-link to=""><cite>操作日志</cite></router-link>
 		</span>
-		
+		<br><br>
 		<div id="OC_main">
 
 			<div class="OC_header_introduce">
@@ -25,15 +25,15 @@
 				  <!-- <el-button type="info" plain @click="exportFile()" size='mini'>导出</el-button> -->
 				  <el-button-group class="btn_group_three">
 					  
-					  <el-tooltip class="item" effect="light" content="刷新" placement="bottom-start" hide-after='800'>
+					  <el-tooltip class="item" effect="light" content="刷新" placement="bottom-start" >
 					      	<el-button type="success" plain icon="el-icon-refresh" size="small"></el-button>
 					  </el-tooltip>
 
-					  <el-tooltip class="item" effect="light" content="导出数据" placement="bottom" hide-after='800'>
+					  <el-tooltip class="item" effect="light" content="导出数据" placement="bottom" >
 					  		<el-button type="info" icon="el-icon-download" plain size="small"></el-button>
 					  </el-tooltip>
 
-					  <el-tooltip class="item" effect="light" content="设置，无权限" placement="bottom" hide-after='800'>
+					  <el-tooltip class="item" effect="light" content="设置，无权限" placement="bottom" >
 					  		<el-button type="danger" icon="el-icon-setting" plain size="small"></el-button>
 					  </el-tooltip>
 				  </el-button-group>
@@ -45,16 +45,15 @@
 						<!-- 分页 -->
 					    <el-pagination 
 					      background
-					      @size-change="handleSizeChange"
 					      @current-change="handleCurrentChange"
 					      :current-page.sync="currentPage1"
 					      :page-size="12"
 					      layout=" jumper,prev, pager, next, total"
-					      :total="1249">
+					      :total="list_total">
 					    </el-pagination>
 				  	</div>
 				  	
-				</div>
+				</div>		
 				<table class="table table-bordered table-hover table-condensed ">
 					<!-- <input type="file"  @change="importFile($event)" class="inportFILE"> -->
 			
@@ -69,111 +68,15 @@
 						</tr>
 					</thead>
 					<tbody class="table-condensed">
-						<tr>
+						<tr v-for="item in record_list">
 							<td><input type="checkbox" name=""></td>
-							<td>dlyw</td>
-							<td>201613136023</td>
-							<td>游客</td>
-							<td>20180928 12：00</td>
-							<td>创建活动</td>
+							<td>{{item.stuName}}</td>
+							<td>{{item.stuNum}}</td>
+							<td>未知</td>
+							<td>{{item.time}}</td>
+							<td>{{item.operation}}</td>
 						</tr>
-						<tr>
-							<td><input type="checkbox" name=""></td>
-							<td>dlyw</td>
-							<td>201613136023</td>
-							<td>游客</td>
-							<td>20180928 12：00</td>
-							<td>创建活动</td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" name=""></td>
-							<td>dlyw</td>
-							<td>201613136023</td>
-							<td>游客</td>
-							<td>20180928 12：00</td>
-							<td>创建活动</td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" name=""></td>
-							<td>dlyw</td>
-							<td>201613136023</td>
-							<td>游客</td>
-							<td>20180928 12：00</td>
-							<td>创建活动</td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" name=""></td>
-							<td>dlyw</td>
-							<td>201613136023</td>
-							<td>游客</td>
-							<td>20180928 12：00</td>
-							<td>创建活动</td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" name=""></td>
-							<td>dlyw</td>
-							<td>201613136023</td>
-							<td>游客</td>
-							<td>20180928 12：00</td>
-							<td>创建活动</td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" name=""></td>
-							<td>dlyw</td>
-							<td>201613136023</td>
-							<td>游客</td>
-							<td>20180928 12：00</td>
-							<td>创建活动</td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" name=""></td>
-							<td>dlyw</td>
-							<td>201613136023</td>
-							<td>游客</td>
-							<td>20180928 12：00</td>
-							<td>创建活动</td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" name=""></td>
-							<td>dlyw</td>
-							<td>201613136023</td>
-							<td>游客</td>
-							<td>20180928 12：00</td>
-							<td>创建活动</td>
-						</tr>
-
-						<tr>
-							<td><input type="checkbox" name=""></td>
-							<td>dlyw</td>
-							<td>201613136023</td>
-							<td>游客</td>
-							<td>20180928 12：00</td>
-							<td>创建活动</td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" name=""></td>
-							<td>dlyw</td>
-							<td>201613136023</td>
-							<td>游客</td>
-							<td>20180928 12：00</td>
-							<td>创建活动</td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" name=""></td>
-							<td>dlyw</td>
-							<td>201613136023</td>
-							<td>游客</td>
-							<td>20180928 12：00</td>
-							<td>创建活动</td>
-						</tr>
-						<tr>
-							<td><input type="checkbox" name=""></td>
-							<td>dlyw</td>
-							<td>201613136023</td>
-							<td>游客</td>
-							<td>20180928 12：00</td>
-							<td>创建活动</td>
-						</tr>
+						
 					</tbody>
 				</table>
 			</div>
@@ -193,6 +96,7 @@
 </template>
 
 <script type="text/javascript">
+	import qs from 'qs';
 
 	import MainFooter from '@/components/MainFooter';  	
 	import xlsx from 'xlsx';				//引入xlsx插件
@@ -207,16 +111,32 @@
 			return{
 				wb:'',				// 读取完成的数据
 				rABS: false,		// 是否将文件读取为二进制字符串
-				currentPage1: 5,
-		        currentPage2: 5,
-		        currentPage3: 5,
-		        currentPage4: 4,
+				currentPage1: 1,
 		        input_value:'',
-		        select: ''
+		        select: '',
+
+		        record_list: [],
+		        list_total: 0
 			}
 		},
 		components:{
 			'MainFooter':MainFooter
+		},
+		mounted(){
+			// 获取操作记录
+			var sendmsg = {
+				pageNum: 1,
+				pageSize: 12
+			}
+			this.axios.post('/api/WustVolunteer/college/getOperationRecord.do', qs.stringify(sendmsg),{
+					headers:{
+							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+					}
+			}).then((data) => {
+				console.log(data);
+				this.record_list = data.data.data.list;
+				this.list_total = data.data.data.total;
+			})
 		},
 		methods:{
 			importFile: function (event){
@@ -304,15 +224,31 @@
 			},
 
 
-			handleSizeChange(val) {
-		        console.log(`每页 ${val} 条`);
-		    },
 		    handleCurrentChange(val) {
 		        console.log(`当前页: ${val}`);
+		        var sendmsg = {
+						pageNum: this.currentPage1,
+						pageSize: 12
+					}
+
+				this.axios.post('/api/WustVolunteer/college/getOperationRecord.do', qs.stringify(sendmsg),{
+						headers:{
+								'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+						}
+				}).then((data) => {
+					console.log(data);
+					this.record_list = data.data.data.list;
+					this.list_total = data.data.data.total;
+				})
+			    },
+
+
+		    getOperatinoRecord: function(){
+
 		    }
 		}
 	}
-</script>
+</script>	
 
 <style type="text/css">
 

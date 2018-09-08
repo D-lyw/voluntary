@@ -9,8 +9,8 @@
 
 		<div class="contenter panel panel-default">
 			<div class="panel-heading" style="background:#e8edf0;bordre:1px solid #e8edf0;">
-				<em>计算机学院 院队负责人</em>
-				<p>dkj dskfajidsajfdsjfkdjs dsfaj;d</p>     
+				<em>计算机科学与技术学院 </em><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-size:13px;">院队负责人 - 某某某</span>
+				<!-- <p>dkj dskfajidsajfdsjfkdjs dsfaj;d</p>      -->
 			</div>
 			<div class="panel-body">
 				<div class="btn_group">
@@ -56,25 +56,27 @@
 					    <el-input placeholder="请根据姓名或学号查询" v-model="input_key" class="input-with-select" >
 						    <el-select v-model="select" slot="prepend" placeholder="请选择" style="width:100px;">
 						      <el-option label="学号" value="1"></el-option>
-						      <el-option label="姓名" value="2"></el-option>
+						      <el-option label="姓名" value="2" disabled></el-option>
 						    </el-select>
-						    <el-button slot="append" icon="el-icon-search" @click="search_person_toadd"></el-button>
+						    <el-button slot="append" icon="el-icon-search" @click="searchStudent"></el-button>
 						</el-input>
 					</div>
 					<table class="find_person_msg table table-condensed table-hover ">
 						<tbody v-if="show_search_result">
 							<tr>
-								<td><el-checkbox v-model="find_person_checked"></el-checkbox></td>
 								<td>
 									<el-tag
 									  type="success" size="mini" color="#f1f4f5" >
-									  20161316023
+									  {{result_obj.studentNum}}
 									</el-tag>
 								</td>
-								<td>刘元旺</td>
-								<td>网络1601</td>
-								<td>计算机科学与技术学院</td>
+								<td>{{result_obj.name}}</td>
+								<td>{{result_obj.className}}</td>
+								<td>{{result_obj.collegeName}}</td>
 							</tr>
+						</tbody>
+						<tbody v-if="show_search_error_result">
+							<span>没有找到符合条件的志愿者信息 : (</span>
 						</tbody>
 					</table>
 				    <el-form-item label="授予权限" :label-width="formLabelWidth">
@@ -94,137 +96,45 @@
 				<table class="table table-bordered table-hover">
 					<thead>
 						<tr>
-							<td><el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange"></el-checkbox></td>
+							<td><el-checkbox ></el-checkbox></td>
 							<td>ID</td>
 							<td>姓名</td>
 							<td>学号</td>
-							<td>联系方式</td>
+							<td>年级</td>
 							<td>权限</td>
-							<td>上次操作</td>
+							<td>上次登陆</td>
 							<td>状态</td>
 							<td>操作</td>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td><el-checkbox></el-checkbox></td>
-							<td>1</td>
-							<td>李四</td>
-							<td>201613136023</td>
-							<td>liuyuanwang4321@gmail.com</td>
-							<td>2018/07/18 12:00:00 </td>
-							<td>学院管理员</td>
+						<tr v-for="item in adminlist">
+							<td><el-checkbox v-model="checkone"	> </el-checkbox></td>
+							<td>{{item.id}}</td>
+							<td>{{item.stuName}}</td>
+							<td>{{item.stuNum}}</td>
+							<td>{{item.level}}</td>
+							<td>{{item.roll}}</td>
+							<td>{{item.lastLogin}} </td>
+							
+							
 							<td><span class="layui-badge-dot layui-bg-green" size="big"></span><span style="color:green;">&nbsp;正常</span></td>
 							<td>
-								<span class="layui-badge layui-bg-green">
+								<span class="layui-badge layui-bg-green" >
 									<i class="el-icon-edit"></i>
 								</span>
 
-								<span class="layui-badge layiui-bg-red">
+								<span class="layui-badge layiui-bg-red btn_del" @click='deleteAdmin(item.id)' >
 									<i class="el-icon-delete"></i>
 								</span>
 							</td>
 						</tr>
-						<tr>
-							<td><el-checkbox></el-checkbox></td>
-							<td>1</td>
-							<td>李四</td>
-							<td>201613136023</td>
-							<td>liuyuanwang4321@gmail.com</td>
-							<td>2018/07/18 12:00:00 </td>
-							<td>学院管理员</td>
-							<td><span class="layui-badge-dot layui-bg-green" size="big"></span><span style="color:green;">&nbsp;正常</span></td>
-							<td>
-								<span class="layui-badge layui-bg-green">
-									<i class="el-icon-edit"></i>
-								</span>
-
-								<span class="layui-badge layiui-bg-red">
-									<i class="el-icon-delete"></i>
-								</span>
-							</td>
-						</tr>
-						<tr>
-							<td><el-checkbox></el-checkbox></td>
-							<td>1</td>
-							<td>李四</td>
-							<td>201613136023</td>
-							<td>liuyuanwang4321@gmail.com</td>
-							<td>2018/07/18 12:00:00 </td>
-							<td>学院管理员</td>
-							<td><span class="layui-badge-dot layui-bg-green" size="big"></span><span style="color:green;">&nbsp;正常</span></td>
-							<td>
-								<span class="layui-badge layui-bg-green">
-									<i class="el-icon-edit"></i>
-								</span>
-
-								<span class="layui-badge layiui-bg-red">
-									<i class="el-icon-delete"></i>
-								</span>
-							</td>
-						</tr>
-						<tr>
-							<td><el-checkbox></el-checkbox></td>
-							<td>1</td>
-							<td>李四</td>
-							<td>201613136023</td>
-							<td>liuyuanwang4321@gmail.com</td>
-							<td>2018/07/18 12:00:00 </td>
-							<td>学院管理员</td>
-							<td><span class="layui-badge-dot layui-bg-green" size="big"></span><span style="color:green;">&nbsp;正常</span></td>
-							<td>
-								<span class="layui-badge layui-bg-green">
-									<i class="el-icon-edit"></i>
-								</span>
-
-								<span class="layui-badge layiui-bg-red">
-									<i class="el-icon-delete"></i>
-								</span>
-							</td>
-						</tr>
-						<tr>
-							<td><el-checkbox></el-checkbox></td>
-							<td>1</td>
-							<td>李四</td>
-							<td>201613136023</td>
-							<td>liuyuanwang4321@gmail.com</td>
-							<td>2018/07/18 12:00:00 </td>
-							<td>学院管理员</td>
-							<td><span class="layui-badge-dot layui-bg-green" size="big"></span><span style="color:green;">&nbsp;正常</span></td>
-							<td>
-								<span class="layui-badge layui-bg-green">
-									<i class="el-icon-edit"></i>
-								</span>
-
-								<span class="layui-badge layiui-bg-red">
-									<i class="el-icon-delete"></i>
-								</span>
-							</td>
-						</tr>
-						<tr>
-							<td><el-checkbox></el-checkbox></td>
-							<td>1</td>
-							<td>李四</td>
-							<td>201613136023</td>
-							<td>liuyuanwang4321@gmail.com</td>
-							<td>2018/07/18 12:00:00 </td>
-							<td>学院管理员</td>
-							<td><span class="layui-badge-dot layui-bg-green" size="big"></span><span style="color:green;">&nbsp;正常</span></td>
-							<td>
-								<span class="layui-badge layui-bg-green">
-									<i class="el-icon-edit"></i>
-								</span>
-
-								<span class="layui-badge layiui-bg-red">
-									<i class="el-icon-delete"></i>
-								</span>
-							</td>
-						</tr>
+						
 					</tbody>
 				</table>
 
 				<span class="table_buttom_msg">
-					显示第<span>1</span>到第<span>10</span>条记录，总共<span>17</span>记录
+					# 共显示 {{count_list}} 条管理人员信息
 				</span>
 
 			</div>
@@ -233,6 +143,7 @@
 </template>
 
 <script type="text/javascript">
+import qs from 'qs'
 	export default{
 		name: 'PeopleAuthority',
 		data () {
@@ -253,16 +164,33 @@
 				select:"",
 				input_key:'',
 
-				checkAll: false,
-				find_person_checked: false,
 
 				formLabelWidth:'14%',
 
-				isIndeterminate: "",
-				change:"",
 
 				show_search_result:false,
+				result_obj: {},
+				show_search_error_result: false,
+
+				// adminlist
+				adminlist: [],
+				count_list: 0,
+
+				checkone: []
 			}
+		},
+		mounted(){
+			this.axios.post('/api/WustVolunteer/college/checkLogin.do')
+			.then((data) => {
+				// 转跳登陆页面
+				if(data.data.status == 1){
+					this.$router.push({path: '/login'});
+				}
+			});
+
+			this.getAmdinList();
+
+			// this.addVolunteer('201613136023','刘元旺', '网络1601', '15272058782', 1);
 		},
 		methods:{
 			addManager: function(){
@@ -287,12 +215,140 @@
 		          customClass: 'user_style_savePerson'
 		        });
 			},
-			handleCheckAllChange: function(){
+ 
 
-			},
-			search_person_toadd: function(){		// 显示搜索出的结果
-				this.show_search_result = true;
-			}
+			/**
+		       * [getAmdinList 获取管理员列表]
+		       * @enum {[type]}   【9】
+		       * @return {[type]} [null]
+		       */
+		    getAmdinList: function(){
+		      		this.axios.post('/api/WustVolunteer/college/getAmdinList.do',{
+		      			headers:{
+							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+						}
+		      		}).then((data) => {
+		      			console.log(data);
+		      			this.adminlist = data.data.data;
+		      			this.count_list = data.data.data.length;
+		      		}).catch((err) => {
+						console.log(err);
+					})
+		      		return ;
+		    },
+
+		    /**
+		       * [deleteAdmin 删除管理员]
+		       * ＠enum  [19]
+		       * @param  {[type]} adminId [管理员ID]
+		       * @return {[type]}         [description]
+		       */
+		    deleteAdmin: function(adminId){
+		    	this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+			          confirmButtonText: '确定',
+			          cancelButtonText: '取消',
+			          type: 'warning'
+		        }).then(() => {
+		        		let data = {
+		      				adminId: adminId
+			      		};
+
+			      		this.axios.post('/api/WustVolunteer/college/deleteAdmin.do',qs.stringify(data),{
+			      			headers:{
+								'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+							}
+			      		}).then((data) => {
+			      			console.log(data);
+			      		}).catch((err) => {
+							console.log(err);
+						})
+
+				        this.$message({
+				            type: 'success',
+				            message: '删除成功!'
+				        });
+		        }).catch(() => {
+			          this.$message({
+			            type: 'info',
+			            message: '已取消删除'
+			          });          
+		        });
+		      		
+		    },
+
+		    /**
+		       * [searchStudent 模糊查询志愿者]
+		       * @enum {[type]}  【29】
+		       * @param  {[type]} msg [查询字段(学号或姓名)只可查询本学院志愿者]
+		       * @return {[type]}     [description]
+		       */
+		    searchStudent: function(){
+		      		let data = {
+		      			msg: this.input_key
+		      		};
+
+		      		this.axios.post('/api/WustVolunteer/college/searchStudent.do',qs.stringify(data),{
+		      			headers:{
+							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+						}
+		      		}).then((data) => {
+		      			console.log(data);
+		      			if(data.data.data.length == 1){  					// 查询的结果不为空
+		      				this.show_search_result = true;
+		      				this.show_search_error_result = false;
+		      				this.result_obj = data.data.data[0];
+		      			}else {
+		      				this.show_search_error_result = true;
+		      				this.show_search_result = false;
+		      			}
+		      			
+		      		}).catch((err) => {
+						console.log(err);
+					})
+		    },
+
+
+
+
+
+
+
+
+
+
+
+
+
+		    /**
+		       * [addVolunteer 添加志愿者]
+		       * @enum { }	 [20]
+		       * @param {[type]} stuNum    [学号]
+		       * @param {[type]} stuName   [姓名]
+		       * @param {[type]} className [班级名称]
+		       * @param {[type]} phone     [手机号]
+		       * @param {[type]} roll      [权限级别 ]
+		       */
+		    addVolunteer: function(StuNum, StuName, ClassName, Phone, Roll){
+		      		var data = {
+		      			stuNum: StuNum,
+		      			stuName: StuName,
+		      			className: ClassName,
+		      			phone: Phone,
+		      			roll:Roll
+		      		};
+
+		      		this.axios.post('/api/WustVolunteer/college/addVolunteer.do',qs.stringify(data),{
+		      			headers:{
+							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+						}
+		      		}).then((data) => {
+		      			console.log(data);
+		      		}).catch((err) => {
+						console.log(err);
+					})
+
+		    },
+		    
 		}
 	}
 </script>

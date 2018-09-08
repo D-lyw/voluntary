@@ -89,7 +89,7 @@
 								    						</tr>
 								    				</thead>
 								    				<tbody>
-								    						<tr for="item in show_list_msg">
+								    						<tr v-for="item in show_list_msg">
 								    							<td>{{item.id}}</td>
 								    							<td>{{item.stuName}}</td>
 								    							<td>{{item.time}}</td>
@@ -220,13 +220,16 @@ import qs from 'qs'
 									for(var i = 0; i < data.data.data.list.length; i++){
 										if(data.data.data.list[i].stuNum == this.userNum){
 											this.show_list_num += 1;
-											data.data.data.list[i].id = i;
-											this.show_list_msg.push(data.data.data.list[i]);
+											var obj = data.data.data.list[i];
+											obj.id = i;
+											this.show_list_msg.push(obj);
+
 										}
 										if(this.show_list_num >= 7){
 											break ;
 										}
 									}
+									console.log(this.show_list_msg);
 								})
 
 

@@ -524,7 +524,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 			// 获取未认证的活动(获取最新一届的未认证的活动)（状态，页数，行数）
 			this.getUnauActivity(2, 1, 12);
 			this.getUnauActivity(1, 1, 12);
-
+			this.getOrganizationInfo();	
 
 		},
 		methods:{
@@ -939,23 +939,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 		      		return ;
 		      },
 
-		      /**
-		       * [getAmdinList 获取管理员列表]
-		       * @enum {[type]}   【9】
-		       * @return {[type]} [null]
-		       */
-		      getAmdinList: function(){
-		      		 this.axios.post('/api/WustVolunteer/college/getAmdinList.do',{
-		      			headers:{
-							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-						}
-		      		}).then((data) => {
-		      			console.log(data);
-		      		}).catch((err) => {
-						console.log(err);
-					})
-		      		return ;
-		      },
+		     
 
 		      /**
 		       * [getUnauActivity 获取未认证活动列表]
@@ -1523,7 +1507,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 		       * @return {[type]}     [description]
 		       */
 		      searchStudent: function(msg){
-		      		let data = {
+		      		let data = { 
 		      			msg: msg
 		      		};
 

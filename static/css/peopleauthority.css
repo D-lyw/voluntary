@@ -15,7 +15,7 @@
 	margin-top: 10px;
 	width: 100%;
 	height: auto;
-	min-height: 70%;
+	min-height: 90%;
 }
 
 .panel_heading{
@@ -56,3 +56,6 @@ table thead{
 }
 
 
+.btn_del:hover{
+	cursor: pointer;
+}
