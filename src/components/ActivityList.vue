@@ -872,55 +872,9 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 		      },
 
 		      
-		      /**
-		       * [getClassesBylevel 获取学院组织班级列表]
-		       * @enum 		{7}
-		       * @param  {[type]} level [届别]
-		       * @return {[type]}       [null]
-		       */
-		      getClassesBylevel: function(level){
-		      	   let data = {
-		      	   		level: level
-		      	   };
+		      
 
-		      	   this.axios.post('/WustVolunteer/college/getClassesBylevel.do',qs.stringify(data),{
-		      			headers:{
-							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-						}
-		      		}).then((data) => {
-		      			console.log(data);
-		      		}).catch((err) => {
-						console.log(err);
-					})
-		      },
-
-		      /**
-		       * [getVolunteerByClassName 获取班级志愿者]
-		       * @enum {[type]}  [8]
-		       * @param  {[type]} className [班级名称]
-		       * @param  {[type]} pageSize  [页面行数 default 15]
-		       * @param  {[type]} pageNum   [页数]
-		       * @return {[type]}           [null]
-		       */
-		      getVolunteerByClassName: function(className, pageSize, pageNum){
-		      		let data = {
-		      			className: className,
-		      			pageSize: pageSize,
-		      			pageNum: pageNum
-		      		}
-		      		
-		      		this.axios.post('/WustVolunteer/college/getVolunteerByClassName.do',qs.stringify(data),{
-		      			headers:{
-							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-						}
-		      		}).then((data) => {
-		      			console.log(data);
-		      		}).catch((err) => {
-						console.log(err);
-					})
-
-		      		return ;
-		      },
+		      
 
 		     
 
@@ -1243,27 +1197,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 					})
 		      },
 
-		      /**
-		       * [deleteVolunteer 删除志愿者]
-		       * @enum {[type]} 【22】
-		       * @param  {[type]} stuNum [学号]
-		       * @return {[type]}        [description]
-		       */
-		      deleteVolunteer: function(stuNum){
-		      		let data = {
-		      			stuNum: stuNum
-		      		};
-		      		this.axios.post('/WustVolunteer/college/deleteVolunteer.do',qs.stringify(data),{
-		      			headers:{
-							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-						}
-		      		}).then((data) => {
-		      			console.log(data);
-		      		}).catch((err) => {
-						console.log(err);
-					})
-
-		      },
+		      
 
 		      /**
 		       * [addActivity 创建新活动]

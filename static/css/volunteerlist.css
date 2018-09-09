@@ -6,3 +6,15 @@
 .user_sytle_for_volunteerlist{
 	margin-top:30px;
 }
+
+#table_style{
+	text-align: center;
+	margin-top: 20px;
+}
+#table_style thead{
+	color: #121212;
+}
+
+#head_activity_search:hover{
+	cursor: pointer;
+}

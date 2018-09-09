@@ -190,7 +190,7 @@ import qs from 'qs'
 
 			this.getAmdinList();
 
-			// this.addVolunteer('201613136023','刘元旺', '网络1601', '15272058782', 1);
+
 		},
 		methods:{
 			addManager: function(){
