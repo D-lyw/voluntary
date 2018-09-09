@@ -5,17 +5,17 @@
 const path = require('path')
 
 module.exports = {
-  dev: {
+    dev: {
 
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-        '/api': {
-            target: 'http://120.78.143.70:8080/',
+        '/': {
+            target: 'http://120.78.143.70:8080',
             changeOrigin: true,
             pathRewrite: {
-                '^/api': '/'
+                '^/': ''
             }
         }
     },
@@ -45,13 +45,14 @@ module.exports = {
   },
 
   build: {
+    
     // Template for index.html
     index: path.resolve(__dirname, '../dist/index.html'),
 
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    assetsPublicPath: './',
 
     /**
      * Source Maps

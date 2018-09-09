@@ -128,7 +128,7 @@
 				pageNum: 1,
 				pageSize: 12
 			}
-			this.axios.post('/api/WustVolunteer/college/getOperationRecord.do', qs.stringify(sendmsg),{
+			this.axios.post('/WustVolunteer/college/getOperationRecord.do', qs.stringify(sendmsg),{
 					headers:{
 							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 					}
@@ -231,7 +231,7 @@
 						pageSize: 12
 					}
 
-				this.axios.post('/api/WustVolunteer/college/getOperationRecord.do', qs.stringify(sendmsg),{
+				this.axios.post('/WustVolunteer/college/getOperationRecord.do', qs.stringify(sendmsg),{
 						headers:{
 								'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 						}

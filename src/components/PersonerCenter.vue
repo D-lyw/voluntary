@@ -170,7 +170,7 @@ import qs from 'qs'
 				},
 				mounted(){
 					// 判断是否已登陆
-					this.axios.post('/api/WustVolunteer/college/checkLogin.do')
+					this.axios.post('/WustVolunteer/college/checkLogin.do')
 							.then((data) => {
 								console.log(data);
 								// 转跳登陆页面
@@ -192,7 +192,7 @@ import qs from 'qs'
 								}
 
 								// 获取该用户的详细信息
-								this.axios.post('/api/WustVolunteer/college/searchStudent.do', qs.stringify(sendmsg), {
+								this.axios.post('/WustVolunteer/college/searchStudent.do', qs.stringify(sendmsg), {
 									headers:{
 										'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 									}
@@ -211,7 +211,7 @@ import qs from 'qs'
 									pageNum: 1,
 									pageSize: 100
 								}
-								this.axios.post('/api/WustVolunteer/college/getOperationRecord.do', qs.stringify(sendmsgRecord),{
+								this.axios.post('/WustVolunteer/college/getOperationRecord.do', qs.stringify(sendmsgRecord),{
 									headers:{
 										'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 									}
@@ -252,7 +252,7 @@ import qs from 'qs'
 							}
 
 							// 核对原密码是否正确     （接口暂未提供）
-							// this.axios.post('/api/WustVolunteer/college/checkLogin.do')
+							// this.axios.post('/WustVolunteer/college/checkLogin.do')
 							// .then((data) => {
 							// 	console.log(data);
 							// })
@@ -281,7 +281,7 @@ import qs from 'qs'
 						        	var data = {
 						        		passwordNew: this.i_new_pw
 						        	}
-						        	this.axios.post('/api/WustVolunteer/college/resetPassword.do',qs.stringify(data),{
+						        	this.axios.post('/WustVolunteer/college/resetPassword.do',qs.stringify(data),{
 						        		headers:{	
 											'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 										}

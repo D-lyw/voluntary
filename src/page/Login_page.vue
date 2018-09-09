@@ -1,50 +1,30 @@
 <template>
-	<div class="row">
-		<div class="col-md-3" id="contenter">
-			  <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
-				  <ul class="layui-tab-title">
-				    <li class="layui-this" >院队登陆</li>
-				    <li>总队登陆</li>
-				    
-				  </ul>
-				  <div class="layui-tab-content">
-						<!-- 院队部分 -->
-				    	<div class="layui-tab-item layui-show">
-				    		<br><br>
-							<div class="row">
-								<div class="col-md-2" style="line-height:35px;text-align:left;">账号</div>
-								<div class="col-md-10"><input type="text" class="form-control input_login" v-model="userid"></div>
-							</div>
-
-							<div class="row" style="margin-top:15px;">
-								<div class="col-md-2" style="line-height:35px;text-align:left;">密码</div>
-								<div class="col-md-10"><input type="text" class="form-control input_login" v-model="userpw" @keyup.13 ='userlogin'></div>
-							</div>
-							 
-							<div style="margin-top:15px;">
-								<input type="checkbox" lay-skin="primary" > <span style="font-size:12px;">记住密码</span>
-							</div>
-							<!-- 错误类型提示 -->
-							<!-- <div v-show='loginErr'>
-								<span id="show_err_msg" >
-									<i class="layui-icon layui-icon-face-cry" style="font-size: 26px; color: red;"></i> &nbsp;{{show_err_msg}}
-								</span>
-							</div> -->
-							 <el-alert 
-							 	v-show='loginErr'
-							    :title = 'show_err_msg'
-							    type="error"
-							    center
-							    show-icon>
-							 </el-alert>
-							<div id="btn_login">
-								<el-button type="success"  size='small' style="width:80px;" @click='userlogin'>Login</el-button>
-								<el-button  size='small' @click="resetAll">重置</el-button>
-							</div>
-				    	</div>
-						<!-- 总队部分 -->
-				    	<div class="layui-tab-item">				    		
-				    		<div class="layui-tab-item layui-show">
+	<div >
+		<div  id="login_header">
+			<p> <span>志愿服务管理平台</span> <span>武汉科技大学</span></p>
+		</div>
+		<div class="row" style="margin-top:60px;">
+			<div class="col-md-1"></div>
+			<div class="col-md-5" >
+				<!-- <img src="../../static/img/礼让.jpg" style="width:250px;height:320px;"> -->
+				<el-carousel :interval='5000'  arrow="never" height="350px">
+			      <el-carousel-item v-for="item in imgList" :key="item">
+			        <!-- <h3>{{ item }}</h3> -->
+			        <img :src="item.url" style="width:100%;height:100%;">
+			      </el-carousel-item>
+			    </el-carousel>
+			</div>
+			<div class="col-md-1"></div>
+			<div class="col-md-3" id="contenter">
+				  <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+					  <ul class="layui-tab-title">
+					    <li class="layui-this" >院队登陆</li>
+					    <li>总队登陆</li>
+					    
+					  </ul>
+					  <div class="layui-tab-content">
+							<!-- 院队部分 -->
+					    	<div class="layui-tab-item layui-show">
 					    		<br><br>
 								<div class="row">
 									<div class="col-md-2" style="line-height:35px;text-align:left;">账号</div>
@@ -56,27 +36,66 @@
 									<div class="col-md-10"><input type="text" class="form-control input_login" v-model="userpw" @keyup.13 ='userlogin'></div>
 								</div>
 								 
-								<div style="margin-top:15px; ">
+								<div style="margin-top:15px;">
 									<input type="checkbox" lay-skin="primary" > <span style="font-size:12px;">记住密码</span>
 								</div>
 								<!-- 错误类型提示 -->
-								<div v-show='loginErr'>
+								<!-- <div v-show='loginErr'>
 									<span id="show_err_msg" >
 										<i class="layui-icon layui-icon-face-cry" style="font-size: 26px; color: red;"></i> &nbsp;{{show_err_msg}}
 									</span>
-								</div>
-
+								</div> -->
+								 <el-alert 
+								 	v-show='loginErr'
+								    :title = 'show_err_msg'
+								    type="error"
+								    center
+								    show-icon>
+								 </el-alert>
 								<div id="btn_login">
 									<el-button type="success"  size='small' style="width:80px;" @click='userlogin'>Login</el-button>
 									<el-button  size='small' @click="resetAll">重置</el-button>
 								</div>
+					    	</div>
+							<!-- 总队部分 -->
+					    	<div class="layui-tab-item">				    		
+					    		<div class="layui-tab-item layui-show">
+						    		<br><br>
+									<div class="row">
+										<div class="col-md-2" style="line-height:35px;text-align:left;">账号</div>
+										<div class="col-md-10"><input type="text" class="form-control input_login" v-model="userid"></div>
+									</div>
 
-				    		</div>
-				 		</div>
-			   		</div> 
-			 </div>
+									<div class="row" style="margin-top:15px;">
+										<div class="col-md-2" style="line-height:35px;text-align:left;">密码</div>
+										<div class="col-md-10"><input type="text" class="form-control input_login" v-model="userpw" @keyup.13 ='userlogin'></div>
+									</div>
+									 
+									<div style="margin-top:15px; ">
+										<input type="checkbox" lay-skin="primary" > <span style="font-size:12px;">记住密码</span>
+									</div>
+									<!-- 错误类型提示 -->
+									<div v-show='loginErr'>
+										<span id="show_err_msg" >
+											<i class="layui-icon layui-icon-face-cry" style="font-size: 26px; color: red;"></i> &nbsp;{{show_err_msg}}
+										</span>
+									</div>
+
+									<div id="btn_login">
+										<el-button type="success"  size='small' style="width:80px;" @click='userlogin'>Login</el-button>
+										<el-button  size='small' @click="resetAll">重置</el-button>
+									</div>
+
+					    		</div>
+					 		</div>
+				   		</div> 
+				 </div>
+			</div>
+			
 		</div>
-		
+		<div  id="login_footer">
+			<span><a href="http://www.wust.edu.cn" target="_blank">武汉科技大学</a></span> &nbsp;|&nbsp; <span><a href="http://www.zgzyz.org.cn/" target="_blank">中国青年志愿者</a></span> &nbsp;|&nbsp; <span><a href="http://www.cn.undp.org/content/china/zh/home/about-us/united-nations-volunteers.html" target="_blank">联合国志愿人员组织</a></span> &nbsp;|&nbsp;&nbsp;&nbsp; <span>©2017 - 2018 305工作室. All Rights Reserved.</span>
+		</div>
 	</div>
 </template>
 
@@ -90,7 +109,14 @@ import qs from 'qs';
 				userid: '',
 				userpw: '',
 				loginErr: false,
-				show_err_msg: ''
+				show_err_msg: '',
+
+				imgList: [
+					// {url: '../../static/img/s1.jpg'},
+					{url: '../../static/img/s2.jpg'},
+					{url: '../../static/img/s5.jpg'},
+					{url: '../../static/img/s4.jpg'}
+				]
 			}
 		},
 		methods:{
@@ -109,7 +135,7 @@ import qs from 'qs';
 					password: this.userpw
 				}
 				console.log(this.userid+' '+ this.userpw);
-				this.axios.post('/api/WustVolunteer/college/login.do',qs.stringify(data),{
+				this.axios.post('/WustVolunteer/college/login.do',qs.stringify(data),{
 					headers:{
 						'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 					}
@@ -153,8 +179,8 @@ import qs from 'qs';
 <style type="text/css">
 	#contenter{
 		border:1px solid #e1e1e1;
-		margin-top: 5%;
-		margin-left: 60%;
+		/*margin-top: 5%;*/
+		/*margin-left: 60%;*/
 		box-shadow: 5px 5px 5px #e3e3e3;
 	}
 	.layui-tab-title{
@@ -188,4 +214,42 @@ import qs from 'qs';
 		line-height:26px;
 		color:red;
 	}
+
+	#login_header{
+		width: 100%;
+		height: 55px;
+		/*border:1px solid grey;*/
+		/*background: #dcbdee;*/
+		background: #ebf4f3;
+		/*opacity: 0.8;*/
+		/*background: #dd4b39;*/
+		/*color: white;*/
+		box-sizing: border-box;
+		padding: 10px 100px;
+		line-height: 35px;
+		font-size: 20px;
+	}
+	#login_header p{
+		opacity: 1;
+	}
+	#login_footer{
+		width: 100%;
+		height: 40px;
+		border:1px solid grey;
+		position: fixed;
+		bottom: 0px;
+		text-align: center;
+		line-height: 40px;
+	}
+
+
+
+
+	.el-carousel__item:nth-child(2n) {
+    background-color: #99a9bf;
+  }
+  
+  .el-carousel__item:nth-child(2n+1) {
+    background-color: #d3dce6;
+  }
 </style>

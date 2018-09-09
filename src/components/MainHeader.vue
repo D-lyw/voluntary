@@ -36,7 +36,7 @@
                         <span class="hidden-xs" id="LoginName">Admin</span>
                     </a>
                     <div class="dropdown-menu" style="width: 60px;" id="logOut" @click="userlogout">
-                        &nbsp;&nbsp;&nbsp;<a href="#" class="btn  btn-flat"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>&nbsp;&nbsp;退出/切换账号</a>
+                        &nbsp;&nbsp;&nbsp;<span class="btn  btn-flat"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>&nbsp;&nbsp;退出/切换账号</span>
                     </div>
 
 

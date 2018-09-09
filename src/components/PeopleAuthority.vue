@@ -35,7 +35,7 @@
 
 						<!-- Split button -->
 						<div class="btn-group" style="display:inline-block;margin-top:-1px;">
-						  <button type="button" class="btn btn-sm"><i class="glyphicon glyphicon-export icon-share"></i>导出</button>
+						  <button type="button" class="btn btn-sm" ><i class="glyphicon glyphicon-export icon-share"></i>&nbsp;&nbsp;导出</button>
 						  <button type="button" class="btn btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						    <span class="caret"></span>
 						    <span class="sr-only">Toggle Dropdown</span>
@@ -50,7 +50,7 @@
 				</div>
 				
 				<!-- 添加管理员对话框 -->
-				<el-dialog title="添加用户角色" :visible.sync="dialogFormVisible" style="width:80%;margin:auto;" @closed="savePerson">
+				<el-dialog title="添加用户角色" :visible.sync="dialogFormVisible" style="width:80%;margin:auto;" >
 				  <el-form :model="form">
 					<div style="display:inline-block; width:100%;">
 					    <el-input placeholder="请根据姓名或学号查询" v-model="input_key" class="input-with-select" >
@@ -88,8 +88,8 @@
 
 				  </el-form>
 				  <div slot="footer" class="dialog-footer">
-				    <el-button @click="dialogFormVisible = false">取 消</el-button>
-				    <el-button type="primary" @click="dialogFormVisible = false" >确 定</el-button>
+				    <el-button @click="dialogFormVisible = false;input_key = '';adminlist = []">取 消</el-button>
+				    <el-button type="primary" @click="addAdmin(result_obj.studentNum)" >确 定</el-button>
 				  </div>
 				</el-dialog>
 
@@ -180,7 +180,7 @@ import qs from 'qs'
 			}
 		},
 		mounted(){
-			this.axios.post('/api/WustVolunteer/college/checkLogin.do')
+			this.axios.post('/WustVolunteer/college/checkLogin.do')
 			.then((data) => {
 				// 转跳登陆页面
 				if(data.data.status == 1){
@@ -223,7 +223,7 @@ import qs from 'qs'
 		       * @return {[type]} [null]
 		       */
 		    getAmdinList: function(){
-		      		this.axios.post('/api/WustVolunteer/college/getAmdinList.do',{
+		      		this.axios.post('/WustVolunteer/college/getAmdinList.do',{
 		      			headers:{
 							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 						}
@@ -253,7 +253,7 @@ import qs from 'qs'
 		      				adminId: adminId
 			      		};
 
-			      		this.axios.post('/api/WustVolunteer/college/deleteAdmin.do',qs.stringify(data),{
+			      		this.axios.post('/WustVolunteer/college/deleteAdmin.do',qs.stringify(data),{
 			      			headers:{
 								'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 							}
@@ -287,7 +287,7 @@ import qs from 'qs'
 		      			msg: this.input_key
 		      		};
 
-		      		this.axios.post('/api/WustVolunteer/college/searchStudent.do',qs.stringify(data),{
+		      		this.axios.post('/WustVolunteer/college/searchStudent.do',qs.stringify(data),{
 		      			headers:{
 							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 						}
@@ -307,46 +307,38 @@ import qs from 'qs'
 					})
 		    },
 
-
-
-
-
-
-
-
-
-
-
-
-
 		    /**
-		       * [addVolunteer 添加志愿者]
-		       * @enum { }	 [20]
-		       * @param {[type]} stuNum    [学号]
-		       * @param {[type]} stuName   [姓名]
-		       * @param {[type]} className [班级名称]
-		       * @param {[type]} phone     [手机号]
-		       * @param {[type]} roll      [权限级别 ]
+		       * [addAdmin 添加管理员]
+		       * @enum {[type]} 	【18】
+		       * @param {[type]} stuNum [description]
 		       */
-		    addVolunteer: function(StuNum, StuName, ClassName, Phone, Roll){
-		      		var data = {
-		      			stuNum: StuNum,
-		      			stuName: StuName,
-		      			className: ClassName,
-		      			phone: Phone,
-		      			roll:Roll
+		    addAdmin: function(stuNum){
+		    		// 关闭对话框
+		    		this.dialogFormVisible = false;
+		    		if(stuNum == undefined){
+		    			return ;
+		    		}
+		      		let data = {
+		      			stuNum: stuNum
 		      		};
 
-		      		this.axios.post('/api/WustVolunteer/college/addVolunteer.do',qs.stringify(data),{
+		      		this.axios.post('/WustVolunteer/college/addAdmin.do',qs.stringify(data),{
 		      			headers:{
 							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 						}
 		      		}).then((data) => {
 		      			console.log(data);
+		      			if(data.data.status == 0){
+		      				this.savePerson();
+		      			}else {
+		      				alert("添加失败！");
+		      			}
 		      		}).catch((err) => {
 						console.log(err);
 					})
 
+		      		this.input_key = '';
+		      		this.adminlist = [];
 		    },
 		    
 		}

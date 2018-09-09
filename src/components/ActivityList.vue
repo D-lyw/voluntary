@@ -839,7 +839,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 		       * @return {[type]} [description]
 		       */
 		      checkLogin: function(){
-		      		this.axios.post('/api/WustVolunteer/college/checkLogin.do',{
+		      		this.axios.post('/WustVolunteer/college/checkLogin.do',{
 		      			headers:{
 							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 						}
@@ -860,7 +860,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 		       * @url  url+getOrganizationInfo.do
 		       */
 		      getOrganizationInfo: function(){
-		      		this.axios.post('/api/WustVolunteer/college/getOrganizationInfo.do',{
+		      		this.axios.post('/WustVolunteer/college/getOrganizationInfo.do',{
 		      			headers:{
 							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 						}
@@ -871,24 +871,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 					})
 		      },
 
-		      /**
-		       * [getLevelList 获届别列表接口]
-		       * @enum [6]
-		       * @return {[type]} [description]
-		       */
-		      getLevelList:function(){
-
-		      		this.axios.post('/api/WustVolunteer/college/getLevelList.do',{
-		      			headers:{
-							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-						}
-		      		}).then((data) => {
-		      			this.levellist = data.data;      // 将获取的届别参数赋值给变量
-		      			// console.log(this.levellist.data[0].level);
-		      		}).catch(err => {
-						console.log(err);
-					})
-		      },
+		      
 		      /**
 		       * [getClassesBylevel 获取学院组织班级列表]
 		       * @enum 		{7}
@@ -900,7 +883,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 		      	   		level: level
 		      	   };
 
-		      	   this.axios.post('/api/WustVolunteer/college/getClassesBylevel.do',qs.stringify(data),{
+		      	   this.axios.post('/WustVolunteer/college/getClassesBylevel.do',qs.stringify(data),{
 		      			headers:{
 							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 						}
@@ -926,7 +909,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 		      			pageNum: pageNum
 		      		}
 		      		
-		      		this.axios.post('/api/WustVolunteer/college/getVolunteerByClassName.do',qs.stringify(data),{
+		      		this.axios.post('/WustVolunteer/college/getVolunteerByClassName.do',qs.stringify(data),{
 		      			headers:{
 							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 						}
@@ -956,7 +939,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 		      			pageSize: pageSize
 		      		};
 
-		      		this.axios.post('/api/WustVolunteer/college/getUnauActivity.do',qs.stringify(data),{
+		      		this.axios.post('/WustVolunteer/college/getUnauActivity.do',qs.stringify(data),{
 		      			headers:{
 							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 						}
@@ -988,7 +971,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 		      			pageNum: pageNum
 		      		};
 
-		      		this.axios.post('/api/WustVolunteer/college/getAuActivity.do',qs.stringify(data),{
+		      		this.axios.post('/WustVolunteer/college/getAuActivity.do',qs.stringify(data),{
 		      			headers:{
 							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 						}
@@ -1019,7 +1002,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 		      			pageSize: pageSize
 		      		}
 
-		      		this.axios.post('/api/WustVolunteer/college/getActivityMember.do',qs.stringify(data),{
+		      		this.axios.post('/WustVolunteer/college/getActivityMember.do',qs.stringify(data),{
 		      			headers:{
 							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 						}
@@ -1047,7 +1030,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 		      	   		level: level
 		      	   };
 
-		      	   this.axios.post('/api/WustVolunteer/college/getClassInfo.do',qs.stringify(data),{
+		      	   this.axios.post('/WustVolunteer/college/getClassInfo.do',qs.stringify(data),{
 		      			headers:{
 							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 						}
@@ -1072,7 +1055,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 		      			pageSize: pageSize
 		      		};
 
-		      		this.axios.post('/api/WustVolunteer/college/getOperationRecord.do',qs.stringify(data),{
+		      		this.axios.post('/WustVolunteer/college/getOperationRecord.do',qs.stringify(data),{
 		      			headers:{
 							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 						}
@@ -1100,7 +1083,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 		      			pageSize: pageSize
 		      		};
 
-		      		this.axios.post('/api/WustVolunteer/college/getActivityDetail.do',qs.stringify(data),{
+		      		this.axios.post('/WustVolunteer/college/getActivityDetail.do',qs.stringify(data),{
 		      			headers:{
 							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 						}
@@ -1123,7 +1106,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 		      			className: className
 		      		};
 
-		      		this.axios.post('/api/WustVolunteer/college/addClass.do',qs.stringify(data),{
+		      		this.axios.post('/WustVolunteer/college/addClass.do',qs.stringify(data),{
 		      			headers:{
 							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 						}
@@ -1145,7 +1128,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 		      			className: className
 		      		};
 
-		      		this.axios.post('/api/WustVolunteer/college/deleteClass.do',qs.stringify(data),{
+		      		this.axios.post('/WustVolunteer/college/deleteClass.do',qs.stringify(data),{
 		      			headers:{
 							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 						}
@@ -1166,7 +1149,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 		      			stuNum: stuNum
 		      		};
 
-		      		this.axios.post('/api/WustVolunteer/college/addAdmin.do',qs.stringify(data),{
+		      		this.axios.post('/WustVolunteer/college/addAdmin.do',qs.stringify(data),{
 		      			headers:{
 							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 						}
@@ -1189,7 +1172,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 		      			adminId: adminId
 		      		};
 
-		      		this.axios.post('/api/WustVolunteer/college/deleteAdmin.do',qs.stringify(data),{
+		      		this.axios.post('/WustVolunteer/college/deleteAdmin.do',qs.stringify(data),{
 		      			headers:{
 							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 						}
@@ -1218,7 +1201,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 		      			roll:roll
 		      		};
 
-		      		this.axios.post('/api/WustVolunteer/college/addVolunteer.do',qs.stringify(data),{
+		      		this.axios.post('/WustVolunteer/college/addVolunteer.do',qs.stringify(data),{
 		      			headers:{
 							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 						}
@@ -1249,7 +1232,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 		      			roll:roll
 		      		};
 
-		      		this.axios.post('/api/WustVolunteer/college/alterVolunteer.do',qs.stringify(data),{
+		      		this.axios.post('/WustVolunteer/college/alterVolunteer.do',qs.stringify(data),{
 		      			headers:{
 							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 						}
@@ -1270,7 +1253,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 		      		let data = {
 		      			stuNum: stuNum
 		      		};
-		      		this.axios.post('/api/WustVolunteer/college/deleteVolunteer.do',qs.stringify(data),{
+		      		this.axios.post('/WustVolunteer/college/deleteVolunteer.do',qs.stringify(data),{
 		      			headers:{
 							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 						}
@@ -1298,7 +1281,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 		      			category: category
 		      		};
 
-		      		this.axios.post('/api/WustVolunteer/college/addActivity.do',qs.stringify(data),{
+		      		this.axios.post('/WustVolunteer/college/addActivity.do',qs.stringify(data),{
 		      			headers:{
 							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 						}
@@ -1345,7 +1328,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 				        		let data = {
 					      			activityId: activityId
 					      		};
-					      		this.axios.post('/api/WustVolunteer/college/deleteActivity.do',qs.stringify(data),{
+					      		this.axios.post('/WustVolunteer/college/deleteActivity.do',qs.stringify(data),{
 					      			headers:{
 										'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 									}
@@ -1396,7 +1379,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 		      			category: category
 		      		};
 
-		      		this.axios.post('/api/WustVolunteer/college/alterActivity.do',qs.stringify(data),{
+		      		this.axios.post('/WustVolunteer/college/alterActivity.do',qs.stringify(data),{
 		      			headers:{
 							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 						}
@@ -1424,7 +1407,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 		      			volunteerTime: volunteerTime
 		      		};
 
-		      		this.axios.post('/api/WustVolunteer/college/addActivityMember.do',qs.stringify(data),{
+		      		this.axios.post('/WustVolunteer/college/addActivityMember.do',qs.stringify(data),{
 		      			headers:{
 							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 						}
@@ -1463,7 +1446,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 		      			stuNum: stuNum
 		      		};
 
-		      		this.axios.post('/api/WustVolunteer/college/deleteActivityMember.do',qs.stringify(data),{
+		      		this.axios.post('/WustVolunteer/college/deleteActivityMember.do',qs.stringify(data),{
 		      			headers:{
 							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 						}
@@ -1488,7 +1471,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 		      			activityId: activityId
 		      		};
 
-		      		this.axios.post('/api/WustVolunteer/college/cancelSubmit.do',qs.stringify(data),{
+		      		this.axios.post('/WustVolunteer/college/cancelSubmit.do',qs.stringify(data),{
 		      			headers:{
 							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 						}
@@ -1511,7 +1494,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 		      			msg: msg
 		      		};
 
-		      		this.axios.post('/api/WustVolunteer/college/searchStudent.do',qs.stringify(data),{
+		      		this.axios.post('/WustVolunteer/college/searchStudent.do',qs.stringify(data),{
 		      			headers:{
 							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 						}
@@ -1540,7 +1523,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 		      			activityId: activityId
 		      		};
 
-		      		this.axios.post('/api/WustVolunteer/college/getUnMsg.do',qs.stringify(data),{
+		      		this.axios.post('/WustVolunteer/college/getUnMsg.do',qs.stringify(data),{
 		      			headers:{
 							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 						}
