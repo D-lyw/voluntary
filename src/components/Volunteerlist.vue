@@ -51,7 +51,7 @@
 					  			</tr>
 					  		</tbody>
 					  		<tbody v-if="no_search_result">
-					  			没有找到相关志愿者信息 : (
+					  			<tr> 没有找到相关志愿者信息 : ( </tr>
 					  		</tbody>
 					  </table>
 					  
@@ -206,7 +206,7 @@ import qs from 'qs';
 									             customClass: 'user_sytle_for_volunteerlist',
 									             duration: 2000
 								          	});          
-								        });
+								});
 					    },
 
 

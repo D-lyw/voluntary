@@ -2,3 +2,23 @@
 	 background: white;
 	 padding: 15px 20px;
 }
+
+#tabs_body{
+	/*border:1px solid red;*/
+	margin-top: 20px;
+}
+
+#msg_edit{
+	width: 50%;
+	margin: 30px auto;
+	margin-left: 10%;
+}
+
+.input-with-select .el-input-group__prepend {
+    background-color: #fff;
+  }
+
+
+.user_sytle_for_volunteerlist{
+	margin-top:30px;
+}

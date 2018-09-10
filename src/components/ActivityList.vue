@@ -1167,35 +1167,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 
 		      },
 
-		      /**
-		       * [alterVolunteer 修改志愿者信息]
-		       * @enum { }		[21]
-		       * @param  {[type]} stu       [学号]
-		       * @param  {[type]} stuName   [姓名]
-		       * @param  {[type]} className [班级]
-		       * @param  {[type]} phone     [手机号]
-		       * @param  {[type]} roll      [权限级别]
-		       * @return {[type]}           [description]
-		       */
-		      alterVolunteer: function(stu, stuName, className, phone, roll){
-		      		let data = {
-		      			stuNum: stuNum,
-		      			stuName: stuName,
-		      			className: className,
-		      			phone: phone,
-		      			roll:roll
-		      		};
-
-		      		this.axios.post('/WustVolunteer/college/alterVolunteer.do',qs.stringify(data),{
-		      			headers:{
-							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-						}
-		      		}).then((data) => {
-		      			console.log(data);
-		      		}).catch((err) => {
-						console.log(err);
-					})
-		      },
+		      
 
 		      
 

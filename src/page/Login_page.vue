@@ -113,9 +113,9 @@ import qs from 'qs';
 
 				imgList: [
 					// {url: '../../static/img/s1.jpg'},
-					{url: '../../static/img/s2.jpg'},
 					{url: '../../static/img/s5.jpg'},
-					{url: '../../static/img/s4.jpg'}
+					{url: '../../static/img/s4.jpg'},
+					{url: '../../static/img/s2.jpg'},
 				]
 			}
 		},
