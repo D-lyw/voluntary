@@ -11,7 +11,7 @@
 #msg_edit{
 	width: 50%;
 	margin: 30px auto;
-	margin-left: 10%;
+	margin-left: 0%;
 }
 
 .input-with-select .el-input-group__prepend {
@@ -21,4 +21,24 @@
 
 .user_sytle_for_volunteerlist{
 	margin-top:30px;
+}
+
+#el_collapse{
+	margin-top: 30px;
+}
+
+.inputfile{
+	margin-top: 15px;
+}
+
+.inputfile input{
+	display: none;
+}
+
+#input_file{
+	border:1px solid red;
+	width: 100%;
+	height: 100%;
+	border-radius: 5px;
+	background: #ccd;
 }

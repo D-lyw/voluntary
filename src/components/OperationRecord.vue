@@ -1,12 +1,19 @@
 <template>
-	<div class="content-wrapper" style="height:400px;overflow-y:auto;overflow-x:hidden;" id="operationR">
-		<span class="layui-breadcrumb navigoto" >
+	<div class="content-wrapper" style="height:800px;overflow-y:auto;overflow-x:hidden;" id="operationR">
+		<!-- <span class="layui-breadcrumb navigoto" >
 		  <i class="fa fa-home" style="opacity:0.8;color:#333;font-size:16px;"></i>&nbsp;
 		  <router-link to="/">&nbsp;&nbsp;主页</router-link>
 		  <router-link to="">系统操作</router-link>
 		  <router-link to=""><cite>操作日志</cite></router-link>
-		</span>
-		<br><br>
+		</span> -->
+		<div  >
+			<el-breadcrumb separator-class="el-icon-arrow-right">
+				 <el-breadcrumb-item :to="{ path: '/home/introduce' }"><i class="fa fa-home" style="opacity:0.8;color:#333;"></i>&nbsp;主页</el-breadcrumb-item>
+				 <el-breadcrumb-item>系统操作</el-breadcrumb-item>
+				 <el-breadcrumb-item>操作日志</el-breadcrumb-item>
+			</el-breadcrumb>
+		</div>
+		<br>
 		<div id="OC_main">
 
 			<div class="OC_header_introduce">
@@ -26,7 +33,7 @@
 				  <el-button-group class="btn_group_three">
 					  
 					  <el-tooltip class="item" effect="light" content="刷新" placement="bottom-start" >
-					      	<el-button type="success" plain icon="el-icon-refresh" size="small"></el-button>
+					      	<el-button type="success" plain icon="el-icon-refresh" size="small" @click="refreshData"></el-button>
 					  </el-tooltip>
 
 					  <el-tooltip class="item" effect="light" content="导出数据" placement="bottom" >
@@ -45,9 +52,9 @@
 						<!-- 分页 -->
 					    <el-pagination 
 					      background
-					      @current-change="handleCurrentChange"
+					      @current-change="getOperatinoRecord"
 					      :current-page.sync="currentPage1"
-					      :page-size="12"
+					      :page-size="pageSize"
 					      layout=" jumper,prev, pager, next, total"
 					      :total="list_total">
 					    </el-pagination>
@@ -55,7 +62,7 @@
 				  	
 				</div>		
 				<table class="table table-bordered table-hover table-condensed ">
-					<!-- <input type="file"  @change="importFile($event)" class="inportFILE"> -->
+					
 			
 					<thead>
 						<tr>
@@ -78,10 +85,12 @@
 						</tr>
 						
 					</tbody>
+					
 				</table>
+				<p style="font-size:12px; opacity:1;"># 当前显示 {{startRow}} 到 {{endRow}} 条操作记录</p>
 			</div>
 
-
+		<!-- <input type="file"  @change="importFile($event)" class="inportFILE"> -->
 
 		</div>
 
@@ -97,9 +106,9 @@
 
 <script type="text/javascript">
 	import qs from 'qs';
-
-	import MainFooter from '@/components/MainFooter';  	
+	
 	import xlsx from 'xlsx';				//引入xlsx插件
+
 	import TableExport from 'tableexport';	// tableexport插件
 	import FileSaver from 'file-saverjs';
 
@@ -116,34 +125,28 @@
 		        select: '',
 
 		        record_list: [],
-		        list_total: 0
+		        list_total: 0,
+		        pageSize: 15,
+		        startRow: 0,
+		        endRow: 0,
 			}
-		},
-		components:{
-			'MainFooter':MainFooter
 		},
 		mounted(){
 			// 获取操作记录
-			var sendmsg = {
-				pageNum: 1,
-				pageSize: 12
-			}
-			this.axios.post('/WustVolunteer/college/getOperationRecord.do', qs.stringify(sendmsg),{
-					headers:{
-							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-					}
-			}).then((data) => {
-				console.log(data);
-				this.record_list = data.data.data.list;
-				this.list_total = data.data.data.total;
-			})
+			this.getOperatinoRecord();
 		},
 		methods:{
-			importFile: function (event){
+			/**
+			     * [importFile 导入文件]
+			     * @param  {[type]} event [description]
+			     * @return {[type]}       [description]
+			     */
+			    importFile: function (event){
 				if(!event.target.files){
 					return
 				}
 				var f = event.target.files[0];
+				
 				var reader = new FileReader();
 				reader.onload = function(e){
 					var data = e.target.result;
@@ -167,17 +170,18 @@
 				}else{
 					reader.readAsBinaryString(f);
 				}
-			},
-			fixdata: function(data){
-				var o = "",
-				l = 0,
-				w = 10240;
-				for(; l < data.byteLength / w; ++l)
-					o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w, l * w + w)));
-                o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w)));
-                return o;
+				},
 
-			},
+				fixdata: function(data){
+					var o = "",
+					l = 0,
+					w = 10240;
+					for(; l < data.byteLength / w; ++l)
+						o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w, l * w + w)));
+	                o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w)));
+	                return o;
+
+				},
 
 			// 利用tableexport插件导出文件
 			exportFile: function(){
@@ -244,8 +248,35 @@
 
 
 		    getOperatinoRecord: function(){
+		    	var sendmsg = {
+					pageNum: this.currentPage1,
+					pageSize: this.pageSize
+				}
+				this.axios.post('/WustVolunteer/college/getOperationRecord.do', qs.stringify(sendmsg),{
+						headers:{
+								'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+						}
+				}).then((data) => {
+					console.log(data);
+					this.record_list = data.data.data.list;
+					this.list_total = data.data.data.total;
+					this.startRow = data.data.data.startRow;
+					this.endRow = data.data.data.endRow;
+				})
+		    },
 
-		    }
+		    refreshData: function(){
+		    	this.getOperatinoRecord();
+		    	this.$message({
+			            type: 'success',
+			             message: '刷新成功！',
+			             offset: '35px',
+			             customClass: 'user_sytle_for_volunteerlist',
+			             duration: 2000
+		          	});    
+		    	}
+
+
 		}
 	}
 </script>	

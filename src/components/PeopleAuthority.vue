@@ -1,11 +1,19 @@
 <template>
-	<div class="content-wrapper" style="height:400px;overflow-y:auto;overflow-x:hidden;">	
-		<span class="layui-breadcrumb navigoto " >
+	<div class="content-wrapper" style="height:800px;overflow-y:auto;overflow-x:hidden;">	
+		<!-- <span class="layui-breadcrumb navigoto " >
 		  <i class="fa fa-home" style="opacity:0.8;color:#333;font-size:16px;"></i>&nbsp;
 		  <router-link to="/">&nbsp;&nbsp;主页</router-link>
-		  <router-link to="">系统操作</router-link>
+		  <router-link to=""></router-link>
 		  <router-link to=""><cite>人员权限</cite></router-link>
 		</span>
+		 -->
+		<div  >
+			<el-breadcrumb separator-class="el-icon-arrow-right">
+				 <el-breadcrumb-item :to="{ path: '/home/introduce' }"><i class="fa fa-home" style="opacity:0.8;color:#333;"></i>&nbsp;主页</el-breadcrumb-item>
+				 <el-breadcrumb-item>系统操作</el-breadcrumb-item>
+				 <el-breadcrumb-item>人员权限</el-breadcrumb-item>
+			</el-breadcrumb>
+		</div>
 
 		<div class="contenter panel panel-default">
 			<div class="panel-heading" style="background:#e8edf0;bordre:1px solid #e8edf0;">
@@ -139,6 +147,7 @@
 
 			</div>
 		</div>
+		
 	</div>
 </template>
 

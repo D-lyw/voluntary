@@ -14,7 +14,7 @@
 
 				    <el-tab-pane label="信息编辑" name="first">
 						
-						<el-input placeholder="请输入学号查找学生信息" v-model="search_stuNum" class="input-with-select" style="width:50%;margin-left:16%;">
+						<el-input placeholder="请输入学号查找学生信息" v-model="search_stuNum" class="input-with-select" style="width:50%;margin-left:6%;">
 						    <el-select  v-model="select" slot="prepend" placeholder="请选择" style="width:120px;">
 						      <el-option label="学号" value="1"></el-option>
 						    </el-select>
@@ -64,22 +64,84 @@
 				    </el-tab-pane>
 
 				    <el-tab-pane label="班级列表" name="second">
-				    	班级列表
+						<!-- addClass 输入框 -->
+						<el-input placeholder="请输入新建班级名称" v-model="add_class_input" class="input-with-select">
+						    <el-select v-model="select_add_level" slot="prepend" placeholder="选择新建班级届别" style="width:200px;">
+						      
+						      <el-option v-for="(item,index) in collapse_levellist" :label='item.level' :value="item.level" :key="index" ></el-option>
+						    </el-select>
+						    <el-button slot="append" @click="addClass()" icon="el-icon-plus" style="width:150px;">添加班级</el-button>
+						</el-input>
+						<!-- 折叠面板 -->
+				    	<el-collapse v-model="selectCollapse" accordion id="el_collapse" style="width:95%;margin:auto;margin-top:30px;">
+							 
+							  <el-collapse-item v-for="(item, index) in collapse_levellist" :title="item.level + '届 班级列表'" :name="index" :key="index" >
+							  		<!-- <span v-for="i in levelClassList" :key = "index">{{i.name}}</span> -->
+								  		 <el-table
+									      :data="levelClassList[index]"
+									      style="width: 100%; " 
+									      size="small" 
+									      :stripe="true"
+									      :default-sort = "{prop: 'id',  order: 'descending'}" >
+									      <el-table-column
+									        prop="id"
+									        label="ID"
+									        sortable
+									        width="100" >
+									      </el-table-column>
+									      <el-table-column
+									        prop="name"
+									        label="班级名称"
+									        width="180">
+									      </el-table-column>
+									      <el-table-column
+									        prop="volunteerNum"
+									        sortable
+									        label="班级志愿者总数">
+									      </el-table-column>
+									      <el-table-column
+									        prop="volunteerTime"
+									        sortable
+									        label="班级志愿者工时">
+									      </el-table-column>
+									       <el-table-column
+										      label="操作"
+										      width="150">
+										      <template slot-scope="scope">
+										        <!-- <el-button  type="text" size="mini">新建班级</el-button> -->
+										        <el-button type="danger" size="mini" @click="deleteClass(scope.row.name)">删除</el-button>
+										      </template>
+										    </el-table-column>
+									    </el-table>
+							  </el-collapse-item>
+						</el-collapse>
 				    </el-tab-pane>
 
 				    <el-tab-pane label="批量导入" name="third">
-				    	批量导入
+				    	<el-alert
+						    title="导入文件须知:"
+						    type="info"
+						    description="导入的.xlsx文件中,表头包含 ## 学号  姓名  班级  联系方式  权限 ## 五个字段 ,填写的班级必须是系统中已经存在的班级名，权限一栏，填写0或1， 0 代表 志愿者， 1 代表 班级小助手; 如果导入学号重复，或系统已存在相同学号的志愿者信息，将报错；报错后，检查导入文件是否符合要求，刷新重试！"
+						    show-icon>
+						</el-alert>
+
+				
+						<el-button type="success" style="width:200px;margin-top:20px;">
+							<span style="display:block; margin-bottom:-25px;">批量导入志愿者信息</span> 
+							<input type="file"  @change="importFile($event)" id="input_file" style="opacity:0;" >
+						</el-button>
+						<p style="font-size:12px;margin-top:8px;opacity:0.8;">
+						# 该文件共有 {{inputdataLength}} 条数据, 成功导入 {{successNum}} 条志愿者信息</p>
 				    </el-tab-pane>
 
-				    <el-tab-pane label="定时任务补偿" name="fourth">
-				    	定fdgsfdgfds时任务补偿
-				    </el-tab-pane>
 				</el-tabs>
 		</div>
 </template>
 
 <script type="text/javascript">
 import qs from 'qs';
+import xlsx from 'xlsx';
+
 		export default{
 			 neme: 'VolunteerOperation',
 
@@ -105,20 +167,41 @@ import qs from 'qs';
 			 		classLists: ['选择所属班级'],
 			 		levelList: ['选择所属届别'],
 
+
+			 		// part 2
+			 		selectCollapse: '0',
+			 		collapse_levellist: [],
+			 		levelClassList: [],
+
+			 		select_add_level: '',
+			 		add_class_input: '',
+
+			 		// part 3
+			 		inputdataLength: 0,
+			 		successNum: 0,
+
  				}
   			},
 
   			mounted(){
   				 this.clearStuMsg();
+  				 this.getLevelList();
   				 // this.alterVolunteer('201613136023', '刘元旺', '网络1601', '1826789310', 0);
   			},
 
   			methods: {
 
-  				handleClick: function(){
-  					 this.clearStuMsg();
-  				},
+  				handleClick(tab, event) {
 
+  					// 切换tab时，清除tab0 输入框中的内容
+			  		this.clearStuMsg();
+
+			        if(tab.index == 1){
+			        	for(var i = 0; i < this.collapse_levellist.length; i++){
+			        		this.getClassMsgForCollapse(this.collapse_levellist[i].level, i);
+			        	}
+			        }
+			    },
   				saveStuMsg: function(){
   					// 确认更新
   					this.$confirm('此操作将更新此志愿者信息, 是否继续?', '提示', {
@@ -244,16 +327,34 @@ import qs from 'qs';
 								'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 							}
 			      		}).then((data) => {
-			      			console.log(data);
-			      			// for(var i = 0; i < data.data.data.list.length; i++){
-			      			// 	this.classLists.push(data.data.data.list[i].name);
-			      			// }
 			      			this.classLists = data.data.data.list;
 			      		}).catch((err) => {
 							console.log(err);
 						})
 			    },
 
+			    /**
+			     * [getClassMsgForCollapse 为Collpapse获取班级信息]
+			     * @param  {[type]} level [description]
+			     * @return {[type]}       [description]
+			     */
+			    getClassMsgForCollapse: function(level, i){
+			      	   var data = {
+			      	   		level: level
+			      	   };
+
+			      	   this.axios.post('/WustVolunteer/college/getClassInfo.do',qs.stringify(data),{
+			      			headers:{
+								'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+							}
+			      		}).then((data) => {
+			      			// console.log(data);
+			      			this.levelClassList[i] = data.data.data.list;
+
+			      		}).catch((err) => {
+							console.log(err);
+						})
+			    },
 
 			     /**
 			       * [getLevelList 获届别列表接口]
@@ -266,8 +367,8 @@ import qs from 'qs';
 								'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 							}
 			      		}).then((data) => {
-			      			// console.log(data);
 			      			this.levelList = data.data.data;
+			      			this.collapse_levellist = data.data.data.reverse();
 			      		}).catch(err => {
 							console.log(err);
 						})
@@ -327,6 +428,235 @@ import qs from 'qs';
 						})
 			    },
 
+			    /**
+			       * [addClass 添加志愿班级]
+			       * @enum {[type]}   【16】
+			       * @param {[type]} level     [届别]
+			       * @param {[type]} className [description]
+			       */
+			    addClass: function(){
+			    		if(this.add_class_input == '' || this.select_add_level == ""){
+			    			this.add_class_input = '';
+			    			this.select_add_level = "";
+			    			return ;
+			    		}
+
+			      		let data = {
+			      			level: this.select_add_level,
+			      			className: this.add_class_input
+			      		};
+
+			      		this.axios.post('/WustVolunteer/college/addClass.do',qs.stringify(data),{
+			      			headers:{
+								'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+							}
+			      		}).then((data) => {
+			      			// console.log(data);
+			      			if(data.data.status == 0){
+			      				this.$message({
+						            type: 'success',
+						            message: '成功添加班级 : )',
+						            customClass: 'user_sytle_for_volunteerlist',
+						            duration: 2000
+								});
+								// 更新数据
+					        	for(var i = 0; i < this.collapse_levellist.length; i++){
+					        		this.getClassMsgForCollapse(this.collapse_levellist[i].level, i);
+					        	}
+			      			}else{
+			      				this.$message({
+						            type: 'error',
+						            message: '添加班级失败 : (',
+						            customClass: 'user_sytle_for_volunteerlist',
+						            duration: 2000
+						        });
+			      			}
+			      		}).catch((err) => {
+							console.log(err);
+							this.$message({
+						            type: 'error',
+						            message: '添加班级失败 : (',
+						            customClass: 'user_sytle_for_volunteerlist',
+						            duration: 2000
+						    });
+						})
+
+						this.add_class_input = '';
+			    		this.select_add_level = "";
+			    },
+
+			    /**
+			       * [deleteClass 删除志愿班级]
+			       * @enum {[type]}  [17]
+			       * @param  {[type]} className [班级名称]
+			       * @return {[type]}           [description]
+			       */
+			    deleteClass: function(className){
+			    	this.$confirm('此操作将永久删除该班级, 是否继续?', '提示', {
+						           confirmButtonText: '确定',
+						           cancelButtonText: '取消',
+						           type: 'warning'
+					        	}).then(() => {
+					        		// 删除班级
+					        		let data = {
+						      			className: className
+						      		};
+
+						      		this.axios.post('/WustVolunteer/college/deleteClass.do',qs.stringify(data),{
+						      			headers:{
+											'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+										}
+						      		}).then((data) => {
+						      			// console.log(data);
+						      			if(data.data.status == 0){
+						      				this.$message({
+									            type: 'success',
+									             message: '成功删除 : )',
+									             offset: '35px',
+									             customClass: 'user_sytle_for_volunteerlist',
+									             duration: 2000
+								        	});
+						      				// 更新数据
+								        	for(var i = 0; i < this.collapse_levellist.length; i++){
+								        		this.getClassMsgForCollapse(this.collapse_levellist[i].level, i);
+								        	}
+						      			}else{
+						      				this.$message({
+									            type: 'error',
+									             message: '删除失败 : (',
+									             offset: '35px',
+									             customClass: 'user_sytle_for_volunteerlist',
+									             duration: 2000
+								        	});    
+						      			}			  
+						      		}).catch((err) => {
+										console.log(err);
+										this.$message({
+									            type: 'error',
+									             message: '删除失败 : (',
+									             offset: '35px',
+									             customClass: 'user_sytle_for_volunteerlist',
+									             duration: 2000
+								        	});    
+									})	
+									            
+					        	}).catch(() => {
+
+						            this.$message({
+							            type: 'info',
+							             message: '已取消删除',
+							             offset: '35px',
+							             customClass: 'user_sytle_for_volunteerlist',
+							             duration: 2000
+						        	});          
+							});
+		      	
+			    },
+
+			    /**
+			     * [importFile 导入文件]
+			     * @param  {[type]} event [description]
+			     * @return {[type]}       [description]
+			     */
+			    importFile: function (event){
+			    	this.inputdataLength = 0;
+			    	this.successNum = 0;
+
+				if(!event.target.files){
+					return
+				}
+				var f = event.target.files[0];
+				var that = this;
+				var reader = new FileReader();
+				reader.onload = function(e){
+					var data = e.target.result;
+					if(this.rABS){
+						this.wb = xlsx.read(btoa(fixdata(data)),{
+							type:'base64'
+						});
+					}else{
+						this.wb = xlsx.read(data, {
+							type: 'binary'
+						});
+					}
+					// wb.SheetNames[0] 是获取sheets中第一个sheet的名字
+					// wb.Sheets[Sheet名]获取第一个Sheet的数据
+					// console.log(JSON.stringify(xlsx.utils.sheet_to_json(this.wb.Sheets[this.wb.SheetNames[0]])));//转化为字符串
+					// console.log(event.target.files);
+					
+					// console.log(xlsx.utils.sheet_to_json(this.wb.Sheets[this.wb.SheetNames[0]]));  		
+					var inputData = xlsx.utils.sheet_to_json(this.wb.Sheets[this.wb.SheetNames[0]]);
+					// console.log(this.inputdataLength)
+					// this.inputdataLength = inputData.length;
+					for(var i = 0; i < inputData.length; i++){
+						that.addVolunteer(inputData[i].姓名,inputData[i].学号, inputData[i].班级, inputData[i].联系方式, inputData[i].权限);
+						// console.log(inputData[i].姓名,inputData[i].学号, inputData[i].班级, inputData[i].联系方式, inputData[i].权限)
+					}
+					
+				};
+				if(this.rABS){
+					reader.readAsArrayBuffer(f);
+				}else{
+					reader.readAsBinaryString(f);
+				}
+				},
+
+				fixdata: function(data){
+					var o = "",
+					l = 0,
+					w = 10240;
+					for(; l < data.byteLength / w; ++l)
+						o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w, l * w + w)));
+	                o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w)));
+	                return o;
+
+				},
+
+				/**
+			       * [addVolunteer 添加志愿者]
+			       * @enum { }	 [20]
+			       * @param {[type]} stuNum    [学号]
+			       * @param {[type]} stuName   [姓名]
+			       * @param {[type]} className [班级名称]
+			       * @param {[type]} phone     [手机号]
+			       * @param {[type]} roll      [权限级别 ]
+			       */
+			    addVolunteer: function(stuNum, stuName, className, phone, roll){
+			    		this.inputdataLength++;
+			      		let data = {
+			      			stuNum: stuNum,
+			      			stuName: stuName,
+			      			className: className,
+			      			phone: phone,
+			      			roll:roll
+			      		};
+
+			      		this.axios.post('/WustVolunteer/college/addVolunteer.do',qs.stringify(data),{
+			      			headers:{
+								'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+							}
+			      		}).then((data) => {
+			      			if(data.data.status == 0){
+			      				this.$notify.success({
+					      				title: '添加成功！',
+					      				message: '成功添加一条志愿者信息',
+					      				offset: 45,
+					      				duration: 2000
+					      		});
+					      		this.successNum++;
+			      			}else if(data.data.status == 1){
+			      				alert("学号：" + stuNum + " 导入失败， 原因：" + data.data.msg);
+			      			}
+			      		}).catch((err) => {
+							console.log(err);
+							this.$notify.error({
+						             message: '导入文件内容格式，不符合要求！添加失败 : (',
+						             offset: '35px',
+						             customClass: 'user_sytle_for_volunteerlist',
+						             duration: 2000
+					        	});    
+						})
+			    },
   			}
    		}
 </script>

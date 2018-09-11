@@ -510,13 +510,6 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 			
 			// this.getOrganizationInfo();
 
-			//添加志愿班级
-			// this.addClass(2018,'网络工程1801');
-			// 
-			// 添加管理员
-			// this.addAdmin(201613136023);
-			// 添加志愿者
-			// this.addVolunteer('201613136023', '刘元旺', '网络1801', '15272058782', '0');
 			
 			//添加活动
 			// this.addActivity('add_test', '2018-11-22', '武科大', 0);
@@ -1137,35 +1130,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 					})
 		      },
 
-		      /**
-		       * [addVolunteer 添加志愿者]
-		       * @enum { }	 [20]
-		       * @param {[type]} stuNum    [学号]
-		       * @param {[type]} stuName   [姓名]
-		       * @param {[type]} className [班级名称]
-		       * @param {[type]} phone     [手机号]
-		       * @param {[type]} roll      [权限级别 ]
-		       */
-		      addVolunteer: function(stuNum, stuName, className, phone, roll){
-		      		let data = {
-		      			stuNum: stuNum,
-		      			stuName: stuName,
-		      			className: className,
-		      			phone: phone,
-		      			roll:roll
-		      		};
-
-		      		this.axios.post('/WustVolunteer/college/addVolunteer.do',qs.stringify(data),{
-		      			headers:{
-							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-						}
-		      		}).then((data) => {
-		      			console.log(data);
-		      		}).catch((err) => {
-						console.log(err);
-					})
-
-		      },
+		      
 
 		      
 

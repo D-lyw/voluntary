@@ -1,65 +1,73 @@
 <template>
 	 	<div class="content-wrapper" style="height:900px;overflow-y:auto;overflow-x:hidden;">
-	 			<div>
+	 			<!-- <div>
 	 			<span class="layui-breadcrumb navigoto " >
 					  <i class="fa fa-home" style="opacity:0.8;color:#333;font-size:16px;"></i>&nbsp;
 					  <router-link to="/">&nbsp;&nbsp;主页</router-link>
 					  <router-link to="">志愿者管理</router-link>
 					  <router-link to=""><cite>志愿者信息</cite></router-link>
 				</span>
+				</div> -->
+
+				<div id="navigoto_div" >
+					<el-breadcrumb separator-class="el-icon-arrow-right">
+						 <el-breadcrumb-item :to="{ path: '/home/introduce' }"><i class="fa fa-home" style="opacity:0.8;color:#333;"></i>&nbsp;主页</el-breadcrumb-item>
+						 <el-breadcrumb-item>志愿者管理</el-breadcrumb-item>
+						 <el-breadcrumb-item>志愿者信息</el-breadcrumb-item>
+					</el-breadcrumb>
 				</div>
 				
-				<div>
-				<!-- 级联选择 -->
-				<el-cascader :options="options" v-model="selectedOptions" style="width: 250px;" @change="changeClass">				
-				</el-cascader>
+				<div style="margin-top:15px;">
+					<!-- 级联选择 -->
+					<el-cascader :options="options" v-model="selectedOptions" style="width: 250px;" @change="changeClass">				
+					</el-cascader>
 
-				<button class="layui-btn layui-btn-sm" style="float:right;">
-						<span class="glyphicon glyphicon-export" aria-hidden="true">导出</span>
-				</button>
+					<button class="layui-btn layui-btn-sm" style="float:right;margin-top:6px;">
+							<span class="glyphicon glyphicon-export" aria-hidden="true">导出</span>
+					</button>
 
-				<el-input
-					    placeholder="按学号或姓名模糊查找"
-					    v-model="search_content_header" style="display:inline-block;width:280px;float:right;margin-right:10px;" size="small">
-					    <i slot="suffix" class="el-input__icon el-icon-search"  id="head_activity_search" @click="clickSearch"></i>
-				</el-input>
-				
-				<!-- 搜索框展示搜索的结果 -->
-				<el-dialog
-					  title="搜索结果"
-					  :visible.sync="dialogVisible"
-					  width="40%"
-					  :before-close="handleClose">
+					<el-input
+						    placeholder="按学号或姓名模糊查找"
+						    v-model="search_content_header" style="display:inline-block;width:280px;float:right;margin-right:10px;margin-top:5px;" size="small">
+						    <i slot="suffix" class="el-input__icon el-icon-search"  id="head_activity_search" @click="clickSearch"></i>
+					</el-input>
+					
+					<!-- 搜索框展示搜索的结果 -->
+					<el-dialog
+						  title="搜索结果"
+						  :visible.sync="dialogVisible"
+						  width="40%"
+						  :before-close="handleClose">
 
-					  <table class="table" style="text-align:center;">
-					  		<thead>
-					  			<tr>
-					  				<td>ID</td>
-					  				<td>学号</td>
-					  				<td>姓名</td>
-					  				<td>班级</td>
-					  				<td>学院</td>
-					  			</tr>
-					  		</thead>
-					  		<tbody v-if="is_search_result">
-					  			<tr v-for="(item, index) in search_result_list">
-					  				<td>{{index+1}}</td>
-					  				<td><el-tag type="success" size="mini">{{item.studentNum}}</el-tag></td>
-					  				<td>{{item.name}}</td>
-					  				<td>{{item.className}}</td>
-					  				<td>{{item.collegeName}}</td>
-					  			</tr>
-					  		</tbody>
-					  		<tbody v-if="no_search_result">
-					  			<tr> 没有找到相关志愿者信息 : ( </tr>
-					  		</tbody>
-					  </table>
-					  
-					  <span slot="footer" class="dialog-footer">
-					    <!-- <el-button @click="dialogVisible = false" size="small">取 消</el-button> -->
-					    <el-button type="primary" @click="dialogVisible = false" size="small">确 定</el-button>
-					  </span>
-				</el-dialog>
+						  <table class="table" style="text-align:center;">
+						  		<thead>
+						  			<tr>
+						  				<td>ID</td>
+						  				<td>学号</td>
+						  				<td>姓名</td>
+						  				<td>班级</td>
+						  				<td>学院</td>
+						  			</tr>
+						  		</thead>
+						  		<tbody v-if="is_search_result">
+						  			<tr v-for="(item, index) in search_result_list">
+						  				<td>{{index+1}}</td>
+						  				<td><el-tag type="success" size="mini">{{item.studentNum}}</el-tag></td>
+						  				<td>{{item.name}}</td>
+						  				<td>{{item.className}}</td>
+						  				<td>{{item.collegeName}}</td>
+						  			</tr>
+						  		</tbody>
+						  		<tbody v-if="no_search_result">
+						  			<tr> 没有找到相关志愿者信息 : ( </tr>
+						  		</tbody>
+						  </table>
+						  
+						  <span slot="footer" class="dialog-footer">
+						    <!-- <el-button @click="dialogVisible = false" size="small">取 消</el-button> -->
+						    <el-button type="primary" @click="dialogVisible = false" size="small">确 定</el-button>
+						  </span>
+					</el-dialog>
 
 				</div>
 				<!-- Volunteer List table -->

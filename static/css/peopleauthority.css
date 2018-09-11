@@ -4,18 +4,10 @@
 	background: #f1f4f6;
 }	
 
-/*导航条部分*/
-.navigoto{
-	display: inline-block;
-	/*border:1px solid red;*/
-
-}
 /*主题内容*/
 .contenter{
 	margin-top: 10px;
-	width: 100%;
-	height: auto;
-	min-height: 90%;
+
 }
 
 .panel_heading{

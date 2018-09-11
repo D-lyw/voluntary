@@ -56,7 +56,7 @@
 		name: 'Mainheader',
     methods:{
         userlogout: function(){
-            this.axios.post('/api/WustVolunteer/college/logout.do',{
+            this.axios.post('/WustVolunteer/college/logout.do',{
                  headers:{
                     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
                 }
