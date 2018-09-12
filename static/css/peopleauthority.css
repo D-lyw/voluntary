@@ -2,6 +2,8 @@
 .content-wrapper{
 	padding: 10px;
 	background: #f1f4f6;
+	box-sizing: border-box;
+	/*border:1px solid red;*/
 }	
 
 /*主题内容*/
@@ -50,4 +52,8 @@ table thead{
 
 .btn_del:hover{
 	cursor: pointer;
+}
+
+.user_sytle_for_volunteerlist{
+	margin-top:30px;
 }

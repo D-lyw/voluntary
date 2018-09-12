@@ -16,8 +16,8 @@
 		</div>
 
 		<div class="contenter panel panel-default">
-			<div class="panel-heading" style="background:#e8edf0;bordre:1px solid #e8edf0;">
-				<em>计算机科学与技术学院 </em><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-size:13px;">院队负责人 - 某某某</span>
+			<div class="panel-heading" style="background:#e8edf0;bordre:1px solid #e8edf0;height:45px;line-height:25px;">
+				<em sty>#{{organizationName}}{{collegeAdmimlevel}}届负责人#</em>  - {{collegeAdmim}}<!-- <br>#院队工时管理员#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-size:13px;display:inline-block; margin-top:10px;"> &nbsp;&nbsp; 现共有 {{count_list - 1}} 名 </span> -->
 				<!-- <p>dkj dskfajidsajfdsjfkdjs dsfaj;d</p>      -->
 			</div>
 			<div class="panel-body">
@@ -66,7 +66,7 @@
 						      <el-option label="学号" value="1"></el-option>
 						      <el-option label="姓名" value="2" disabled></el-option>
 						    </el-select>
-						    <el-button slot="append" icon="el-icon-search" @click="searchStudent"></el-button>
+						    <el-button slot="append" icon="el-icon-search" @click="searchStudent">查询</el-button>
 						</el-input>
 					</div>
 					<table class="find_person_msg table table-condensed table-hover ">
@@ -185,10 +185,16 @@ import qs from 'qs'
 				adminlist: [],
 				count_list: 0,
 
-				checkone: []
+				checkone: [],
+
+				collegeAdmim: '',
+				collegeAdmimId: '',
+				organizationName: '',
+				collegeAdmimlevel: '',
 			}
 		},
 		mounted(){
+			// 判断是否登陆
 			this.axios.post('/WustVolunteer/college/checkLogin.do')
 			.then((data) => {
 				// 转跳登陆页面
@@ -197,8 +203,34 @@ import qs from 'qs'
 				}
 			});
 
-			this.getAmdinList();
+			// this.getAmdinList();
+			this.axios.post('/WustVolunteer/college/getAmdinList.do',{
+		      			headers:{
+							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+						}
+		      		}).then((data) => {
+		      			this.adminlist = data.data.data;
+		      			this.count_list = data.data.data.length;
+		      			for(var i = 0; i < this.count_list; i++){
+		      				if(data.data.data[i].roll == 1){
+		      					data.data.data[i].roll = '院队管理员';
+		      					this.collegeAdmim = data.data.data[i].stuName; // mounted额外添加的代码
+		      					this.collegeAdmimId = data.data.data[i].id;
+		      					this.organizationName = data.data.data[i].organizationName;
+		      					this.collegeAdmimlevel = data.data.data[i].level;
+ 		      				}else if(data.data.data[i].roll == 4){
+		      					data.data.data[i].roll = '院队工时管理员'
+		      				}
+		      			}
+		      			
 
+		      		}).catch((err) => {
+						this.$message({
+				            type: 'error',
+				            message: '获取管理员列表失败!',
+				            customClass: 'user_sytle_for_volunteerlist',
+				        });
+					})
 
 		},
 		methods:{
@@ -206,6 +238,7 @@ import qs from 'qs'
 				alert("show");
 			},
 			refresh: function(){
+				this.getAmdinList();
 				this.$notify({      			//刷新提示框
 		          type: 'success',
 		          message: '刷新成功！',
@@ -237,13 +270,23 @@ import qs from 'qs'
 							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 						}
 		      		}).then((data) => {
-		      			console.log(data);
+		      			// console.log(data);
 		      			this.adminlist = data.data.data;
 		      			this.count_list = data.data.data.length;
+		      			for(var i = 0; i < this.count_list; i++){
+		      				if(data.data.data[i].roll == 1){
+		      					data.data.data[i].roll = '院队管理员';
+		      				}else if(data.data.data[i].roll == 4){
+		      					data.data.data[i].roll = '院队工时管理员'
+		      				}
+		      			}
 		      		}).catch((err) => {
-						console.log(err);
+						this.$message({
+				            type: 'error',
+				            message: '获取管理员列表失败!',
+				            customClass: 'user_sytle_for_volunteerlist',
+				        });
 					})
-		      		return ;
 		    },
 
 		    /**
@@ -253,6 +296,15 @@ import qs from 'qs'
 		       * @return {[type]}         [description]
 		       */
 		    deleteAdmin: function(adminId){
+		    	if(adminId == this.collegeAdmimId){
+		    		this.$message({
+				            type: 'error',
+				            message: '删除失败!,无权限删除院队管理员信息',
+				            customClass: 'user_sytle_for_volunteerlist',
+				            duration: 2000
+				        });
+		    		return ;
+		    	}
 		    	this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
 			          confirmButtonText: '确定',
 			          cancelButtonText: '取消',
@@ -268,21 +320,40 @@ import qs from 'qs'
 							}
 			      		}).then((data) => {
 			      			console.log(data);
+			      			if (data.data.status == 0) {
+			      				this.$message({
+						            type: 'success',
+						            message: '删除成功!',
+						            customClass: 'user_sytle_for_volunteerlist',
+						            duration: 2000
+						        });
+						        this.getAmdinList();
+			      			}else if(data.data.status == 1){
+			      				this.$message({
+						            type: 'error',
+						            message: '删除失败!,无权限进行此操作',
+						            customClass: 'user_sytle_for_volunteerlist',
+						            duration: 2000
+						        });
+			      			}
 			      		}).catch((err) => {
 							console.log(err);
+							this.$message({
+						            type: 'error',
+						            message: '删除失败!',
+						            customClass: 'user_sytle_for_volunteerlist',
+						            duration: 2000
+						    });
 						})
-
-				        this.$message({
-				            type: 'success',
-				            message: '删除成功!'
-				        });
+				        
 		        }).catch(() => {
 			          this.$message({
 			            type: 'info',
-			            message: '已取消删除'
+			            message: '已取消删除',
+			            customClass: 'user_sytle_for_volunteerlist',
+			            duration: 2000
 			          });          
 		        });
-		      		
 		    },
 
 		    /**
@@ -339,15 +410,29 @@ import qs from 'qs'
 		      			console.log(data);
 		      			if(data.data.status == 0){
 		      				this.savePerson();
+		      				this.getAmdinList();
 		      			}else {
-		      				alert("添加失败！");
+		      				this.$message({
+					            type: 'error',
+					            message: '删除失败!无权限进行此操作或该账户已存在',
+					            customClass: 'user_sytle_for_volunteerlist',
+					            duration: 2000,
+				        	});
 		      			}
 		      		}).catch((err) => {
 						console.log(err);
+						this.$message({
+				            type: 'error',
+				            message: '删除失败!',
+				            customClass: 'user_sytle_for_volunteerlist',
+				            duration: 2000,
+				        });
 					})
 
 		      		this.input_key = '';
-		      		this.adminlist = [];
+		      		this.result_obj = {};
+		      		this.show_search_result = false;
+		      		this.show_search_error_result = false;
 		    },
 		    
 		}

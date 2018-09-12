@@ -14,8 +14,8 @@
 
 				    <el-tab-pane label="信息编辑" name="first">
 						
-						<el-input placeholder="请输入学号查找学生信息" v-model="search_stuNum" class="input-with-select" style="width:50%;margin-left:6%;">
-						    <el-select  v-model="select" slot="prepend" placeholder="请选择" style="width:120px;">
+						<el-input placeholder="请输入学号查找学生信息" v-model="search_stuNum" class="input-with-select" style="width:50%;margin-left:4.5%;margin-top:5px;">
+						    <el-select  v-model="select" slot="prepend" placeholder="请选择" style="width:140px;">
 						      <el-option label="学号" value="1"></el-option>
 						    </el-select>
 						    <el-button slot="append" icon="el-icon-search" @click='searchStudent'></el-button>
@@ -57,7 +57,7 @@
 
 							  <el-form-item size="small">
 							    	<el-button type="primary" @click="saveStuMsg">立即修改</el-button>
-							    	<el-button>取消</el-button>
+							    	<el-button @click="clearStuMsg">取消</el-button>
 							  </el-form-item>
 						</el-form>
 
