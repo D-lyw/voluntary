@@ -1,6 +1,10 @@
 .content-wrapper{
 	 background: white;
 	 padding: 15px 20px;
+	 min-height: 800px;
+	 height: auto;
+	 /*height: 100%;*/
+	 /*overflow: scroll;*/
 }
 
 #tabs_body{

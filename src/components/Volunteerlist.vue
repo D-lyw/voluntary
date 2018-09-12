@@ -328,6 +328,8 @@ import qs from 'qs';
 					      					this.classStudentList[i].roll = '志愿者'
 					      				}else if(this.classStudentList[i].roll == 1){
 					      					this.classStudentList[i].roll = '班级小助手'
+					      				}else if(this.classStudentList[i].roll == 2){
+					      					this.classStudentList[i].roll = '委员'
 					      				}
 					      			}
 					      		}).catch((err) => {

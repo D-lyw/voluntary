@@ -1,5 +1,5 @@
 <template>
-		<div class="content-wrapper" style="height:900px;overflow-y:auto;overflow-x:hidden;">
+		<div class="content-wrapper" style="">
 
 				<div id="navigoto_div" >
 					<el-breadcrumb separator-class="el-icon-arrow-right">
@@ -46,6 +46,7 @@
 							    	<el-select v-model="stuMsg.roll" placeholder="志愿者的职务" style="width:100%;">
 							    		  <el-option  label="志愿者" value="0"></el-option>
 							    		  <el-option  label="班级小助手" value="1"></el-option>
+							    		  <el-option  label="委员"  value="2"></el-option>
 							    	</el-select>
 							  </el-form-item>
 							  <el-form-item label="联系方式" >
@@ -79,7 +80,7 @@
 							  		<!-- <span v-for="i in levelClassList" :key = "index">{{i.name}}</span> -->
 								  		 <el-table
 									      :data="levelClassList[index]"
-									      style="width: 100%; " 
+									      style="width: 100%; height:auto;max-height:500px;overflow:auto;" 
 									      size="small" 
 									      :stripe="true"
 									      :default-sort = "{prop: 'id',  order: 'descending'}" >
@@ -121,7 +122,7 @@
 				    	<el-alert
 						    title="导入文件须知:"
 						    type="info"
-						    description="导入的.xlsx文件中,表头包含 ## 学号  姓名  班级  联系方式  权限 ## 五个字段 ,填写的班级必须是系统中已经存在的班级名，权限一栏，填写0或1， 0 代表 志愿者， 1 代表 班级小助手; 如果导入学号重复，或系统已存在相同学号的志愿者信息，将报错；报错后，检查导入文件是否符合要求，刷新重试！"
+						    description="导入的.xlsx文件中,表头包含 ## 学号  姓名  班级  联系方式  权限 ## 五个字段 ,填写的班级必须是系统中已经存在的班级名，权限一栏，填写0,1或2， 0 代表 志愿者， 1 代表 班级小助手, 2 代表 委员; 如果导入学号重复，或系统已存在相同学号的志愿者信息，将报错；报错后，检查导入文件是否符合要求，刷新重试！"
 						    show-icon>
 						</el-alert>
 

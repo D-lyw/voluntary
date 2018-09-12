@@ -194,15 +194,6 @@ import qs from 'qs'
 			}
 		},
 		mounted(){
-			// 判断是否登陆
-			this.axios.post('/WustVolunteer/college/checkLogin.do')
-			.then((data) => {
-				// 转跳登陆页面
-				if(data.data.status == 1){
-					this.$router.push({path: '/login'});
-				}
-			});
-
 			// this.getAmdinList();
 			this.axios.post('/WustVolunteer/college/getAmdinList.do',{
 		      			headers:{

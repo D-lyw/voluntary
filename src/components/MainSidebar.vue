@@ -20,7 +20,7 @@
 	            </span>
 	          </a>
 	          <ul class="treeview-menu">
-	          	<li ><router-link to="/home/index"><span class="glyphicon glyphicon-fire" aria-hidden="true" ></span> 首页</router-link></li>
+	          	<li ><router-link to="/home/introduce"><span class="glyphicon glyphicon-fire" aria-hidden="true" ></span> 首页</router-link></li>
 	            <li><router-link to="/home/activitylist"><span class="glyphicon glyphicon-fire" aria-hidden="true" ></span> 志愿活动</router-link></li>
 	            <li><router-link to="/home/personercenter"><span class="glyphicon glyphicon-fire" aria-hidden="true" ></span> 个人中心</router-link></li>
 	          </ul>

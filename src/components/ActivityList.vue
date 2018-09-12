@@ -1,14 +1,16 @@
 <template>
-	<div class="content-wrapper" style="min-height:500px;height:auto; overflow-y:auto;overflow-x:hidden;">
+	<div class="content-wrapper" style="height:800px;height:auto; overflow-y:auto;overflow-x:hidden;">
 		
-		<span class="layui-breadcrumb navigoto " >
-		  <i class="fa fa-home" style="opacity:0.8;color:#333;font-size:16px;"></i>&nbsp;
-		  <router-link to="/">&nbsp;&nbsp;主页</router-link>
-		  <!-- <router-link to="">志愿活动</router-link> -->
-		  <router-link to=""><cite>活动列表</cite></router-link>
-		</span>
 		
-		<div class="panel panel-default" style=" height:auto;margin-top:10px;margin-bottom:50px;">
+		<div >
+			<el-breadcrumb separator-class="el-icon-arrow-right">
+				 <el-breadcrumb-item :to="{ path: '/home/introduce' }"><i class="fa fa-home" style="opacity:0.8;color:#333;"></i>&nbsp;主页</el-breadcrumb-item>
+				 <el-breadcrumb-item>志愿活动</el-breadcrumb-item>
+				 <el-breadcrumb-item>活动列表</el-breadcrumb-item>
+			</el-breadcrumb>
+		</div>
+
+		<div class="panel panel-default" style=" height:auto;margin-top:18px;margin-bottom:50px;">
 			<div class="panel-heading">
 				<br>
 				<div class="btn-group" style="width:100%;">
@@ -45,7 +47,7 @@
 			</div>
 
 			<div class="panel-body">
-					<el-tabs :tab-position="tabPosition" style="height: auto;min-height: 500px;" v-model="activiTab">
+					<el-tabs :tab-position="tabPosition" style="height: auto;min-height: 600px;" v-model="activiTab">
 
 						<!-- 已认证活动 Part -->
 					    <el-tab-pane label="已认证活动" name="first">
@@ -67,9 +69,10 @@
 												  </span>
 												  <el-dropdown-menu slot="dropdown">
 													    <el-dropdown-item 
-													    	v-for = '(item, index) in levellist.data' 
-													    	:key = 'levellist.data.id'>
-													    	<span style="padding:10px 20px;" v-on:click="currentLevel=index">{{item.level}}</span>
+													    	v-for = '(item, index) in levellist' 
+													    	:key = 'index'>
+													    	<span style="padding:10px 20px;" 
+													    	@click="Done_level=item.level">{{item.level}}</span>
 													    </el-dropdown-item>					    
 												  </el-dropdown-menu>
 												  </el-dropdown>
@@ -91,7 +94,7 @@
 											<td>{{item.organizationId}}</td>
 											<td>{{item.level}}届</td>
 											<td>{{item.creater}}</td>
-											<td>赵六</td>
+											<td>{{item.authenticator}}</td>
 											<td>
 												<button class="layui-btn layui-btn-xs" @click="activityMsg">编辑</button>
 												<button class="layui-btn layui-btn-warm layui-btn-xs" @click="btn_Delete">删除</button>
@@ -103,11 +106,11 @@
 								</table>
 								
 								 <el-pagination
-							      :current-page="currentPage"
-							      :page-sizes="[12]"
-							      :page-size="100"
-							      layout="total, sizes, prev, pager, next, jumper"
-							      :total="totalPage">
+							      :current-page.sync="Done_currentPage"
+							      @current-change="getAuActivity"
+							      :page-size="pageSize"
+							      layout="total, prev, pager, next, jumper"
+							      :total="Done_totalNum">
 							    </el-pagination>
 
 					    </el-tab-pane>
@@ -134,24 +137,6 @@
 										</tr>
 									</thead>
 									<tbody>
-										<tr>
-											<td><input type="checkbox" name=""></td>
-											<td>7</td>
-											<td>志愿迎新活动   <span class="layui-badge ">New</span></td>
-											<td>2018-08-30</td>
-											<td>武科大黄家湖校区</td>
-											<td>3</td>
-											<td>30</td>
-											<td>计算机院队</td>
-											<td>2018届</td>
-											<td>王五</td>
-											<td>赵六</td>
-											<td>
-												<button class="layui-btn layui-btn-xs" @click="AddActivityPerson">去添加</button>
-												<button class="layui-btn layui-btn-warm layui-btn-xs" >删除</button>
-											</td>
-										</tr>
-										<!-- 未认证的活动循环列表 -->
 										<tr v-for='(item, index) in UnauActivitylist'>
 											<td><input type="checkbox" name=""></td>
 											<td>{{item.id}}</td>
@@ -163,9 +148,9 @@
 											<td>{{item.organization}}</td>
 											<td>{{item.level}}届</td>
 											<td>{{item.creater}}</td>
-											<td>赵六</td>
+											<td>...</td>
 											<td>
-												<button class="layui-btn layui-btn-xs" @click="AddActivityPerson(item.id)">去添加</button>
+												<button class="layui-btn layui-btn-xs" @click="AddActivityPerson(item.id,item.name, item.time)">去添加</button>
 												<button class="layui-btn layui-btn-warm layui-btn-xs" @click="deleteActivity(item.id)">删除</button>
 											</td>
 										</tr>
@@ -181,7 +166,7 @@
 											<td>{{item.organization}}</td>
 											<td>{{item.level}}届</td>
 											<td>{{item.creater}}</td>
-											<td>赵六</td>
+											<td>...</td>
 											<td>
 												<!-- <button class="layui-btn layui-btn-xs" @click="AddActivityPerson">去添加</button>
 												<button class="layui-btn layui-btn-warm layui-btn-xs" @click="">删除</button> -->
@@ -279,12 +264,10 @@
 														        <div class="layui-card-header" @mouseover="showAnimateHeader">
 														        			<i class="fa fa-free-code-camp" style="font-size: 18px;" id="header_icon_color"></i>
 														        			&nbsp;&nbsp;
-														        			<em style="font-size: 18px;" id="header_activity_name">志愿迎新活动</em>
-														        			<div style="display: inline-block;float: right;width: 30%;" >
-														        					<span style="margin-left: 20%;">活动时间:</span>
-																        			<span><em>2018年8月30日</em></span>&nbsp;&nbsp;&nbsp;
-																        			<span>发起组织:</span>
-																        			<span><em>计算机学院青队</em></span>
+														        			<em style="font-size: 18px;" id="header_activity_name">{{this.currentEditActName}}</em>
+														        			<div style="display: inline-block;float: right;width: 13%;" >
+														        					<span style="font-size:13px;">活动时间:</span>
+																        			<span><em>{{this.currentEditActTime}}</em></span>&nbsp;&nbsp;&nbsp;
 														        			</div>
 	       			
 														        </div>
@@ -292,17 +275,17 @@
 														        <!-- 尚未添加人员时的提示框内容  -->
 														        <div class="layui-card-body" v-if="tip_show_none_list">
 														        		<span style="display: block;padding-left: 35%;">本活动尚未添加活动成员呢 : (<br>
-																				        		<span style="padding-left: 10%;">点击上方
-																				        		<button class="layui-btn layui-btn-xs">
-																				        				<i class="fa fa-plus" aria-hidden="true"></i> 
-																										添加人员
-																								</button>			
-																								或
-																								<button class="layui-btn layui-btn-xs" style="background-color:#e74c3c" >
-																								<i class="fa fa-upload"></i> 
-																								导入
-																								</button>
-																								进行批量导入添加吧 ：）</span>
+																        		<span style="padding-left: 10%;">点击上方
+																        		<button class="layui-btn layui-btn-xs">
+																        				<i class="fa fa-plus" aria-hidden="true"></i> 
+																						添加人员
+																				</button>			
+																				或
+																				<button class="layui-btn layui-btn-xs" style="background-color:#e74c3c" >
+																				<i class="fa fa-upload"></i> 
+																				导入
+																				</button>
+																				进行批量导入添加吧 ：）</span>
 																		</span>
 														        </div>
 
@@ -333,15 +316,14 @@
 														          			</table>
 
 																		  <el-pagination
-																	      @size-change="handleSizeChange"
-																	      @current-change="handleCurrentChange"
-																	      :current-page.sync="currentPage1"
-																	      :page-size="100"
-																	      layout="slot, prev, pager, next"
-																	      :total="1000">
+																	      @current-change="getActivityMember(currentEditActId,currentEditPage,addActStu_pageSize)"
+																	      :current-page.sync="currentEditPage"
+																	      :page-size="addActStu_pageSize"
+																	      layout="slot, prev, pager, next,jumper"
+																	      :total="currentEditActNumCount">
 																	      		<slot >
 																	      			<span style="font-weight: 400;">
-																	      			# 本活动共42人参与，现显示1到10条数据</span></slot>
+																	      			# 本活动共 {{currentEditActNumCount}} 人参与，现显示 {{currentEditActStartRow}} 到 {{currentEditActEndRow}} 条数据</span></slot>
 																	    </el-pagination>														          			
 														        </div>
 													     </div>
@@ -417,8 +399,8 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 				show_add_activityperson_page: false,
 				activiTab: 'first',
 				tip_show_person_list: true,
-				tip_show_none_list: false,
-				currentPage1: 1,
+				tip_show_none_list:  false,
+				
 				dialogVisible: false,
 				
 				
@@ -434,17 +416,19 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 
 
 				// 分页参数
-				currentPage: 1,
-				totalPage: 100,
+				Done_currentPage: 1,
+				Done_totalNum: 0,
+
+				pageSize: 12,
 
 				levellist: '',   	// 届别列表
-				currentLevel: '',	// 当前被选中的届别
+				Done_level: '',	// 当前被选中的届别
 
 
 				//已认证的活动信息列表
 				AuActivitylist: [],
 
-				//未认证的活动信息列表
+				//未认证的活动信息表
 				UnauActivitylist: [],
 
 				//认证中的活动信息列表
@@ -464,9 +448,21 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 				getActivityMemberList:[
 
 				],
+				addActStu_pageSize: 10,    // 添加活动成员部分
+				addActStu_pageNum: 1,
+				isNone: false,
+
 
 				// 当前正在被编辑的活动的id
 				currentEditActId:'',
+				currentEditActTime: '',
+				currentEditActName: '',
+
+				currentEditActNumCount: 0,
+				currentEditActStartRow: 0,
+				currentEditActEndRow: 0,
+
+				currentPage1: 1,
 
 				// 模糊查询结果
 				result_search_act_num: '',
@@ -492,6 +488,19 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 				console.log(this.V_If_Show);
 				console.log(this.Edit_act_name);
 				console.log(val);
+			},
+			Done_level(){
+				// 获取已认证活动列表
+				this.getAuActivity();
+			},
+			getActivityMemberList(){
+				if(this.getActivityMemberList.length === 0){
+					this.tip_show_none_list = true;
+					this.tip_show_person_list = false;
+				}else{
+					this.tip_show_none_list = false;
+					this.tip_show_person_list = true;
+				}
 			}
 		},
 		mounted(){		
@@ -505,19 +514,11 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 			// 获取届别类别
 			this.getLevelList();
 
-			// 获取已认证活动列表
-			this.getAuActivity(2016,12, 1);
 			
-			// this.getOrganizationInfo();
-
 			
-			//添加活动
-			// this.addActivity('add_test', '2018-11-22', '武科大', 0);
-			// 
 			// 获取未认证的活动(获取最新一届的未认证的活动)（状态，页数，行数）
-			this.getUnauActivity(2, 1, 12);
-			this.getUnauActivity(1, 1, 12);
-			this.getOrganizationInfo();	
+			this.getUnauActivity(2, 1, 15);
+			this.getUnauActivity(1, 1, 15);
 
 		},
 		methods:{
@@ -706,7 +707,9 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 
 			  				that.$message({
 			  					type: 'error',
-			  					message: '填写活动信息不完整！'
+			  					message: '填写活动信息不完整！',
+			  					customClass: 'user_sytle_for_volunteerlist',
+								duration: 2000
 			  				})
 			  				layer.close(index);	
 			  				return ;
@@ -720,7 +723,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 
 
 			  			// 关闭弹出框
-			  						
+			  			layer.close(index);				
 
 			  			// 将数据传给后台（addNewact）
 			  			that.addActivity(that.addActMsg.name, that.addActMsg.time, that.addActMsg.address, that.addActMsg.category);
@@ -742,17 +745,23 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 			/**
 			 * [AddActivityPerson 当点击  去添加 时，跳转到活动添加人员页面]
 			 * @param {[type]} actId [活动id]
+			 * @param {[type]} actName [活动name]
+			 * @param {[type]} actTime [活动id]
 			 */
-			AddActivityPerson: function(actId){
+			AddActivityPerson: function(actId, actName , actTime){
 
 					// 获取该活动参与人员
 					this.getActivityMember(actId, 1, 12);
 					// 将当前的正在被编辑的活动id保存
 					this.currentEditActId = actId;
+					this.currentEditActName = actName;
+					this.currentEditActTime = actTime;
+
 					//将tab标签切换到 添加活动人员部分
 					this.show_add_activityperson_page = true;
 					this.activiTab = "four";
 
+					this.getActivityMember(actId, this.addActStu_pageSize, this.addActStu_pageNum);
 			},
 
 			/**
@@ -792,13 +801,9 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 	      	},
 
 			showAnimateHeader: function () {
-					// alert("dsfsdfdsf");
 					$("#header_activity_name").addClass("animated lightSpeedIn");
 			},
 
-			handleSizeChange(val) {
-		        	console.log(`每页 ${val} 条`);
-		    },
 
 		    handleCurrentChange(val) {
 		        	console.log(`当前页: ${val}`);
@@ -827,45 +832,46 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 		      // ----------交互JavaScript部分---------------
 		      // 
 		     
-		      /**
-		       * [checkLogin 核对是否登陆]
-		       * @return {[type]} [description]
-		       */
-		      checkLogin: function(){
-		      		this.axios.post('/WustVolunteer/college/checkLogin.do',{
-		      			headers:{
-							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-						}
-		      		}).then((data) => {
-		      			// console.log(data);
-		      			if(data.data.status == 1){
-		      				this.$router.push({path: '/login'});			// 未登陆则调到登陆页面
-		      			}
-		      		}).catch((err) => {
-						console.log(err);
-					})
-		      },
-
-		      /**
-		       * [getOrganizationInfo 获取组织信息接口]
-		       * @enum 		{5}
-		       * @return {[type]} [null]
-		       * @url  url+getOrganizationInfo.do
-		       */
-		      getOrganizationInfo: function(){
-		      		this.axios.post('/WustVolunteer/college/getOrganizationInfo.do',{
-		      			headers:{
-							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-						}
-		      		}).then((data) => {
-		      			console.log(data);
-		      		}).catch((err) => {
-						console.log(err);
-					})
-		      },
-
+		      	/**
+		           * [checkLogin 核对是否登陆]
+		           * @return {[type]} [description]
+		           */
+		        checkLogin: function(){
+		              this.axios.post('/WustVolunteer/college/checkLogin.do',{
+		                          headers:{
+		                            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+		                          }
+		              }).then((data) => {
+		                if(data.data.status == 1){
+		                  this.$router.push({path: '/login'});      // 未登陆则调到登陆页面
+		                }else{
+		                  this.collegeName = data.data.data.organizationName;
+		                  this.collegeUserName = data.data.data.stuName;
+		                }
+		                
+		              }).catch((err) => {
+		            console.log(err);
+		          })
+		        },
 		      
-		      
+		      	/**
+			       * [getLevelList 获届别列表接口]
+			       * @enum [6]
+			       * @return {[type]} [description]
+			       */
+			    getLevelList:function(){
+			      		this.axios.post('/WustVolunteer/college/getLevelList.do',{
+			      			headers:{
+								'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+							}
+			      		}).then((data) => {	      		
+			      			console.log(data);
+			      			this.levellist = data.data.data;
+			      			this.Done_level = data.data.data[data.data.data.length - 1].level;
+			      		}).catch(err => {
+							console.log(err);
+						})
+			    },
 
 		      
 
@@ -891,6 +897,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 						}
 		      		}).then(data => {
+		      			console.log(data);
 		      			if(statu == 1){                  // 未认证状态
 		      				this.UnauActivitylist = data.data.data.list;
 		      			}else if(statu == 2){            // 待处理状态
@@ -911,11 +918,11 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 		       * @param  {[type]} pageNum  [当前页数]
 		       * @return {[type]}          [null]
 		       */
-		      getAuActivity: function(level, pageSize, pageNum){
+		      getAuActivity: function(){
 		      		let data = {
-		      			level: level,
-		      			pageSize: pageSize,
-		      			pageNum: pageNum
+		      			level: this.Done_level,
+		      			pageSize: this.pageSize,
+		      			pageNum: this.Done_currentPage
 		      		};
 
 		      		this.axios.post('/WustVolunteer/college/getAuActivity.do',qs.stringify(data),{
@@ -923,9 +930,9 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 						}
 		      		}).then((data) => {
-
+		      			console.log(data);
 		      			this.AuActivitylist = data.data.data.list;
-
+		      			this.Done_totalNum = data.data.data.total;
 					}).catch((err) => {
 						console.log(err);
 					})
@@ -956,12 +963,12 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 		      		}).then((data) => {
 		      			console.log(data);
 		      			this.getActivityMemberList = data.data.data.list;
+		      			this.currentEditActNumCount = data.data.data.total;
+		      			this.currentEditActStartRow = data.data.data.startRow;
+		      			this.currentEditActEndRow = data.data.data.endRow;
 					}).catch((err) => {
 						console.log(err);
-					})
-		      		
-
-
+					})	      		
 
 		      		return ;
 		      },
@@ -989,31 +996,6 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 		      },
 
 
-		      /**
-		       * [getOperationRecord 获取操作记录]
-		       * @enum {[type]} [14]
-		       * @param  {[type]} pageNum  [当前页数]
-		       * @param  {[type]} pageSize [当前行数]
-		       * @return {[type]}          [description]
-		       */
-		      getOperationRecord: function(pageNum, pageSize){
-		      		let data = {
-		      			pageNum: pageNum,
-		      			pageSize: pageSize
-		      		};
-
-		      		this.axios.post('/WustVolunteer/college/getOperationRecord.do',qs.stringify(data),{
-		      			headers:{
-							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-						}
-		      		}).then((data) => {
-		      			console.log(data);
-		      		}).catch((err) => {
-						console.log(err);
-					})
-
-		      		return ;
-		      },
 
 		     /**
 		      * [getActivityDetail 获取志愿者详情]
@@ -1041,95 +1023,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 					})
 		      },
 
-		      /**
-		       * [addClass 添加志愿班级]
-		       * @enum {[type]}   【16】
-		       * @param {[type]} level     [届别]
-		       * @param {[type]} className [description]
-		       */
-		      addClass: function(level, className){
-		      		let data = {
-		      			level: level,
-		      			className: className
-		      		};
-
-		      		this.axios.post('/WustVolunteer/college/addClass.do',qs.stringify(data),{
-		      			headers:{
-							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-						}
-		      		}).then((data) => {
-		      			console.log(data);
-		      		}).catch((err) => {
-						console.log(err);
-					})
-		      },
-
-		      /**
-		       * [deleteClass 删除志愿班级]
-		       * @enum {[type]}  [17]
-		       * @param  {[type]} className [班级名称]
-		       * @return {[type]}           [description]
-		       */
-		      deleteClass: function(className){
-		      		let data = {
-		      			className: className
-		      		};
-
-		      		this.axios.post('/WustVolunteer/college/deleteClass.do',qs.stringify(data),{
-		      			headers:{
-							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-						}
-		      		}).then((data) => {
-		      			console.log(data);
-		      		}).catch((err) => {
-						console.log(err);
-					})
-		      },
-
-		      /**
-		       * [addAdmin 添加管理员]
-		       * @enum {[type]} 	【18】
-		       * @param {[type]} stuNum [description]
-		       */
-		      addAdmin: function(stuNum){
-		      		let data = {
-		      			stuNum: stuNum
-		      		};
-
-		      		this.axios.post('/WustVolunteer/college/addAdmin.do',qs.stringify(data),{
-		      			headers:{
-							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-						}
-		      		}).then((data) => {
-		      			console.log(data);
-		      		}).catch((err) => {
-						console.log(err);
-					})
-
-		      },
-
-		      /**
-		       * [deleteAdmin 删除管理员]
-		       * ＠enum  [19]
-		       * @param  {[type]} adminId [管理员ID]
-		       * @return {[type]}         [description]
-		       */
-		      deleteAdmin: function(adminId){
-		      		let data = {
-		      			adminId: adminId
-		      		};
-
-		      		this.axios.post('/WustVolunteer/college/deleteAdmin.do',qs.stringify(data),{
-		      			headers:{
-							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-						}
-		      		}).then((data) => {
-		      			console.log(data);
-		      		}).catch((err) => {
-						console.log(err);
-					})
-		      },
-
+		  
 		      
 
 		      
@@ -1163,10 +1057,13 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 			  					message: 'Add New Save Successful!',
 			  					type: "success",
 			  					duration: 2000,
-			  					offset: 50,
-			  					showClose: true
+			  					showClose: true,
+			  					customClass: 'user_sytle_for_volunteerlist',
 			  				})
 
+			  				// 刷新数据
+			  				this.getUnauActivity(2, 1, 15);
+							this.getUnauActivity(1, 1, 15);
 		      			}
 		      			console.log(data);
 		      		}).catch((err) => {
@@ -1182,11 +1079,6 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 		       * @return {[type]}            [description]
 		       */
 		      deleteActivity: function(activityId){
-
-
-		      		// 判断是否有权限
-
-
 
 		      		// 确认删除框
 		      		 this.$confirm('此操作将永久删除该活动, 是否继续?', '提示', {
@@ -1209,12 +1101,14 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 					      			if(data.data.status == 0){
 					      				  this.$message({
 								            type: 'success',
-								            message: '删除成功!'
+								            message: '删除成功!',
+								            duration: 2000,
+								            customClass: 'user_sytle_for_volunteerlist',
 								          });
-								          this.getUnauActivity(1, 1, 12);  // 重新获取数据
+								          this.getUnauActivity(1, 1, 15);  // 重新获取数据
 					      			}else{
-					      				alert("删除失败");
-					      				this.getUnauActivity(1, 1, 12);  // 重新获取数据
+					      				  alert("删除失败");
+					      				  this.getUnauActivity(1, 1, 15);  // 重新获取数据
 					      			}
 					      		}).catch((err) => {
 									alert("删除程序出错！");
@@ -1223,7 +1117,9 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 				        }).catch(() => {
 					          this.$message({
 					            type: 'info',
-					            message: '已取消删除'
+					            message: '已取消删除',
+					            duration: 2000,
+								customClass: 'user_sytle_for_volunteerlist',
 					          });          
 				        });
 
@@ -1286,12 +1182,14 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 		      			console.log(data.data.status);
 		      			if(data.data.status == 0){
 		      				this.$message({					// 成功提示
-			      				message: '&nbsp;&nbsp;添加成功',
-			      				dangerouslyUseHTMLString: true,
+			      				message: '添加成功',
+			      				type: "success",
+			      				// dangerouslyUseHTMLString: true,
 			      				customClass: "user_style_for_ok_add",
 			      				iconClass: 'fa fa-check',
 			      				showClose: true
 		      				});
+		      				this.getActivityMember(activityId, this.addActStu_pageNum, this.addActStu_pageSize);
 		      			}else {
 		      				alert(data.data.msg);
 		      			}

@@ -2,9 +2,9 @@
 
 <template>
 
-	<footer class="main-footer">
+	<footer class="main-footer" >
 	    <!-- To the right -->
-	    <div class="pull-right hidden-xs">
+	    <div class="pull-right hidden-xs" >
 	      武科大志愿活动管理平台
 	    </div>
 	    <!-- Default to the left -->

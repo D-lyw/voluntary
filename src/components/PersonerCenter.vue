@@ -1,14 +1,20 @@
 <template>
-		 	<div class="content-wrapper" style="height:900px;overflow-y:auto;overflow-x:hidden;">
-			<div style=" margin-bottom: 10px;">
+		 	<div class="content-wrapper" style="height:800px;overflow-y:auto;overflow-x:hidden;">
+			<!-- <div style=" margin-bottom: 10px;">
 				<span class="layui-breadcrumb navigoto " >
 					  <i class="fa fa-home" style="opacity:0.8;color:#333;font-size:16px;"></i>&nbsp;
 					  <router-link to="/">&nbsp;&nbsp;主页</router-link>
 					  <router-link to=""><cite>个人中心</cite></router-link>
 				</span>
 			</div>
-			<br>
-			<div class="row animated fadeInRight" >
+			<br> -->
+			<div style="margin-bottom:20px;">
+				<el-breadcrumb separator-class="el-icon-arrow-right">
+					 <el-breadcrumb-item :to="{ path: '/home/introduce' }"><i class="fa fa-home" style="opacity:0.8;color:#333;"></i>&nbsp;主页</el-breadcrumb-item>
+					 <el-breadcrumb-item>个人中心</el-breadcrumb-item>
+				</el-breadcrumb>
+			</div>
+			<div class="row animated fadeInRight" style="height:700px;" >
 						<div class="col-md-1"></div>
 						<div class=" col-md-4 " id="personBox">
 					            <div class="panel-heading" >
@@ -179,11 +185,9 @@ import qs from 'qs'
 								}
 
 								if(data.data.data.roll == 1){
-									this.authority = "管理员"
-								}else if(data.data.data.roll == 2){
-									this.authority = "委员"
-								}else if(data.data.data.roll == 3){
-									this.authority = "志愿者"
+									this.authority = "院队管理员"
+								}else if(data.data.data.roll == 4){
+									this.authority = "工时管理员"
 								}
 								this.last_login = data.data.data.lastLogin;
 
