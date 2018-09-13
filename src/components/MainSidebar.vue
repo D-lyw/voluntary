@@ -20,23 +20,23 @@
 	            </span>
 	          </a>
 	          <ul class="treeview-menu">
-	          	<li ><router-link to="/home/introduce"><span class="glyphicon glyphicon-fire" aria-hidden="true" ></span> 首页</router-link></li>
+	          	<li ><router-link to="/home/introduce"><span class="glyphicon glyphicon-home" aria-hidden="true" ></span> 首页</router-link></li>
 	            <li><router-link to="/home/activitylist"><span class="glyphicon glyphicon-fire" aria-hidden="true" ></span> 志愿活动</router-link></li>
-	            <li><router-link to="/home/personercenter"><span class="glyphicon glyphicon-fire" aria-hidden="true" ></span> 个人中心</router-link></li>
+	            <li><router-link to="/home/personercenter"><span class="glyphicon glyphicon-user" aria-hidden="true" ></span> 个人中心</router-link></li>
 	          </ul>
 
 	        </li>
 
 	        <li class="treeview">
 		          <a href="#">
-			              <i class="fa fa-university" aria-hidden="true"></i>
+			            <span class="glyphicon glyphicon-stats" aria-hidden="true" ></span>
 			            <span>志愿者管理</span>
 			            <span class="pull-right-container">
 			              <i class="fa fa-angle-left pull-right"></i>
 			            </span>
 		          </a>
 		          <ul class="treeview-menu">
-			            <li><router-link to="/home/volunteerlist"><span class="glyphicon glyphicon-fire" aria-hidden="true" ></span> 志愿者信息</router-link></li>
+			            <li><router-link to="/home/volunteerlist"><span class="glyphicon glyphicon-book" aria-hidden="true" ></span> 志愿者信息</router-link></li>
 			            <li><router-link to="/home/volunteeroperation"><i class="fa fa-odnoklassniki" aria-hidden="true"></i> 志愿者操作</router-link></li>
 		          </ul>
 	        </li>

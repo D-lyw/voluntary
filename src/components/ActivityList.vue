@@ -1,7 +1,6 @@
 <template>
 	<div class="content-wrapper" style="height:800px;height:auto; overflow-y:auto;overflow-x:hidden;">
 		
-		
 		<div >
 			<el-breadcrumb separator-class="el-icon-arrow-right">
 				 <el-breadcrumb-item :to="{ path: '/home/introduce' }"><i class="fa fa-home" style="opacity:0.8;color:#333;"></i>&nbsp;主页</el-breadcrumb-item>
@@ -21,7 +20,7 @@
 						<i class="fa fa-plus" aria-hidden="true" ></i> 
 						添加活动
 					</button>
-					<button class="layui-btn layui-btn-sm" @click="dialogVisible = true">
+					<button class="layui-btn layui-btn-sm" @click="dialogVisible = true" :disabled="addPersonBtn">
 						<i class="fa fa-plus" aria-hidden="true"></i> 
 						添加人员
 					</button>					
@@ -96,8 +95,8 @@
 											<td>{{item.creater}}</td>
 											<td>{{item.authenticator}}</td>
 											<td>
-												<button class="layui-btn layui-btn-xs" @click="activityMsg">编辑</button>
-												<button class="layui-btn layui-btn-warm layui-btn-xs" @click="btn_Delete">删除</button>
+												<button class="layui-btn layui-btn-xs" @click="showLocked" v-if="!item.statu"><i class="el-icon-goods" ></i>&nbsp;锁定</button> 
+												<button class="layui-btn layui-btn-warm layui-btn-xs" @click="deleteActivity(item.id)" v-if="item.statu"><i class="el-icon-delete"></i>&nbsp;删除</button>
 											</td>
 										</tr>
 										
@@ -122,7 +121,6 @@
 								<table class="table table-hover table-bordered" style="border-top:1.5px solid #009688;">
 									<thead>
 										<tr>
-											<td><input type="checkbox"></td>
 											<td>ID</td>
 											<td>名称</td>
 											<td>时间</td>
@@ -132,13 +130,12 @@
 											<td>所属组织</td>
 											<td>所属届别</td>
 											<td>发起人</td>
-											<td>认证人</td>
+											<td>类别</td>
 											<td>操作</td>
 										</tr>
 									</thead>
 									<tbody>
 										<tr v-for='(item, index) in UnauActivitylist'>
-											<td><input type="checkbox" name=""></td>
 											<td>{{item.id}}</td>
 											<td>{{item.name}}   </td>
 											<td>{{item.time}}</td>
@@ -148,15 +145,14 @@
 											<td>{{item.organization}}</td>
 											<td>{{item.level}}届</td>
 											<td>{{item.creater}}</td>
-											<td>...</td>
+											<td>{{item.category}}</td>
 											<td>
-												<button class="layui-btn layui-btn-xs" @click="AddActivityPerson(item.id,item.name, item.time)">去添加</button>
+												<button class="layui-btn layui-btn-xs" @click="AddActivityPerson(item.id, item.name, item.time, item.address,item.category)">详情</button>
 												<button class="layui-btn layui-btn-warm layui-btn-xs" @click="deleteActivity(item.id)">删除</button>
 											</td>
 										</tr>
 										<!-- 待处理的活动 -->
 										<tr v-for='(item, index) in WaitingActivitylist'>
-											<td><input type="checkbox" name=""></td>
 											<td>{{item.id}}</td>
 											<td>{{item.name}}   </td>
 											<td>{{item.time}}</td>
@@ -166,12 +162,13 @@
 											<td>{{item.organization}}</td>
 											<td>{{item.level}}届</td>
 											<td>{{item.creater}}</td>
-											<td>...</td>
+											<td>{{item.category}}</td>
 											<td>
 												<!-- <button class="layui-btn layui-btn-xs" @click="AddActivityPerson">去添加</button>
 												<button class="layui-btn layui-btn-warm layui-btn-xs" @click="">删除</button> -->
 
 												<span class="layui-badge">认证中..</span>
+												<el-button type="text" @click="cancelSubmit(item.id)">取消</el-button>
 											</td>
 										</tr>
 									</tbody>
@@ -181,21 +178,22 @@
 
 					    <!-- 待处理 Part -->
 					    <el-tab-pane style="margin-top:10px;margin-left: 10px;" name="third" >
-						    	<el-badge :value="100" :max="10" class="item" slot="label" style="padding-right:7px;margin-right:10px;">
+						    	<el-badge :value="waitToDealCountNum" :max="10" class="item" slot="label" style="padding-right:7px;margin-right:10px;">
 								 	 待处理
 								</el-badge>
 
-								<ul class="layui-timeline" id="Need_do_thinglist">
-									  <li class="layui-timeline-item" v-show="this.show_one_msg"  >
+								<ul class="layui-timeline" id="Need_do_thinglist" style="width:80%;">
+
+									  <li class="layui-timeline-item" v-show="show_one_msg" style="width:100%;" >
 											<i class="fa fa-gg"></i>
-										    <div class="layui-timeline-content layui-text" >
-										     		<h3 class="layui-timeline-title">2018/09/27 11:23:41</h3>
+										    <div class="layui-timeline-content layui-text" style="border-radius: 10px;" >
+										     		<h3 class="layui-timeline-title">莫某某活动(例)</h3>
 										     		
-										     		<fieldset class="layui-elem-field layui-field-title" style="width: 80%;border:1px solid #e8e8e8;" >
-													  <legend style=" display: inline-block;padding: 0px 5px;width: auto;">
+										     		<fieldset class="layui-elem-field layui-field-title" style="width: 95%;border:1px solid #e8e8e8;" >
+													  	<legend style=" display: inline-block;padding: 0px 5px;width: auto;">
 													  		<span ><em>活动认证成功通知</em><i class="layui-icon layui-icon-face-smile"></i></span>
 													  	</legend>
-													  <div class="layui-field-box" >
+													  	<div class="layui-field-box" >
 													   			<div style="margin-top:1px;text-align: center;">你学院申请对 志愿迎新活动 的认证，经总队审核，符合流程要求，已认证成功，祝活动举办圆满成功！</div>
 													   			<div style="margin-top: 0px;padding-bottom: 1px;">    
 													   					<el-tooltip class="item" effect="dark" content="点击按钮，则表示已阅读该消息"  placement="right">
@@ -207,29 +205,19 @@
 
 										    </div>
 									  </li>
-
-									  <li class="layui-timeline-item">
-											<i class="layui-icon layui-icon-fire"></i>   
-										    <div class="layui-timeline-content layui-text">
-											      <h3 class="layui-timeline-title">8月16日</h3>
-											      <p>杜甫的思想核心是儒家的仁政思想，他有<em>“致君尧舜上，再使风俗淳”</em>的宏伟抱负。个人最爱的名篇有：</p>
-											      <ul>
-											        <li>《登高》</li>
-											        <li>《茅屋为秋风所破歌》</li>
-											      </ul>
-										    </div>
-									  </li>
-
-									  <li class="layui-timeline-item">
-										    <i class="fa fa-commenting-o"></i>
-										    <div class="layui-timeline-content layui-text">
-											     	 <h3 class="layui-timeline-title">2018/09/12 15:03:24</h3>
-											     	<fieldset class="layui-elem-field layui-field-title" style="width: 80%;border:1px solid #e8e8e8;" >
+									
+									 <li class="layui-timeline-item" v-show="show_one_msg" v-for="(item,index) in getUnauActivityList" >
+											<i class="fa fa-gg"></i>
+										    <div class="layui-timeline-content layui-text" style="border-radius: 10px;" >
+										     		<h3 class="layui-timeline-title">{{item.name}}</h3>
+										     		
+										     		<fieldset class="layui-elem-field layui-field-title" style="width: 95%;border:1px solid #e8e8e8;">
 													  <legend style=" display: inline-block;padding: 0px 5px;width: auto;">
-													  		<span ><em>活动认证成功通知</em><i class="layui-icon layui-icon-face-smile"></i></span>
+													  		<span ><em>活动认证失败通知 : (</em></span>
 													  	</legend>
 													  <div class="layui-field-box" >
-													   			<div style="margin-top:1px;text-align: center;">你学院申请对 志愿迎新活动 的认证，经总队审核，符合流程要求，已认证成功，祝活动举办圆满成功！</div>
+													   			<div style="margin-top:1px;text-align: center;">
+													   			{{getUnMsgReasonList[index]}}！</div>
 													   			<div style="margin-top: 0px;padding-bottom: 1px;">    
 													   					<el-tooltip class="item" effect="dark" content="点击按钮，则表示已阅读该消息"  placement="right">
 													   						<button class="layui-btn  layui-btn-xs"  style="float: right;"><i class="fa fa-check-square-o" @click="hide_one_msg"></i>已查看</button>
@@ -237,13 +225,7 @@
 																</div>
 													  </div>
 													</fieldset>
-										    </div>
-									  </li>
 
-									  <li class="layui-timeline-item">
-										    <i class="layui-icon layui-timeline-axis"></i>
-										    <div class="layui-timeline-content layui-text">
-										      <div class="layui-timeline-title">过去</div>
 										    </div>
 									  </li>
 
@@ -251,7 +233,6 @@
 
 					    </el-tab-pane>
 						
-
 						
 
 						<el-tab-pane label="添加活动人员" v-if="show_add_activityperson_page" id="Node_add_act_person"  name="four">
@@ -264,14 +245,14 @@
 														        <div class="layui-card-header" @mouseover="showAnimateHeader">
 														        			<i class="fa fa-free-code-camp" style="font-size: 18px;" id="header_icon_color"></i>
 														        			&nbsp;&nbsp;
-														        			<em style="font-size: 18px;" id="header_activity_name">{{this.currentEditActName}}</em>
-														        			<div style="display: inline-block;float: right;width: 13%;" >
-														        					<span style="font-size:13px;">活动时间:</span>
-																        			<span><em>{{this.currentEditActTime}}</em></span>&nbsp;&nbsp;&nbsp;
-														        			</div>
-	       			
+														        			<em style="font-size: 18px;" id="header_activity_name">{{this.currentEditActName}}</em>	
+														        			&nbsp;&nbsp;
+					
+																			 <el-tooltip class="item" effect="dark" content="编辑该活动" placement="right">
+																		     <i class="el-icon-edit" id="EditChoosedAct" @click="activityMsg"></i>
+																		    </el-tooltip>
 														        </div>
-
+																
 														        <!-- 尚未添加人员时的提示框内容  -->
 														        <div class="layui-card-body" v-if="tip_show_none_list">
 														        		<span style="display: block;padding-left: 35%;">本活动尚未添加活动成员呢 : (<br>
@@ -310,7 +291,7 @@
 															          				 				<td>{{item.name}}</td>
 															          				 				<td>{{item.volunteerTime}}</td>
 															          				 				<td>{{item.className}}</td>
-															          				 				<td> <button class="layui-btn layui-btn-danger layui-btn-xs" >删除</button></td>
+															          				 				<td> <button class="layui-btn layui-btn-danger layui-btn-xs" @click="deleteActivityMember(item.activityId, item.stuNum)">删除</button></td>
 														          				 			</tr>
 														          				 	</tbody>
 														          			</table>
@@ -324,7 +305,15 @@
 																	      		<slot >
 																	      			<span style="font-weight: 400;">
 																	      			# 本活动共 {{currentEditActNumCount}} 人参与，现显示 {{currentEditActStartRow}} 到 {{currentEditActEndRow}} 条数据</span></slot>
-																	    </el-pagination>														          			
+																	    </el-pagination>	
+																	    <div style="display: inline-block;float: right;width: 13%;margin-top:-25px;" >
+												        					<span style="font-size:13px;">活动时间:</span>
+														        			<span>
+														        			<em>
+														        			{{currentEditActTime}}
+														        			</em>
+														        			</span>&nbsp;&nbsp;&nbsp;
+												        				</div>													          			
 														        </div>
 													     </div>
 											    </div>
@@ -343,7 +332,7 @@
 
 										 <div v-show="show_search_error_result" >搜索的学号不存在或已加入表中 : (</div>
 										
-										 <div v-show="show_search_success_result">
+										 <div v-show="show_search_success_result" style="margin-top:10px;">
 												<span style="font-size: 15px;"><em>匹配结果如下:</em></span>
 
 												<table class="table table-bordered">
@@ -358,26 +347,18 @@
 																</tr>
 														</tbody>
 												</table>
-
 										</div>
-										
-										
-										<el-input placeholder="请输入工时" v-model="add_person_work_time" style="margin-top: 10px;"></el-input>
+
+										<el-input placeholder="请输入工时" v-model="add_person_work_time" style="margin-top: 5px;"></el-input>
 
 										  <span slot="footer" class="dialog-footer">
 											    <el-button @click="dialogVisible = false">取 消</el-button>
 											    <el-button type="primary" @click="add_person_to_act">确 定</el-button>
 										  </span>
-
 								</el-dialog>
-
-						</el-tab-pane>
-
-						
-
+						</el-tab-pane>	
 					</el-tabs>
 
-				
 			</div>		
 		</div>
 </div>
@@ -414,6 +395,8 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 				// 添加参与活动人员的活动工时
 				add_person_work_time: '',
 
+				// 添加人员按钮
+				addPersonBtn: true,
 
 				// 分页参数
 				Done_currentPage: 1,
@@ -452,7 +435,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 				addActStu_pageNum: 1,
 				isNone: false,
 
-
+				currentEditPage: 1,
 				// 当前正在被编辑的活动的id
 				currentEditActId:'',
 				currentEditActTime: '',
@@ -461,12 +444,18 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 				currentEditActNumCount: 0,
 				currentEditActStartRow: 0,
 				currentEditActEndRow: 0,
+				currentEditActAddress: '',
+				currentEditActCategory: '',
 
 				currentPage1: 1,
 
 				// 模糊查询结果
 				result_search_act_num: '',
 
+				// part3
+				getUnauActivityList: [],
+				getUnMsgReasonList: [],
+				waitToDealCountNum: 0,
       		}
 		},
 		watch: {
@@ -474,6 +463,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 					// console.log(val+oldval);
 					if(val != "four"){
 							this.show_add_activityperson_page = false;
+							this.addPersonBtn = true;
 					}
 			},
 			Edit_act_name (val, oldval){
@@ -504,8 +494,8 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 			}
 		},
 		mounted(){		
-
-
+			this.getUnauActivity(3, 1, 15);
+			this.getUnMsg(9);
 			// ******核对是否登陆********
 			// 登陆时限过后 cookie会失效
 			// 重新调到登陆页面
@@ -543,22 +533,33 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 
 			},
 
-			btn_Delete: function(){											// 删除活动按钮
-				// 判断是否是已经认证的活动
+			laypageINIT: function(){
+				
+			},
+
+			showLocked: function(){
 				this.$notify({      			
 		          type: 'error',
-		          title: '禁止删除',
-		          message: '已认证的活动，该账户无权限删除',
+		          title: '删除失败',
+		          message: '已认证且已冻结的活动，无权删除！',
 		          duration: 2000,
-		          customClass:'user_style_Warm_no_power',
 		          offset:40
 		        });
 			},
-			laypageINIT: function(){
-			
-			},
+
 			activityMsg: function(){
 				var that = this;
+				setTimeout(function(){
+					$("#Edit_input_name").val(that.currentEditActName);
+					$("#Edit_input_address").val(that.currentEditActAddress);
+					$("#Edit_input_time").val(that.currentEditActTime);
+					if(that.currentEditActCategory == "学院活动"){
+						that.currentEditActCategory = 0;
+					}else{
+						that.currentEditActCategory = 1;
+					}
+				},500);
+
 				layer.open({
 				  	type: 1,
 				  	skin: 'layui-layer-molv', //样式类名
@@ -570,62 +571,51 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 			  		content: '<div style="padding:20px;">\
 									<div class="row" >\
 										<div class="col-md-3" style="text-align:right;">活动名称:</div>\
-										<div class="col-md-6"><input class=" form-control input_edit_name" placeholder="请输入活动名称" ></input></div>\
+										<div class="col-md-6"><input class=" form-control input_edit_name" placeholder="请输入活动名称" id="Edit_input_name" ></input></div>\
 										<div class="col-md-3 col-tips" id="node_edit_name_ok" style="display:none;"><i class="glyphicon glyphicon-ok"></i>&nbsp;输入OK</div>\
 									</div>\
 									<div class="row" >\
 										<div class="col-md-3" style="text-align:right;">活动地点:</div>\
-										<div class="col-md-6"><input type="text" class="form-control" placeholder="请输入活动地点"/></div>\
+										<div class="col-md-6"><input type="text" id="Edit_input_address" class="form-control" placeholder="请输入活动地点"/></div>\
 									</div>\
 									<div class="row">						\
 										<div class="col-md-3" style="text-align:right;">活动时间:</div>\
 										<div class="col-md-6" id="">\
 											  	<div class="layui-input-inline">\
-										        <input type="text" class="layui-input" id="test1" placeholder="YYYY-MM-DD" size="small">\
+										        <input type="text" class="layui-input" id="Edit_input_time" placeholder="YYYY-MM-DD" size="small">\
 										      	</div>\
 										</div>\
 									</div>\
 									<div class="row" >\
-										<div class="col-md-3" style="text-align:right;">活动所属组织:</div>\
+										<div class="col-md-3" style="text-align:right;">活动类别:</div>\
 										<div class="col-md-6">\
-												<select class="form-control">\
-													<option>请选择所属组织</option>\
-													<option>计算机科学与技术学院</option>\
-													<option>........</option>\
+												<select class="form-control" placeholder="请选择活动类型" id="Edit_input_category">\
+													<option value="0">学院活动</option>\
+													<option value="1">班级活动</option>\
 												</select>\
 										</div>\
 									</div>\
 									<div class="row" >\
 										<div class="col-md-3" style="text-align:right;">活动总工时:</div>\
-										<div class="col-md-6"><input type="text" class="form-control" placeholder="请输入活动总工时"/></div>\
+										<div class="col-md-6"><input type="text" class="form-control" placeholder="系统自动识别" disabled /></div>\
 									</div>\
 									<div class="row" >\
 										<div class="col-md-3" style="text-align:right;">活动人数:</div>\
-										<div class="col-md-6"><input type="text" class="form-control" placeholder="请输入活动人数"/></div>\
+										<div class="col-md-6"><input type="text" class="form-control" placeholder="系统自动识别" disabled/></div>\
 									</div>\
 									<div class="row" >\
 										<div class="col-md-3" style="text-align:right;">活动发起人:</div>\
-										<div class="col-md-6"><input type="text" class="form-control" placeholder="请输入活动发起人"/></div>\
+										<div class="col-md-6"><input type="text" class="form-control" placeholder="系统自动识别" disabled/></div>\
 									</div>\
 									<div class="row" >\
 										<div class="col-md-3" style="text-align:right;">活动认证人:</div>\
-										<div class="col-md-6"><input type="text" disabled class="form-control" placeholder="请输入活动认证人"/></div>\
+										<div class="col-md-6"><input type="text" disabled class="form-control" placeholder="系统自动识别" disabled/></div>\
 									</div>\
 							</div>',
 			  		area: ['800px','600px'],
 			  		yes: function(index, layero){
 			  			layer.close(index);
-
-			  			setTimeout(function(){					//延迟弹出保存成功提示框
-			  				that.$message({
-			  					message: 'Edit Save Successful!',
-			  					type: "success",
-			  					duration: 2000,
-			  					offset: 50,
-			  					showClose: true
-			  			})
-			  			},  1000);
-			  			
+			  			that.alterActivity(that.currentEditActId ,$("#Edit_input_name").val(), $("#Edit_input_time").val(), $("#Edit_input_address").val(), $("#Edit_input_category").val());
 			  		},
 			  		btn2: function(index, layero){
 			  			// 取消按钮回调
@@ -683,19 +673,19 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 									</div>\
 									<div class="row" >\
 										<div class="col-md-3" style="text-align:right;">活动总工时:</div>\
-										<div class="col-md-6"><input type="text" class="form-control" placeholder="请输入活动总工时"/></div>\
+										<div class="col-md-6"><input type="text" class="form-control" placeholder="新建活动时,暂不需输入" disabled/></div>\
 									</div>\
 									<div class="row" >\
 										<div class="col-md-3" style="text-align:right;">活动人数:</div>\
-										<div class="col-md-6"><input type="text" class="form-control" placeholder="请输入活动人数"/></div>\
+										<div class="col-md-6"><input type="text" class="form-control" placeholder="新建活动时,暂不需输入" disabled/></div>\
 									</div>\
 									<div class="row" >\
 										<div class="col-md-3" style="text-align:right;">活动发起人:</div>\
-										<div class="col-md-6"><input type="text" class="form-control" placeholder="请输入活动发起人"/></div>\
+										<div class="col-md-6"><input type="text" class="form-control" placeholder="系统自动识别" disabled/></div>\
 									</div>\
 									<div class="row" >\
 										<div class="col-md-3" style="text-align:right;">活动认证人:</div>\
-										<div class="col-md-6"><input type="text" disabled class="form-control" placeholder="请输入活动认证人"/></div>\
+										<div class="col-md-6"><input type="text" disabled class="form-control" placeholder="系统自动识别"/></div>\
 									</div>\
 							</div>',
 			  		area: ['800px','600px'],
@@ -738,7 +728,6 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 				window.layui.laydate.render({
 			   	 		elem: '#createNew_date'
 			  	});
-
 			},
 
 			
@@ -748,21 +737,24 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 			 * @param {[type]} actName [活动name]
 			 * @param {[type]} actTime [活动id]
 			 */
-			AddActivityPerson: function(actId, actName , actTime){
-
-					// 获取该活动参与人员
-					this.getActivityMember(actId, 1, 12);
+			AddActivityPerson: function(actId, actName , actTime, actAddress, actCategory){
+					
 					// 将当前的正在被编辑的活动id保存
 					this.currentEditActId = actId;
 					this.currentEditActName = actName;
 					this.currentEditActTime = actTime;
-
-					//将tab标签切换到 添加活动人员部分
+					this.currentEditActAddress = actAddress;
+					this.currentEditActCategory = actCategory;
+					console.log(this.currentEditActName, this.currentEditActAddress, this.currentEditActTime ,this.currentEditActCategory)
+					// 将tab标签切换到 添加活动人员部分
 					this.show_add_activityperson_page = true;
 					this.activiTab = "four";
-
-					this.getActivityMember(actId, this.addActStu_pageSize, this.addActStu_pageNum);
+					// 使得添加人员按钮能够点击
+					this.addPersonBtn = false; 
+					// 获取该活动参与人员
+					this.getActivityMember(actId, this.addActStu_pageNum, this.addActStu_pageSize);
 			},
+
 
 			/**
 		       * [btn_search_add_act_number 在添加活动人员时，判断该学号是否存在，以及是否已经在该活动人员表中]
@@ -781,6 +773,8 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 	      					this.show_search_error_result = false;
 	      			}
 	      	},
+
+
 	      	/**
 	      	 * [add_person_to_act 将添加的数据人员添加到该活动]
 	      	 */
@@ -896,12 +890,25 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 		      			headers:{
 							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 						}
-		      		}).then(data => {
+		      		}).then(data => {	
 		      			console.log(data);
+		      			for(var i = 0; i < data.data.data.list.length; i++){
+		      				if(data.data.data.list[i].category == 1){
+		      					data.data.data.list[i].category = "班级活动";
+		      				}else if(data.data.data.list[i].category == 0){
+		      					data.data.data.list[i].category = "学院活动";
+		      				}
+		      			}
 		      			if(statu == 1){                  // 未认证状态
 		      				this.UnauActivitylist = data.data.data.list;
 		      			}else if(statu == 2){            // 待处理状态
 		      				this.WaitingActivitylist = data.data.data.list;
+		      			}else if(statu == 3){
+		      				this.getUnauActivityList = data.data.data.list;
+		      				this.waitToDealCountNum = data.data.data.list.length;
+		      				for(var i = 0; i < data.data.data.list.length; i++){
+		      					this.getUnMsg(data.data.data.list[i].id);
+		      				}
 		      			}
 		      		}).catch((err) => {
 						console.log(err);
@@ -972,62 +979,6 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 
 		      		return ;
 		      },
-
-		      /**
-		       * [getClassInfo 获取学院班级信息列表]
-		       * @enum {[type]}		[13]
-		       * @param  {[type]} level [届别]
-		       * @return {[type]}       [description]
-		       */
-		      getClassInfo: function(level){
-		      		let data = {
-		      	   		level: level
-		      	   };
-
-		      	   this.axios.post('/WustVolunteer/college/getClassInfo.do',qs.stringify(data),{
-		      			headers:{
-							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-						}
-		      		}).then((data) => {
-		      			console.log(data);
-		      		}).catch((err) => {
-						console.log(err);
-					})
-		      },
-
-
-
-		     /**
-		      * [getActivityDetail 获取志愿者详情]
-		      * @enum {[type]}   [15]
-		      * @param  {[type]} stuNum   [学号]
-		      * @param  {[type]} pageSize [description]
-		      * @param  {[type]} pageNum  [description]
-		      * @return {[type]}          [description]
-		      */
-		      getActivityDetail: function(stuNum, pageSize, pageNum){
-		      		let data = {
-		      			stuNum: stuNum,
-		      			pageNum: pageNum,
-		      			pageSize: pageSize
-		      		};
-
-		      		this.axios.post('/WustVolunteer/college/getActivityDetail.do',qs.stringify(data),{
-		      			headers:{
-							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-						}
-		      		}).then((data) => {
-		      			console.log(data);
-		      		}).catch((err) => {
-						console.log(err);
-					})
-		      },
-
-		  
-		      
-
-		      
-
 		      
 
 		      /**
@@ -1151,9 +1102,25 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 						}
 		      		}).then((data) => {
-		      			console.log(data);
+		      			if(data.data.status == 0){
+		      				this.$message({
+					            type: 'success',
+					            message: '修改活动信息成功！',
+					            duration: 2000,
+								customClass: 'user_sytle_for_volunteerlist',
+					        }); 
+					        this.getUnauActivity(1, 1, 15);
+		      			}else{
+		      				this.$message({
+					            type: 'error',
+					            message: '修改活动信息失败！',
+					            duration: 2000,
+								customClass: 'user_sytle_for_volunteerlist',
+					        }); 
+		      			}
 		      		}).catch((err) => {
 						console.log(err);
+						alert("修改失败！")
 					})
 
 		      		return ;
@@ -1210,23 +1177,54 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 		       * @return {[type]}            [description]
 		       */
 		      deleteActivityMember: function(activityId, stuNum){
-		      		let data = {
-		      			activityId: activityId,
-		      			stuNum: stuNum
-		      		};
+		      		 this.$confirm('此操作将永久删除该活动, 是否继续?', '提示', {
+					          confirmButtonText: '确定',
+					          cancelButtonText: '取消',
+					          type: 'warning'
+				        }).then(() => {
 
-		      		this.axios.post('/WustVolunteer/college/deleteActivityMember.do',qs.stringify(data),{
-		      			headers:{
-							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-						}
-		      		}).then((data) => {
-		      			console.log(data);
-		      			if(data.data.status == 0){
-		      				
-		      			}
-		      		}).catch((err) => {
-						console.log(err);
-					})
+				      		let data = {
+				      			activityId: activityId,
+				      			stuNum: stuNum
+				      		};
+
+				      		this.axios.post('/WustVolunteer/college/deleteActivityMember.do',qs.stringify(data),{
+				      			headers:{
+									'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+								}
+				      		}).then((data) => {
+				      			console.log(data);
+
+				      			if(data.data.status == 0){
+				      				this.$message({
+					  					message: '删除活动成员成功！',
+					  					type: "success",
+					  					duration: 2000,
+					  					showClose: true,
+					  					customClass: 'user_sytle_for_volunteerlist',
+					  				})
+				      				this.getActivityMember(activityId, 1, 10);
+				      			}else{
+				      				this.$message({
+					  					message: '删除失败',
+					  					type: "error",
+					  					duration: 2000,
+					  					showClose: true,
+					  					customClass: 'user_sytle_for_volunteerlist',
+					  				})
+				      			}
+				      		}).catch((err) => {
+								console.log(err);
+								alert("删除失败!");
+							})
+					  }).catch(() => {
+					          this.$message({
+					            type: 'info',
+					            message: '已取消删除',
+					            duration: 2000,
+								customClass: 'user_sytle_for_volunteerlist',
+					          });          
+				        });
 		      },
 
 		      /**
@@ -1236,19 +1234,49 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 		       * @return {[type]}            [description]
 		       */
 		      cancelSubmit: function(activityId){
-		      		let data = {
-		      			activityId: activityId
-		      		};
+		      		// 确认删除框
+		      		this.$confirm('此操作将取消该认证活动, 是否继续?', '提示', {
+					          confirmButtonText: '确定',
+					          cancelButtonText: '取消',
+					          type: 'warning'
+				        }).then(() => {
 
-		      		this.axios.post('/WustVolunteer/college/cancelSubmit.do',qs.stringify(data),{
-		      			headers:{
-							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-						}
-		      		}).then((data) => {
-		      			console.log(data);
-		      		}).catch((err) => {
-						console.log(err);
-					})
+				        		let data = {
+					      			activityId: activityId
+					      		};
+
+					      		this.axios.post('/WustVolunteer/college/cancelSubmit.do',qs.stringify(data),{
+					      			headers:{
+										'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+									}
+					      		}).then((data) => {
+					      			console.log(data);
+					      			// 删除成功提示
+					      			if(data.data.status == 0){
+					      				  this.$message({
+								            type: 'success',
+								            message: '删除成功!',
+								            duration: 2000,
+								            customClass: 'user_sytle_for_volunteerlist',
+								          });
+								          this.getUnauActivity(2, 1, 15);  // 重新获取数据
+								          this.getUnauActivity(1, 1, 15);
+					      			}else{
+					      				  alert("删除失败");
+					      				  this.getUnauActivity(2, 1, 15);  // 重新获取数据
+					      			}
+					      		}).catch((err) => {
+									console.log(err);
+								})
+				        		
+				        }).catch(() => {
+					          this.$message({
+					            type: 'info',
+					            message: '已取消删除',
+					            duration: 2000,
+								customClass: 'user_sytle_for_volunteerlist',
+					          });          
+				        });
 
 		      },
 
@@ -1298,16 +1326,11 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 						}
 		      		}).then((data) => {
 		      			console.log(data);
+		      			this.getUnMsgReasonList.push(data.data.data[0].msg);
 		      		}).catch((err) => {
 						console.log(err);
 					})
 		      },
-
-		     
-
-
-
-
 		},
 		
 	}

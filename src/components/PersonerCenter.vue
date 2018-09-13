@@ -1,22 +1,14 @@
 <template>
 		 	<div class="content-wrapper" style="height:800px;overflow-y:auto;overflow-x:hidden;">
-			<!-- <div style=" margin-bottom: 10px;">
-				<span class="layui-breadcrumb navigoto " >
-					  <i class="fa fa-home" style="opacity:0.8;color:#333;font-size:16px;"></i>&nbsp;
-					  <router-link to="/">&nbsp;&nbsp;主页</router-link>
-					  <router-link to=""><cite>个人中心</cite></router-link>
-				</span>
-			</div>
-			<br> -->
 			<div style="margin-bottom:20px;">
 				<el-breadcrumb separator-class="el-icon-arrow-right">
 					 <el-breadcrumb-item :to="{ path: '/home/introduce' }"><i class="fa fa-home" style="opacity:0.8;color:#333;"></i>&nbsp;主页</el-breadcrumb-item>
 					 <el-breadcrumb-item>个人中心</el-breadcrumb-item>
 				</el-breadcrumb>
 			</div>
-			<div class="row animated fadeInRight" style="height:700px;" >
+			<div class="row " >
 						<div class="col-md-1"></div>
-						<div class=" col-md-4 " id="personBox">
+						<div class=" col-md-4 " id="personBox" style="height:700px;">
 					            <div class="panel-heading" >
 					               <em> # 个人基本信息 #</em>           
 					            </div>
@@ -37,6 +29,7 @@
 
 					                        <p class="text-muted text-center">{{connectWay}}</p>
 					                        <br>
+					                        <div style="">
 					                        <div class="row form-group ">
 					                        		<div class="col-md-6">
 					                        				<label for="username" class="control-label">学号:</label>
@@ -48,20 +41,20 @@
 					                        		</div>
 					                        </div>
 					                        <div class="form-group has-success">
-					                            <label for="username" class="control-label">姓名:</label>
+					                            <label>姓名:</label>
 					                            <input type="text" class="form-control" v-model="userName" style="background:transparent;" readonly>
 					                        </div>
 					                        <div class="form-group has-success">
-					                            <label for="email" class="control-label">联系方式:</label>
-					                            <input type="text" class="form-control" name="row[email]" value="liuyuanwang4321@gmail.com" v-model="connectWay" style="background:transparent;"  readonly>
+					                            <label >联系方式:</label>
+					                            <input type="text" class="form-control" v-model="connectWay" style="background:transparent;"  readonly>
 					                        </div>
 					                        <div class="form-group has-success">
-					                            <label for="nickname" class="control-label">所属学院:</label>
-					                            <input type="text" class="form-control" value="计算机科学与技术学院"  style="background:transparent;"  readonly v-model='userCollegeName'>
+					                            <label >所属学院:</label>
+					                            <input type="text" class="form-control" style="background:transparent;"  readonly v-model='userCollegeName'>
 					                        </div>
 					                        <div class="form-group has-success">
-					                            <label for="password" class="control-label">所属班级:</label>
-					                            <input type="text" class="form-control" value="计科1801班" style="background:transparent;"  readonly v-model="userClassName">
+					                            <label >所属班级:</label>
+					                            <input type="text" class="form-control" style="background:transparent;"  readonly v-model="userClassName">
 					                        </div>
 					                        <div class="form-group" id="form_group_btn">
 						                            <button  class="btn btn-success" @click="dialogVisible = true">修改密码</button>
@@ -73,7 +66,7 @@
 														    <el-button slot="reference" size="small" >更多</el-button>
 						                        	</el-popover>
 					                        </div>
-
+											</div>
 											
 					                    </div>
 					                </div>

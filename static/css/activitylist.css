@@ -5,11 +5,7 @@
 	table{
 		text-align: center;
 	}
-	.user_style_Warm_no_power{
-		color:red;
-		width: 200px;
-		background-color: #e74c3c;
-	}
+
 	button:focus{
 		outline: none;	
 	}
@@ -69,4 +65,8 @@
 
 	.user_sytle_for_volunteerlist{
 	margin-top:30px;
+}
+
+#EditChoosedAct:hover{
+	cursor: pointer;
 }
