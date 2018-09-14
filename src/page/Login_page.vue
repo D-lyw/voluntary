@@ -94,7 +94,7 @@
 			
 		</div>
 		<div  id="login_footer">
-			<span><a href="http://www.wust.edu.cn" target="_blank">武汉科技大学</a></span> &nbsp;|&nbsp; <span><a href="http://www.zgzyz.org.cn/" target="_blank">中国青年志愿者</a></span> &nbsp;|&nbsp; <span><a href="http://www.cn.undp.org/content/china/zh/home/about-us/united-nations-volunteers.html" target="_blank">联合国志愿人员组织</a></span> &nbsp;|&nbsp;&nbsp;&nbsp; <span>©2017 - 2018 305工作室. All Rights Reserved.</span>
+			<span><a href="http://www.wust.edu.cn" target="_blank">武汉科技大学</a></span> &nbsp;|&nbsp; <span><a href="http://www.zgzyz.org.cn/" target="_blank">中国青年志愿者</a></span> &nbsp;|&nbsp; <span><a href="http://www.cn.undp.org/content/china/zh/home/about-us/united-nations-volunteers.html" target="_blank">联合国志愿人员组织</a></span> &nbsp;|&nbsp;&nbsp;&nbsp; <span>©2017 - 2020 305工作室. All Rights Reserved.</span>
 		</div>
 	</div>
 </template>
@@ -225,7 +225,7 @@ import qs from 'qs';
 		/*background: #dd4b39;*/
 		/*color: white;*/
 		box-sizing: border-box;
-		padding: 10px 100px;
+		padding: 10px 125px;
 		line-height: 35px;
 		font-size: 20px;
 	}

@@ -29,7 +29,7 @@
 
 	        <li class="treeview">
 		          <a href="#">
-			            <span class="glyphicon glyphicon-stats" aria-hidden="true" ></span>
+			            <i class="glyphicon glyphicon-stats" aria-hidden="true" ></i>
 			            <span>志愿者管理</span>
 			            <span class="pull-right-container">
 			              <i class="fa fa-angle-left pull-right"></i>
