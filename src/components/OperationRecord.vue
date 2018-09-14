@@ -109,8 +109,8 @@
 	
 	import xlsx from 'xlsx';				//引入xlsx插件
 
-	import TableExport from 'tableexport';	// tableexport插件
-	import FileSaver from 'file-saverjs';
+	// import TableExport from 'tableexport';	// tableexport插件
+	// import FileSaver from 'file-saverjs';
 
 	// const xlsx = require('xlsx');    	//引入xlsx插件
 
