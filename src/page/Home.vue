@@ -25,13 +25,3 @@ export default {
 }
 
 </script>
-
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style>
-    @import '../../static/bootstrap-3.3.7/css/bootstrap.min.css';
-    @import '../../static/font-awesome-4.7.0/css/font-awesome.min.css';
-    @import '../../static/layui/css/layui.css';
-    @import '../../static/css/all_skins.css';
-    @import '../../static/css/AdminLTE.css';
-</style>
