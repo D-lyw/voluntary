@@ -35,8 +35,8 @@
 							    	<el-input v-model="stuMsg.name"></el-input>
 							  </el-form-item>
 							  <el-form-item label="年级">
-							    	<el-select v-model="stuMsg.level" placeholder="请输入所属届别" style="width:100%;">
-							    		  <el-option v-for="item in levelList" :key = "item.id" :value="item.level" :label='item.level'></el-option>
+							    	<el-select v-model="stuMsg.level" placeholder="请输入所属届别" style="width:100%;" @change="getClassInfo(parseInt(stuMsg.level))">
+							    		  <el-option v-for="item in levelList" :key="item.level" :value="item.level" :label="item.level"></el-option>
 							    	</el-select>
 							  </el-form-item>
 							  <el-form-item label="职务" >
@@ -184,7 +184,7 @@ import xlsx from 'xlsx';
   			},
 
   			mounted(){
-  				 this.getLevelList();
+  				//  this.getLevelList();
   			},
 
   			methods: {
@@ -208,7 +208,6 @@ import xlsx from 'xlsx';
 					            cancelButtonText: '取消',
 					            type: 'warning'
 				        	}).then(() => {
-				        		console.log(this.stuMsg);
 				        		this.alterVolunteer(this.stuMsg.studentNum, this.stuMsg.name, this.stuMsg.className, this.stuMsg.phone, this.stuMsg.roll);
 				        	}).catch(() => {
 					            this.$message({
@@ -279,7 +278,6 @@ import xlsx from 'xlsx';
 			      				 this.stuMsg.roll = data.data.data[0].roll;
 			      				 this.stuMsg.phone = data.data.data[0].phone;
 			      				 this.stuMsg.volunteerTime = data.data.data[0].volunteerTime;
-
 			      				this.$message({
 							             type: 'success',
 							             message: '成功查找志愿者信息',
@@ -289,8 +287,8 @@ import xlsx from 'xlsx';
 								});
 			      				// 获取班级列表
 			      				this.getClassInfo(this.stuMsg.level);
-			      				// 获取届别列表
-			      				// this.getLevelList();
+			      				// // 获取届别列表
+			      				this.getLevelList();
 			      			}else{
 			      				this.$message({
 							             type: 'info',

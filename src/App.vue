@@ -12,7 +12,7 @@
 
 
 <style>
-@import '../static/layui/css/layui.css'
+@import '../static/layui/css/layui.css';
 
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;

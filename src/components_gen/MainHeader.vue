@@ -40,9 +40,7 @@
 
 
                 </li>
-
                 <!-- Control Sidebar Toggle Button -->
-
             </ul>
 
         </div>
@@ -61,17 +59,16 @@
     },
     methods:{
         userlogout: function(){
-            this.axios.post('/WustVolunteer/college/logout.do',{
+            this.axios.post('/WustVolunteer/general/logout.do',{
                  headers:{
                     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
                 }
             }).then((data) => {
                   if(data.data.status == 0){
-                    this.$router.push({path: '/login'})
-                  }else{
-                    alert(data.data.msg);
+                    this.$router.push({path: '/'})
                   }
-            })
+              }
+            )
         },
 
          /**
@@ -79,21 +76,21 @@
            * @return {[type]} [description]
            */
         checkLogin: function(){
-              this.axios.post('/WustVolunteer/college/checkLogin.do',{
+              this.axios.post('/WustVolunteer/general/checkLogin.do',{
                           headers:{
                             'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
                           }
               }).then((data) => {
-                  if(data.data.status == 1){
-                    this.$router.push({path: '/login'});      // 未登陆则调到登陆页面
-                  }else{
-                    this.collegeName = data.data.data.organizationName;
-                    this.collegeUserName = data.data.data.stuName;
-                  }
+                if(data.data.status == 1){
+                  this.$router.push({path: '/'});      // 未登陆则调到登陆页面
+                }else{
+                  this.collegeName = data.data.data.organizationName;
+                  this.collegeUserName = data.data.data.stuName;
+                }
               }).catch((err) => {
                   console.log(err);
               })
-         },
+        },
     },
     mounted(){
         this.checkLogin();

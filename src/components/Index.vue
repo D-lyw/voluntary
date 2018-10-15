@@ -108,7 +108,7 @@
 						}
 		      		}).then((data) => {
 		      			if(data.data.status == 1){
-		      				this.$router.push({path: '/'});			// 未登陆则调到登陆页面
+		      				this.$router.push({path: '/login'});			// 未登陆则调到登陆页面
 								}
 								this.userCollege = data.data.data.organizationName;
 		      		}).catch((err) => {

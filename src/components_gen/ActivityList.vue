@@ -1,9 +1,9 @@
 <template>
-	<div class="content-wrapper" style="height:800px;height:auto; overflow-y:auto;overflow-x:hidden;">
+	<div class="content-wrapper" style="overflow: scoll;">
 		
 		<div >
 			<el-breadcrumb separator-class="el-icon-arrow-right">
-				 <el-breadcrumb-item :to="{ path: '/home/introduce' }"><i class="fa fa-home" style="opacity:0.8;color:#333;"></i>&nbsp;主页</el-breadcrumb-item>
+				 <el-breadcrumb-item :to="{ path: '/general/index' }"><i class="fa fa-home" style="opacity:0.8;color:#333;"></i>&nbsp;主页</el-breadcrumb-item>
 				 <el-breadcrumb-item>志愿活动</el-breadcrumb-item>
 				 <el-breadcrumb-item>活动列表</el-breadcrumb-item>
 			</el-breadcrumb>
@@ -31,13 +31,8 @@
 						导入
 						</button>
 					</el-tooltip>
-
-					<!-- <button class="layui-btn layui-btn-sm" style="float:right;">
-						<span class="glyphicon glyphicon-export" aria-hidden="true">导出</span>
-					</button> -->
-
 					<el-input
-					    placeholder="请输入学号或姓名"
+					    placeholder="请输入关键字"
 					    v-model="search_content_header" style="display:inline-block;width:200px;float:right;margin-right:10px;" size="small">
 					    <i slot="suffix" class="el-input__icon el-icon-search"  id="head_activity_search" @click="clickSearch"></i>
 					</el-input>
@@ -50,11 +45,9 @@
 
 						<!-- 已认证活动 Part -->
 					    <el-tab-pane label="已认证活动" name="first">
-
 					    		<table class="table table-hover table-bordered" style="border-top:1.5px solid red;">
 									<thead>
 										<tr>
-											<td><input type="checkbox"></td>
 											<td>ID</td>
 											<td>名称</td>
 											<td>时间</td>
@@ -69,8 +62,7 @@
 												  </span>
 												  <el-dropdown-menu slot="dropdown">
 													    <el-dropdown-item 
-													    	v-for = '(item, index) in levellist' 
-													    	:key = 'index'>
+													    	v-for = '(item, index) in levellist' :key = 'index'>
 													    	<span style="padding:10px 20px;" 
 													    	@click="Done_level=item.level">{{item.level}}</span>
 													    </el-dropdown-item>					    
@@ -83,8 +75,8 @@
 										</tr>
 									</thead>
 									<tbody>
-										<tr v-for="item in AuActivitylist" :key="item.id">
-											<td><input type="checkbox" name=""></td>
+										<tr v-for="(item, index) in AuActivitylist" :key="index">
+											<!-- <td><input type="checkbox" name=""></td> -->
 											<td>{{item.id}}</td>
 											<td>{{item.name}}</td>
 											<td>{{item.time}}</td>
@@ -96,12 +88,8 @@
 											<td>{{item.creater}}</td>
 											<td>{{item.authenticator}}</td>
 											<td>
-												<!-- <button class="layui-btn layui-btn-xs" @click="showLocked" v-if="!item.statu"><i class="el-icon-goods" ></i>&nbsp;锁定</button> 
-												<button class="layui-btn layui-btn-warm layui-btn-xs" @click="deleteActivity(item.id)" v-if="item.statu"><i class="el-icon-delete"></i>&nbsp;删除</button> -->
-												<!-- 
-												 -->
-												<button class="layui-btn layui-btn-xs" @click="showLocked">&nbsp;<i class="el-icon-goods" ></i>&nbsp;</button><button class="layui-btn layui-btn-xs" @click="getAuActivityMember(item.id)">详情</button>
-												<!-- <button class="layui-btn layui-btn-warm layui-btn-xs" @click="showLocked">&nbsp;<i class="el-icon-delete"></i>&nbsp;</button> -->
+												<button class="layui-btn layui-btn-xs" @click="showLocked" v-if="!item.statu">&nbsp;<i class="el-icon-goods" ></i>&nbsp;</button><button class="layui-btn layui-btn-xs" @click="getAuActivityMember(item.id)">详情</button>
+												<button class="layui-btn layui-btn-warm layui-btn-xs" @click="deleteAuActivity(item.id)" v-if="item.statu">&nbsp;<i class="el-icon-delete"></i>&nbsp;</button>
 											</td>
 										</tr>
 										
@@ -135,7 +123,7 @@
 													</tr>
 												</thead>
 												<tbody>
-													<tr v-for="item in actJoinStuList" :key="item.stuNum" >
+													<tr v-for="(item,index) in actJoinStuList" :key="index" >
 														<td>{{item.activityId}}</td>
 														<td>{{item.name}}</td>
 														<td>{{item.stuNum}}</td>
@@ -155,8 +143,8 @@
 					    </el-tab-pane>
 
 						<!-- 未认证活动 Part  -->
-					    <el-tab-pane  name="second">	
-					    		<el-badge :is-dot="showDot" class="item" slot="label" style="height:30px;line-height:30px;">未认证活动</el-badge>
+					    <el-tab-pane  name="second" style="height: 550px; overflow-y:scroll;"  class="demo">	
+					    		<el-badge :is-dot="show_dot" class="item" slot="label" style="height:30px;line-height:30px;">未认证活动</el-badge>
 								
 								<table class="table table-hover table-bordered" style="border-top:1.5px solid #009688;">
 									<thead>
@@ -232,13 +220,13 @@
 
 					    <!-- 待处理 Part -->
 					    <el-tab-pane style="margin-top:10px;margin-left: 10px;" name="third" >
-						    	<el-badge :value="waitToDealCountNum" :max="10" :hidden="show_when_no_msg" class="item" slot="label" style="padding-right:7px;margin-right:10px;">
+						    	<el-badge :value="waitToDealCountNum" :max="9" :hidden="show_Count_num" class="item" slot="label" style="padding-right:7px;margin-right:10px;">
 								 	 待处理
 								</el-badge>
 
 								<ul class="layui-timeline" id="Need_do_thinglist" style="width:80%;">
-
-									  <li class="layui-timeline-item" style="width:100%;" v-show="show_when_no_msg" >
+									
+									 <li class="layui-timeline-item" style="width:100%;" v-show="show_Count_num" >
 											<i class="fa fa-gg"></i>
 										    <div class="layui-timeline-content layui-text" style="border-radius: 10px;" >
 										     		
@@ -253,7 +241,7 @@
 
 										    </div>
 									  </li>
-									
+
 									 <li class="layui-timeline-item" v-show="show_one_msg" v-for="(item,index) in getUnauActivityList" :key="index">
 											<i class="fa fa-gg"></i>
 										    <div class="layui-timeline-content layui-text" style="border-radius: 10px;" >
@@ -268,7 +256,7 @@
 													   			{{item.msg}}！</div>
 													   			<div style="margin-top: 0px;padding-bottom: 1px;">    
 													   					<el-tooltip class="item" effect="dark" content="点击按钮，则表示已阅读该消息"  placement="right">
-													   						<button class="layui-btn  layui-btn-xs"  @click="hide_one_msg"  style="float: right;"><i class="fa fa-check-square-o"></i>已查看</button>
+													   						<button class="layui-btn  layui-btn-xs" @click="hide_one_msg" style="float: right;"><i class="fa fa-check-square-o" ></i>已查看</button>
 													   					</el-tooltip>
 																</div>
 													  </div>
@@ -276,11 +264,10 @@
 
 										    </div>
 									  </li>
-
 									</ul>  
-
 					    </el-tab-pane>
-						
+									
+
 						<el-tab-pane label="添加活动人员" v-if="show_add_activityperson_page" id="Node_add_act_person"  name="four">
 								<div style="padding: 20px; background-color: #F2F2F2;">
 									  	<div class="layui-row layui-col-space15">
@@ -298,9 +285,8 @@
 																		     <i class="el-icon-edit" id="EditChoosedAct" @click="activityMsg"></i>
 																		    </el-tooltip>
 																			<el-button type="success" plain style="display:inline-block;float:right;margin-top:5px;margin-right:-5px;" size="small" @click="submitAuth(currentEditActId)">认证活动</el-button>
-
 														        </div>
-																
+																 
 														        <!-- 尚未添加人员时的提示框内容  -->
 														        <div class="layui-card-body" v-if="tip_show_none_list">
 														        		<span style="display: block;padding-left: 35%;">本活动尚未添加活动成员呢 : (<br>
@@ -375,19 +361,29 @@
 										  width="50%"
 										  @close="handleClose">
    										 <el-input placeholder="请根据学号进行添加" v-model="add_person_search_id">
-										   		 <template slot="append" ><i class="fa fa-search" id="add_search_id"  @click="searchStudent(add_person_search_id)" style="padding: 10px;" ></i></template>
+										   		 <template slot="append" ><i class="fa fa-search" id="add_search_id"  @click="btn_search_add_act_number" style="padding: 10px;" ></i></template>
 										  </el-input>
 
 										 <div v-show="show_search_error_result" >搜索的学号不存在或已加入表中 : (</div>
 										
 										 <div v-show="show_search_success_result" style="margin-top:10px;">
-												<span style="font-size: 15px;"><em>匹配结果如下:</em></span>
+												<span style="font-size: 15px;">匹配结果如下:</span>
 
 												<table class="table table-bordered">
 														<tbody>
-																<tr v-for="item in result_search_act_num" :key="item.studentNum">
+																<tr>
+																	<td>学号</td>
+																	<td>姓名</td>
+																	<td>工时</td>
+																	<td>班级</td>
+																	<td>学院</td>
+																	<td>年级</td>
+																	<td>状态</td>
+																</tr>
+																<tr v-for="(item,index) in result_search_act_num" :key="index">
 																	<td>{{item.studentNum}}</td>
 																	<td>{{item.name}}</td>
+																	<td>{{item.volunteerTime}}</td>
 																	<td>{{item.className}}</td>
 																	<td>{{item.collegeName}}</td>
 																	<td>{{item.level}}</td>
@@ -438,6 +434,8 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 
 				show_one_msg: true,
 
+				show_when_no_msg: false,
+
 				// 添加参与活动人员的查找学号
 				add_person_search_id: '',
 				// 添加参与活动人员的活动工时
@@ -455,18 +453,18 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 				levellist: '',   	// 届别列表
 				Done_level: '',	// 当前被选中的届别
 
-				// 
-				show_when_no_msg: false,
-
 
 				//已认证的活动信息列表
 				AuActivitylist: [],
-				
-				actJoinStuList: [],				
+				//已认证活动成员展示框
 				dialogVisible_act: false,
+				//已认证活动成员列表
+				actJoinStuList: [],
+
 				//未认证的活动信息表
 				UnauActivitylist: [],
-				showDot: false,
+				show_dot: false,
+				show_Count_num: false,
 
 				//认证中的活动信息列表
 				WaitingActivitylist: [],
@@ -511,12 +509,11 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 				getUnauActivityList: [],
 				getUnMsgReasonList: [],
 				waitToDealCountNum: 0,
-
-				//top_bar search
       		}
 		},
 		watch: {
 			activiTab: function (val, oldval){
+					// console.log(val+oldval);
 					if(val != "four"){
 							this.show_add_activityperson_page = false;
 							this.addPersonBtn = true;
@@ -550,18 +547,19 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 			}
 		},
 		mounted(){		
+			// 获取待处理的消息列表
 			this.getUnauActivity(3, 1, 15);
-			// this.getUnMsg(9);
-
 			// 获取届别类别
 			this.getLevelList();
 			
 			// 获取未认证的活动(获取最新一届的未认证的活动)（状态，页数，行数）
 			this.getUnauActivity(2, 1, 15);
 			this.getUnauActivity(1, 1, 15);
-			this.getUnauActivity(3, 1, 15);
 		},
 		methods:{
+			tests: function (id) {
+			
+			},
 			/**
 			 * [refresh 刷新页面，获取更新后的数据]
 			 * @return {[type]} [description]
@@ -570,26 +568,29 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 					location.reload();
 			},
 			
+
 			/**
 			 * [clickSearch 活动搜索函数]
 			 * @param {[type]} [key] [搜索的关键字]
 			 * @return {[type]} [description]
 			 */
 			clickSearch: function(key){										// 点击按钮触发 搜索事件
-				// this.
-				
+
 			},
 
 			showLocked: function(){
 				this.$notify({      			
 		          type: 'error',
-		          title: '锁定',
-		          message: '已认证的活动，院队无权删除！',
+		          title: '删除失败',
+		          message: '已认证且已冻结的活动，无权删除！',
 		          duration: 2000,
 		          offset:40
 		        });
 			},
 
+			/**
+			 * @description 编辑该活动具体信息
+			 */
 			activityMsg: function(){
 				var that = this;
 				setTimeout(function(){
@@ -634,7 +635,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 										<div class="col-md-6">\
 												<select class="form-control" placeholder="请选择活动类型" id="Edit_input_category">\
 													<option value="0">学院活动</option>\
-													<option value="1">班级活动</option>\
+													<option value="1" disabled>班级活动</option>\
 												</select>\
 										</div>\
 									</div>\
@@ -710,7 +711,6 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 										<div class="col-md-6">\
 												<select class="form-control" placeholder="请选择活动类型" id="selectActType">\
 													<option value="0">学院活动</option>\
-													<option value="1">班级活动</option>\
 												</select>\
 										</div>\
 									</div>\
@@ -788,7 +788,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 					this.currentEditActTime = actTime;
 					this.currentEditActAddress = actAddress;
 					this.currentEditActCategory = actCategory;
-					console.log(this.currentEditActName, this.currentEditActAddress, this.currentEditActTime ,this.currentEditActCategory)
+					// console.log(this.currentEditActName, this.currentEditActAddress, this.currentEditActTime ,this.currentEditActCategory)
 					// 将tab标签切换到 添加活动人员部分
 					this.show_add_activityperson_page = true;
 					this.activiTab = "four";
@@ -797,6 +797,24 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 					// 获取该活动参与人员
 					this.getActivityMember(actId, this.addActStu_pageNum, this.addActStu_pageSize);
 			},
+
+
+			/**
+		       * [btn_search_add_act_number 在添加活动人员时，判断该学号是否存在，以及是否已经在该活动人员表中]
+		       * @return {[type]} [description]
+		       */
+	      	btn_search_add_act_number(){
+	      			// 对该学号进行模糊查询
+	      			this.searchStudent(this.add_person_search_id);
+	      			//判断result_search_act_num数组的值是否为空，不为空，则说明查找到了值
+	      			if(this.result_search_act_num.length >= 1){
+	      					this.show_search_success_result = true;
+	      					this.show_search_error_result = false;
+	      			}else if(this.result_search_act_num.length == 0){
+	      					this.show_search_error_result = true;
+	      					this.show_search_success_result = false;
+	      			}
+	      	},
 
 
 	      	/**
@@ -810,10 +828,12 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 	      					this.addActivityMember(this.currentEditActId,this.add_person_search_id, this.add_person_work_time);
 	      			}else{
 	      				this.show_search_error_result = false;
-	      				this.show_search_success_result = true;
+	      				this.show_search_success_result = false;
 	      				this.$message({
 	      					type:'error',
-	      					message: '添加失败'
+							message: '添加失败',
+							customClass: 'user_sytle_for_volunteerlist',
+							duration: 2000
 	      				})
 	      			}
 	      	},
@@ -845,39 +865,22 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 		    },
 
 
+
+		      // ----------交互JavaScript部分---------------
+		      // 
+		     
+		      
 			/**
-				 * [checkLogin 核对是否登陆]
-				 * @return {[type]} [description]
-				 */
-			checkLogin: function(){
-					this.axios.post('/WustVolunteer/college/checkLogin.do',{
-								headers:{
-								'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-								}
-					}).then((data) => {
-					if(data.data.status == 1){
-						this.$router.push({path: '/login'});      // 未登陆则调到登陆页面
-					}else{
-						this.collegeName = data.data.data.organizationName;
-						this.collegeUserName = data.data.data.stuName;
-					}
-					
-					}).catch((err) => {
-				console.log(err);
-				})
-			},
-			
-			/**
-				 * [getLevelList 获届别列表接口]
-				 * @enum [6]
-				 * @return {[type]} [description]
-				 */
+			 * [getLevelList 获届别列表接口]
+			 * @enum [6]
+			 * @return {[type]} [description]
+			 */
 			getLevelList:function(){
-					this.axios.post('/WustVolunteer/college/getLevelList.do',{
+					this.axios.post('/WustVolunteer/general/getLevelList.do',{
 						headers:{
 							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 						}
-					}).then((data) => {	      		
+					}).then((data) => {
 						this.levellist = data.data.data;
 						this.Done_level = data.data.data[data.data.data.length - 1].level;
 					}).catch(err => {
@@ -885,26 +888,6 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 					})
 			},
 
-			/**
-			 * 获取已认证活动成员列表
-			 */
-			getAuActivityMember: function(id){
-				this.dialogVisible_act = true;
-				let data = {
-					activityId: id,
-					pageNum: 1,
-					pageSize: 1000
-				};
-				this.axios.post('/WustVolunteer/general/getActivityMember.do',qs.stringify(data),{
-					headers:{
-						'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-					}
-				}).then((data) => {
-					this.actJoinStuList = data.data.data.list;				
-				}).catch((err) => {
-					console.log(err);
-				})	
-			},
 
 			/**
 			 * [getUnauActivity 获取未认证活动列表]
@@ -921,37 +904,35 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 					pageSize: pageSize
 				};
 
-				this.axios.post('/WustVolunteer/college/getUnauActivity.do',qs.stringify(data),{
+				this.axios.post('/WustVolunteer/general/getUnauActivity.do',qs.stringify(data),{
 					headers:{
 						'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 					}
 				}).then(data => {	
 					for(var i = 0; i < data.data.data.list.length; i++){
-						if(data.data.data.list[i].category == 1){
-							data.data.data.list[i].category = "班级活动";
-						}else if(data.data.data.list[i].category == 0){
-							data.data.data.list[i].category = "学院活动";
+						if(data.data.data.list[i].category == 0){
+							data.data.data.list[i].category = "院级活动";
 						}
 					}
 					if(statu == 1){                  // 未认证状态
 						this.UnauActivitylist = data.data.data.list;
 						if(data.data.data.list.length > 0){
-							this.showDot = true;
-						}  
+							this.show_dot = true;
+						}
 					}else if(statu == 2){            // 待处理状态
 						this.WaitingActivitylist = data.data.data.list;
 						if(data.data.data.list.length > 0){
-							this.showDot = true;
-						}  
+							this.show_dot = true;
+						}
 					}else if(statu == 3){
 						this.RejectedActList = data.data.data.list;
 						this.getUnauActivityList = data.data.data.list;
 						this.waitToDealCountNum = data.data.data.list.length;
 						if(this.waitToDealCountNum == 0){
-							this.show_when_no_msg = true;
+							this.show_Count_num = true;
 						}
 						for(var i = 0; i < data.data.data.list.length; i++){
-							this.getUnMsg(data.data.data.list[i].id, i);
+							this.getUnMsg(data.data.data.list[i].id,i);
 						}
 					}
 				}).catch((err) => {
@@ -976,7 +957,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 					pageNum: this.Done_currentPage
 				};
 
-				this.axios.post('/WustVolunteer/college/getAuActivity.do',qs.stringify(data),{
+				this.axios.post('/WustVolunteer/general/getAuActivity.do',qs.stringify(data),{
 					headers:{
 						'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 					}
@@ -1006,7 +987,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 					pageSize: pageSize
 				}
 
-				this.axios.post('/WustVolunteer/college/getActivityMember.do',qs.stringify(data),{
+				this.axios.post('/WustVolunteer/general/getActivityMember.do',qs.stringify(data),{
 					headers:{
 						'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 					}
@@ -1022,6 +1003,26 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 				return ;
 			},
 			
+			/**
+			 * 获取已认证活动成员列表
+			 */
+			getAuActivityMember: function(id){
+				this.dialogVisible_act = true;
+				let data = {
+					activityId: id,
+					pageNum: 1,
+					pageSize: 1000
+				};
+				this.axios.post('/WustVolunteer/general/getActivityMember.do',qs.stringify(data),{
+					headers:{
+						'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+					}
+				}).then((data) => {
+					this.actJoinStuList = data.data.data.list;				
+				}).catch((err) => {
+					console.log(err);
+				})	
+			},
 
 			/**
 			 * [addActivity 创建新活动]
@@ -1039,7 +1040,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 					category: category
 				};
 
-				this.axios.post('/WustVolunteer/college/addActivity.do',qs.stringify(data),{
+				this.axios.post('/WustVolunteer/general/addActivity.do',qs.stringify(data),{
 					headers:{
 						'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 					}
@@ -1047,7 +1048,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 					if(data.data.status == 0){
 						// 成功信息提示
 						this.$message({
-							message: 'Add New Save Successful!',
+							message: '添加新活动成功',
 							type: "success",
 							duration: 2000,
 							showClose: true,
@@ -1057,6 +1058,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 						// 刷新数据
 						this.getUnauActivity(2, 1, 15);
 						this.getUnauActivity(1, 1, 15);
+						this.getUnauActivity(3, 1, 10);
 					}
 				}).catch((err) => {
 					console.log(err);
@@ -1071,17 +1073,19 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 			 * @return {[type]}            [description]
 			 */
 			deleteActivity: function(activityId){
+
 				// 确认删除框
 					this.$confirm('此操作将永久删除该活动, 是否继续?', '提示', {
 							confirmButtonText: '确定',
 							cancelButtonText: '取消',
 							type: 'warning'
 					}).then(() => {
+
 							// 已确认执行删除操作
 							let data = {
 								activityId: activityId
 							};
-							this.axios.post('/WustVolunteer/college/deleteActivity.do',qs.stringify(data),{
+							this.axios.post('/WustVolunteer/general/deleteActivity.do',qs.stringify(data),{
 								headers:{
 									'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 								}
@@ -1115,6 +1119,54 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 				
 			},
 
+			/**
+			 * [deleteActivity 删除已认证活动]
+			 * @enum {[type]} 【24】
+			 * @param  {[type]} activityId [活动ID]
+			 * @return {[type]}            [description]
+			 */
+			deleteAuActivity: function(activityId){
+				// 确认删除框
+					this.$confirm('此操作将永久删除该活动, 是否继续?', '提示', {
+							confirmButtonText: '确定',
+							cancelButtonText: '取消',
+							type: 'warning'
+					}).then(() => {
+							// 已确认执行删除操作
+							let data = {
+								activityId: activityId
+							};
+							this.axios.post('/WustVolunteer/general/deleteAuActivity.do',qs.stringify(data),{
+								headers:{
+									'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+								}
+							}).then((data) => {
+								// 删除成功提示
+								if(data.data.status == 0){
+										this.$message({
+										type: 'success',
+										message: '删除成功!',
+										duration: 2000,
+										customClass: 'user_sytle_for_volunteerlist',
+										});
+										this.getAuActivity();  // 重新获取数据
+								}else{
+										alert("删除失败");
+										this.getUnauActigetAuActivityvity();  // 重新获取数据
+								}
+							}).catch((err) => {
+								alert("删除程序出错！");
+							})
+
+					}).catch(() => {
+							this.$message({
+							type: 'info',
+							message: '已取消删除',
+							duration: 2000,
+							customClass: 'user_sytle_for_volunteerlist',
+							});          
+					});
+			},
 
 			/**
 			 * [alterActivity 修改未认证或认证驳回的活动]
@@ -1135,7 +1187,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 					category: category
 				};
 
-				this.axios.post('/WustVolunteer/college/alterActivity.do',qs.stringify(data),{
+				this.axios.post('/WustVolunteer/general/alterActivity.do',qs.stringify(data),{
 					headers:{
 						'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 					}
@@ -1148,6 +1200,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 							customClass: 'user_sytle_for_volunteerlist',
 						}); 
 						this.getUnauActivity(1, 1, 15);
+						this.currentEditActName = name;
 					}else{
 						this.$message({
 							type: 'error',
@@ -1186,18 +1239,25 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 				}).then((data) => {
 					if(data.data.status == 0){
 						this.$message({					// 成功提示
-							message: '添加成功',
+							message: ' 添加成功',
 							type: "success",
 							// dangerouslyUseHTMLString: true,
-							customClass: "user_style_for_ok_add",
+							customClass: "user_sytle_for_volunteerlist",
 							iconClass: 'fa fa-check',
-							showClose: true
+							showClose: true,
+							duration: 2000
 						});
 						this.getActivityMember(activityId, this.addActStu_pageNum, this.addActStu_pageSize);
 					}else {
-						alert(data.data.msg);
+						this.$message({					// 成功提示
+							message: data.data.msg,
+							type: "error",
+							customClass: "user_sytle_for_volunteerlist",
+							iconClass: 'fa fa-error',
+							showClose: true,
+							duration: 2000,
+						});
 					}
-					
 				}).catch((err) => {
 					console.log(err);
 				})
@@ -1214,7 +1274,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 			 * @return {[type]}            [description]
 			 */
 			deleteActivityMember: function(activityId, stuNum){
-					this.$confirm('此操作将永久删除该活动, 是否继续?', '提示', {
+					this.$confirm('此操作将删除该成员, 是否继续?', '提示', {
 							confirmButtonText: '确定',
 							cancelButtonText: '取消',
 							type: 'warning'
@@ -1225,7 +1285,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 							stuNum: stuNum
 						};
 
-						this.axios.post('/WustVolunteer/college/deleteActivityMember.do',qs.stringify(data),{
+						this.axios.post('/WustVolunteer/general/deleteActivityMember.do',qs.stringify(data),{
 							headers:{
 								'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 							}
@@ -1261,8 +1321,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 							});          
 					});
 			},
-			
-			
+
 			/**
 			 * @description 认证活动接口
 			 * @param 活动id
@@ -1278,7 +1337,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 							activityId: activityId,
 						};
 
-						this.axios.post('/WustVolunteer/college/submitAuth.do',qs.stringify(data),{
+						this.axios.post('/WustVolunteer/general/submitAuth.do',qs.stringify(data),{
 							headers:{
 								'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 							}
@@ -1318,7 +1377,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 							customClass: 'user_sytle_for_volunteerlist',
 							});          
 					});
-		    },
+			},
 
 			/**
 			 * [cancelSubmit 取消活动认证]
@@ -1338,7 +1397,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 								activityId: activityId
 							};
 
-							this.axios.post('/WustVolunteer/college/cancelSubmit.do',qs.stringify(data),{
+							this.axios.post('/WustVolunteer/general/cancelSubmit.do',qs.stringify(data),{
 								headers:{
 									'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 								}
@@ -1347,14 +1406,15 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 								if(data.data.status == 0){
 										this.$message({
 										type: 'success',
-										message: '删除成功!',
+										message: '取消活动认证成功!',
 										duration: 2000,
 										customClass: 'user_sytle_for_volunteerlist',
 										});
 										this.getUnauActivity(2, 1, 15);  // 重新获取数据
 										this.getUnauActivity(1, 1, 15);
+										this.getUnauActivity(3, 1, 15);
 								}else{
-										alert("删除失败");
+										alert("取消活动认证失败");
 										this.getUnauActivity(2, 1, 15);  // 重新获取数据
 								}
 							}).catch((err) => {
@@ -1364,7 +1424,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 					}).catch(() => {
 							this.$message({
 							type: 'info',
-							message: '已取消删除',
+							message: '操作已取消',
 							duration: 2000,
 							customClass: 'user_sytle_for_volunteerlist',
 							});          
@@ -1382,22 +1442,25 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 				let data = { 
 					msg: msg
 				};
-				this.axios.post('/WustVolunteer/college/searchStudent.do',qs.stringify(data),{
+
+				this.axios.post('/WustVolunteer/general/searchStudent.do',qs.stringify(data),{
 					headers:{
 						'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 					}
 				}).then((data) => {
+					this.show_search_error_result = false;
+	      			this.show_search_success_result = false;
 					if(data.data.data.length >= 1){  					// 查询的结果不为空
 						this.result_search_act_num = '' ;      			// 先将变量清空，防止上次的搜索结果的干扰
 						this.result_search_act_num = data.data.data;
-						this.show_search_success_result = true;
-						this.show_search_error_result = false;
-						return ;
+						// this.show_search_error_result = false;
+	      				this.show_search_success_result = true;
+					}else{
+						this.result_search_act_num = '';
+						this.show_search_error_result = true;
+	      				this.show_search_success_result = false;
 					}
 					
-					//判断result_search_act_num数组的值是否为空，不为空，则说明查找到了值
-					this.show_search_error_result = true;
-					this.show_search_success_result = false;
 				}).catch((err) => {
 					console.log(err);
 				})
@@ -1410,18 +1473,17 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 			 * @param  {[type]} activityId [活动id]
 			 * @return {[type]}            [description]
 			 */
-			getUnMsg: function(activityId,index){
+			getUnMsg: function(activityId, index){
 				let data = {
 					activityId: activityId
 				};
 
-				this.axios.post('/WustVolunteer/college/getUnMsg.do',qs.stringify(data),{
+				this.axios.post('/WustVolunteer/general/getUnMsg.do',qs.stringify(data),{
 					headers:{
 						'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 					}
 				}).then((data) => {
-					this.getUnauActivityList[index].msg = data.data.data[0].msg;
-					// this.getUnMsgReasonList.push(data.data.data[0].msg);
+					this.getUnauActivityList[index].msg = data.data.data[0].msg
 				}).catch((err) => {
 					console.log(err);
 				})
@@ -1435,6 +1497,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 
 <style type="text/css" >
 	@import '../../static/css/activitylist.css';
+	/* 设置垂直滚动条的宽度和水平滚动条的高度 */
 	.demo::-webkit-scrollbar{
 		width: 4px;
 		height: 4px;
@@ -1456,4 +1519,6 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 		background-color: #888;
 		display: none;
 	}
+
+
 </style>

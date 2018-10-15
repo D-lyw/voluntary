@@ -1,23 +1,23 @@
 <template>
-		 	<div class="content-wrapper" style="height:100%;overflow-y:auto;overflow-x:hidden;">
+		 	<div class="content-wrapper" style="">
 			<div style="margin-bottom:20px;">
 				<el-breadcrumb separator-class="el-icon-arrow-right">
-					 <el-breadcrumb-item :to="{ path: '/home/introduce' }"><i class="fa fa-home" style="opacity:0.8;color:#333;"></i>&nbsp;主页</el-breadcrumb-item>
+					 <el-breadcrumb-item :to="{ path: '/general/index' }"><i class="fa fa-home" style="opacity:0.8;color:#333;"></i>&nbsp;主页</el-breadcrumb-item>
 					 <el-breadcrumb-item>个人中心</el-breadcrumb-item>
 				</el-breadcrumb>
 			</div>
 			<div class="row " >
 						<div class="col-md-1"></div>
-						<div class=" col-md-4 " id="personBox" style="height:700px;">
+						<div class=" col-md-4 " id="personBox" >
 					            <div class="panel-heading" >
 					               <em> # 个人基本信息 #</em>           
 					            </div>
 
-					            <div class="panel-body">
+					            <!-- <div class="panel-body"> -->
 
 					                <div  data-toggle="validator"  class="nice-validator n-default n-bootstrap" novalidate="novalidate">
 					               
-					                    <div class="box-body box-profile">
+					                    <div class="box-body ">
 					                        
 					                        <div class="profile-avatar-container">
 					                        	<el-tooltip class="item" effect="dark" content="项目开发人力、时间有限,尚未开通上传头像功能，敬请期待！" placement="right">
@@ -25,15 +25,15 @@
 					                            </el-tooltip>
 					                        </div>
 					                        
-					                        <h3 class="profile-username text-center"><span>{{userName}}</span>&nbsp;--&nbsp;<span>{{authority}}</span></h3>
+					                        <h3 class="profile-username text-center" ><span>{{userName}}</span>&nbsp;--&nbsp;<span>{{authority}}</span></h3>
 
-					                        <p class="text-muted text-center">{{connectWay}}</p>
+					                        <p class="text-muted text-center" >{{connectWay}}</p>
 					                        <br>
-					                        <div style="">
-					                        <div class="row form-group ">
+
+					                        <div class="row form-group " >
 					                        		<div class="col-md-6">
 					                        				<label for="username" class="control-label">学号:</label>
-					                           				<input type="text" class="form-control" value="201613136023" readonly style="text-align: center; background: transparent;">
+					                           				<input type="text" class="form-control" value="" readonly style="text-align: center; background: transparent;">
 					                        		</div>
 					                        		<div class="col-md-6">
 					                        				<label for="username" class="control-label">工时:</label>
@@ -58,22 +58,23 @@
 					                        </div>
 					                        <div class="form-group" id="form_group_btn">
 						                            <button  class="btn btn-success" @click="dialogVisible = true">修改密码</button>
-						                           <!--  <el-popover
-														  placement="buttom-start"
-														  width="500"
-														  trigger="click"
-														  content="如遇转专业、留级等需要 修改学院、班级的情况，需院队管理员进行操作">
-														    <el-button slot="reference" size="small" >更多</el-button>
-						                        	</el-popover> -->
 					                        </div>
-											</div>
+										</div>
 											
-					                    </div>
 					                </div>
-           						</div>
+           						<!-- </div> -->
         				</div>
-						
-
+<!-- 						
+						<div class="col-md-4" style="padding: 10px 20px;background: white;margin-left: 30px;border-top:3px solid #00a65a;border-radius:5px;">
+							<p># 个人基本信息 #</p>
+							<div class="profile-avatar-container">
+								<el-tooltip class="item" effect="dark" content="项目开发人力、时间有限,尚未开通上传头像功能，敬请期待！" placement="right">
+									<img class="profile-user-img img-responsive img-circle plupload" src="../../static/img/avatar.png">
+								</el-tooltip>
+							</div>
+							<h3 style="width: 100%;text-align:center;border:1px solid red;">{{username}} -- {{authority}}</h3>
+							<p style="width: 100%;text-align:center;opacity: 0.7;border:1px solid red;">{{connectWay}}</p>
+						</div> -->
         				<div class="col-md-6" style="padding: 10px 20px;background: white;margin-left: 30px;">
 			        
 			            	 <el-tabs  >
@@ -88,8 +89,8 @@
 								    						</tr>
 								    				</thead>
 								    				<tbody>
-								    						<tr v-for="item in show_list_msg" :key="item.id">
-								    							<td>{{item.id}}</td>
+								    						<tr v-for="(item,index) in show_list_msg" :key="index+1">
+								    							<td>{{index+1}}</td>
 								    							<td>{{item.stuName}}</td>
 								    							<td>{{item.time}}</td>
 								    							<td>{{item.operation}}</td>
@@ -103,18 +104,13 @@
 							  </el-tabs>
 			        
 						</div>
-			</div>
 
+			</div>
 			<el-dialog title="修改密码"  :visible.sync="dialogVisible"  width="35%" >
 							  
 							<div class="row"> 
 									<div class="col-md-2">原密码:</div>
 									<div class="col-md-8"><input type="password" class="form-control" v-model='old_pw'></div>
-									<!-- 未提供判断原密码正确与否的接口，暂不能判断 -->
-									<!-- <div class="col-md-2" v-show="show_old_pw">
-											<span><i class="fa fa-check"></i></span>
-											<span><i class="fa fa-error"></i></span>
-									</div> -->
 							</div><br/>
 							<div class="row"> 
 									<div class="col-md-2">新密码:</div>
@@ -131,11 +127,10 @@
 							</div>
 
 							  <span slot="footer" class="dialog-footer">
-							    <el-button @click="dialogVisible = false">取 消</el-button>
-							    <el-button type="primary" @click="UpdatePW">确 定</el-button>
+							    <el-button @click="dialogVisible = false" size="small">取 消</el-button>
+							    <el-button type="primary" @click="UpdatePW" size="small">确 定</el-button>
 							  </span>
 			</el-dialog>
-
        </div>
 </template>
 
@@ -144,91 +139,37 @@ import qs from 'qs'
 		export default{
 				name: 'PersonerCenter',
 				data () {
-					return {
-						dialogVisible: false,
-						show_old_pw: false,
-						check_new_pw: false,
-						i_new_pw: '',
-						i_check_new_pw: '',
-						old_pw: '',
+						return {
+								dialogVisible: false,
+								show_old_pw: false,
+								check_new_pw: false,
+								i_new_pw: '',
+								i_check_new_pw: '',
+								old_pw: '',
 
 
-						last_login: '',
-						show_list_num: 0,
-						show_list_msg: [],
+								last_login: '',
+								show_list_num: 0,
+								show_list_msg: [],
 
-						//基本信息
-						userName: '',
-						userNum: '',
-						authority: '',
-						connectWay: '',
-						userWorkTime: '',
-						userCollegeName: '',
-						userClassName: ''
-					}
+								//基本信息
+								userName: '',
+								userNum: '',
+								authority: '',
+								connectWay: '',
+								userWorkTime: '',
+								userCollegeName: '',
+								userClassName: ''
+						}
 				},
 				mounted(){
-					// 判断是否已登陆
-					this.axios.post('/WustVolunteer/college/checkLogin.do')
-							.then((data) => {
-								// 转跳登陆页面
-								if(data.data.status == 1){
-									this.$router.push({path: '/login'});
-								}
-
-								if(data.data.data.roll == 1){
-									this.authority = "院队管理员"
-								}else if(data.data.data.roll == 4){
-									this.authority = "工时管理员"
-								}
-								this.last_login = data.data.data.lastLogin;
-
-								var sendmsg = {
-									msg: data.data.data.stuNum
-								}
-
-								// 获取该用户的详细信息
-								this.axios.post('/WustVolunteer/college/searchStudent.do', qs.stringify(sendmsg), {
-									headers:{
-										'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-									}
-								}).then((data) => {
-									this.userName = data.data.data[0].name;
-									this.connectWay = data.data.data[0].phone;
-									this.userNum = data.data.data[0].studentNum;
-									this.userWorkTime = data.data.data[0].volunteerTime;
-									this.userCollegeName = data.data.data[0].collegeName;
-									this.userClassName = data.data.data[0].className;
-								})
-
-								// 获取用户的操作记录情况
-								var sendmsgRecord = {
-									pageNum: 1,
-									pageSize: 100
-								}
-								this.axios.post('/WustVolunteer/college/getOperationRecord.do', qs.stringify(sendmsgRecord),{
-									headers:{
-										'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-									}
-								}).then((data) => {
-									for(var i = 0; i < data.data.data.list.length; i++){
-										if(data.data.data.list[i].stuNum == this.userNum){
-											this.show_list_num += 1;
-											var obj = data.data.data.list[i];
-											obj.id = i;
-											this.show_list_msg.push(obj);
-										}
-										if(this.show_list_num >= 7){
-											break ;
-										}
-									}
-								})
-					})
-
+					this.checkeLogin();
 				},
 
 				methods:{
-						// -----修改密码-----
+						/**
+						 * 修改密码
+						 */
 						UpdatePW: function(){
 							// 判断三个输入框是否填写完整
 							if(this.old_pw == '' || this.i_new_pw == '' || this.i_check_new_pw == ''){
@@ -239,11 +180,6 @@ import qs from 'qs'
 						        }); 
 								return ;
 							}
-							// 核对原密码是否正确     （接口暂未提供）
-							// this.axios.post('/WustVolunteer/college/checkLogin.do')
-							// .then((data) => {
-							// 	console.log(data);
-							// })
 
 							// 判断两次输入的新密码是否相同  (时间有限判断新密码是否正确的小图标提示未实现 @9月7号)
 							if(this.i_check_new_pw != this.i_new_pw){
@@ -257,16 +193,16 @@ import qs from 'qs'
 
 							// 确认框，确认是否删除？
 							this.$confirm('确认修改此密码？', '提示', {
-					          confirmButtonText: '确定',
-					          cancelButtonText: '取消',
-					          type: 'warning'
+								confirmButtonText: '确定',
+								cancelButtonText: '取消',
+								type: 'warning'
 					        }).then(() => {					//确认删除的回调
 						        	this.dialogVisible = false;    // 将操作面板隐藏
 						        	// 将更新后的密码传给后台
 						        	var data = {
 						        		passwordNew: this.i_new_pw
 						        	}
-						        	this.axios.post('/WustVolunteer/college/resetPassword.do',qs.stringify(data),{
+						        	this.axios.post('/WustVolunteer/general/resetPassword.do',qs.stringify(data),{
 						        		headers:{	
 											'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 										}
@@ -283,23 +219,85 @@ import qs from 'qs'
 									        });
 						        		}
 						        	})
-					          	
 					        }).catch(() => {				//取消的回调
-					        	this.dialogVisible = false;
-						        this.$message({
-						            type: 'info',
-						            message: '已取消修改'
-						        });          
+									this.dialogVisible = false;
+									this.$message({
+										type: 'info',
+										message: '已取消修改'
+									});          
 					        });
 						},
+						
+						/**
+						 * 判断是否登陆
+						 */
+						checkeLogin: function(){
+							this.axios.post('/WustVolunteer/general/checkLogin.do')
+									.then((data) => {
+										if(data.data.status == 1){
+											this.$router.push({path: '/login'});
+										}
+										if(data.data.data.roll == 1){
+											this.authority = "院队管理员"
+										}else if(data.data.data.roll == 4){
+											this.authority = "工时管理员"
+										}
+										this.last_login = data.data.data.lastLogin;
+										this.userNum = data.data.data.stuNum;
+										this.getUserMsg();
+										this.searchOperationRecord();
+							})
+						},
+
+
+						/**
+						 * 获取用户基本信息
+						 */
+						getUserMsg: function(){
+								var sendmsg = {
+									msg: this.userNum
+								}
+								// 获取该用户的详细信息
+								this.axios.post('/WustVolunteer/general/searchStudent.do', qs.stringify(sendmsg), {
+									headers:{
+										'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+									}
+								}).then((data) => {
+									this.userName = data.data.data[0].name;
+									this.connectWay = data.data.data[0].phone;
+									this.userNum = data.data.data[0].studentNum;
+									this.userWorkTime = data.data.data[0].volunteerTime;
+									this.userCollegeName = data.data.data[0].collegeName;
+									this.userClassName = data.data.data[0].className;
+								})
+						},
+
+						/**
+						 * 获取用户最近近7条操作记录
+						 */
+						searchOperationRecord: function(){
+								var sendmsgRecord = {
+										msg: this.userNum,
+										pageNum: 1,
+										pageSize: 7
+								}
+								this.axios.post('/WustVolunteer/general/searchOperationRecord.do', qs.stringify(sendmsgRecord),{
+									headers:{
+										'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+									}
+								}).then((data) => {
+									this.show_list_msg = data.data.data.list;
+									this.show_list_num = data.data.data.list.length;
+								})
+						}
 				}
 		}
 </script>
 
 <style type="text/css">
 .content-wrapper{
-background: #f1f4f6;
-padding: 15px 20px;
+	background: #f1f4f6;
+	padding: 15px 20px;
 }
 
 #form_group_btn{

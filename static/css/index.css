@@ -3,18 +3,17 @@
 	padding-left: 10px;
 	/*border:1px solid red;*/
 }
-#right_part tr td{
+
+#right_part tr td:first{
 	/*border:1px solid red;	*/
-	padding-left: 40px;
+	margin-left: 40px;
 	text-align: left;
 }
 #right_part tr td:hover{
 	background: #f5f5f5;
 }
 
-#right_card{
-	/*color:red;*/
-}
+
 #right_card .card_right_header{
 	border-radius: 3px;
 	border-top: 2px solid #3c8dbd;
@@ -27,3 +26,4 @@
 	font-size: 12px;
 	float: right;
 }
+

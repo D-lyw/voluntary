@@ -18,3 +18,9 @@
 #head_activity_search:hover{
 	cursor: pointer;
 }
+
+#detail{
+	font-size: 10px;
+	cursor: pointer;
+	color: coral;
+}

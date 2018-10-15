@@ -55,8 +55,8 @@
 		margin-top: -20px;
 	}
 	#Need_do_thinglist li .layui-text:hover{
-		box-shadow: 5px 5px 10px  #ccc;
-		border: 1px solid #eee;
+		box-shadow: 5px 5px 10px  rgb(233, 232, 232);
+		border: 1px solid rgb(253, 251, 251);
 	}
 
 	#add_search_id:hover{
@@ -64,9 +64,9 @@
 	}
 
 	.user_sytle_for_volunteerlist{
-	margin-top:30px;
-}
+		margin-top:30px;
+	}
 
-#EditChoosedAct:hover{
-	cursor: pointer;
-}
+	#EditChoosedAct:hover{
+		cursor: pointer;
+	}
