@@ -1,25 +1,17 @@
 <template>
-	 	<div class="content-wrapper" style="height:900px;overflow-y:auto;overflow-x:hidden;">
-	 			<!-- <div>
-	 			<span class="layui-breadcrumb navigoto " >
-					  <i class="fa fa-home" style="opacity:0.8;color:#333;font-size:16px;"></i>&nbsp;
-					  <router-link to="/">&nbsp;&nbsp;主页</router-link>
-					  <router-link to="">志愿者管理</router-link>
-					  <router-link to=""><cite>志愿者信息</cite></router-link>
-				</span>
-				</div> -->
+	 	<div class="content-wrapper" style="">
 
 				<div id="navigoto_div" >
 					<el-breadcrumb separator-class="el-icon-arrow-right">
 						 <el-breadcrumb-item :to="{ path: '/home/introduce' }"><i class="fa fa-home" style="opacity:0.8;color:#333;"></i>&nbsp;主页</el-breadcrumb-item>
-						 <el-breadcrumb-item>志愿者管理</el-breadcrumb-item>
+						 <el-breadcrumb-item>志愿者概览</el-breadcrumb-item>
 						 <el-breadcrumb-item>志愿者信息</el-breadcrumb-item>
 					</el-breadcrumb>
 				</div>
 				
 				<div style="margin-top:15px;">
 					<!-- 级联选择 -->
-					<el-cascader :options="options" v-model="selectedOptions" style="width: 250px;" @change="changeClass">				
+					<el-cascader :options="options" v-model="selectedOptions" style="width: 280px;" @change="changeClass">				
 					</el-cascader>
 
 					<button class="layui-btn layui-btn-sm" style="float:right;margin-top:6px;">
@@ -50,7 +42,7 @@
 						  			</tr>
 						  		</thead>
 						  		<tbody v-if="is_search_result">
-						  			<tr v-for="(item, index) in search_result_list">
+						  			<tr v-for="(item, index) in search_result_list" :key="index">
 						  				<td>{{index+1}}</td>
 						  				<td><el-tag type="success" size="mini">{{item.studentNum}}</el-tag></td>
 						  				<td>{{item.name}}</td>
@@ -68,8 +60,8 @@
 						    <el-button type="primary" @click="dialogVisible = false" size="small">确 定</el-button>
 						  </span>
 					</el-dialog>
-
 				</div>
+
 				<!-- Volunteer List table -->
 				<table class="table table-hover" id="table_style">
 						<thead>
@@ -86,7 +78,7 @@
 								</tr>
 						</thead>
 						<tbody>
-								<tr v-for="(item,index) in classStudentList">
+								<tr v-for="(item,index) in classStudentList" :key="index">
 										<td>{{item.studentNum}}</td>
 										<td>{{item.name}}</td>
 										<td>{{item.collegeName}}</td>
@@ -96,13 +88,51 @@
 										<td>{{item.volunteerTime}}</td>
 										<td>{{item.roll}}</td>
 										<td>
-											<button class="layui-btn layui-btn-xs" >编辑</button>
-											<button @click="Delete_one_volunteer(index)" class="layui-btn layui-btn-warm layui-btn-xs">删除</button>
+											<button @click="Delete_one_volunteer(index)" class="layui-btn layui-btn-danger layui-btn-xs">删除</button> 
+											<el-button type="text" size="mini" @click="showJoinedAct(item.studentNum)">活动详情</el-button>
 										</td>
 								</tr>
 						</tbody>
 				</table>
 				
+				<!-- 展示志愿者所参加过的所有活动 -->
+				<el-dialog
+				  title="志愿者所有活动概览"
+				  :visible.sync="dialogVisible_act"
+				  width="40%"
+				 >
+
+				  <div class="dialog-body">
+				  		<table class="table">
+				  			<thead>
+				  				<tr>
+				  					<th>活动ID</th>
+				  					<th>名称</th>
+				  					<th>地点</th>
+				  					<th>时间</th>
+				  					<th>组织</th>
+				  					<th>工时</th>
+				  				</tr>
+				  			</thead>
+				  			<tbody>
+				  				<tr v-for="(item,index) in volunteer_joined_actlist" :key="index">
+				  					<td>{{item.activityId}}</td>
+				  					<td>{{item.activityName}}</td>
+				  					<td>{{item.address}}</td>
+				  					<td>{{item.time}}</td>
+				  					<td>{{item.organizationName}}</td>
+				  					<td>{{item.volunteerTime}}</td>
+				  				</tr>
+				  			</tbody>
+				  		</table>
+				  </div>
+
+				  <span slot="footer" class="dialog-footer">
+				    <el-button @click="dialogVisible_act = false" size="small">取 消</el-button>
+				    <el-button type="primary" @click="dialogVisible_act = false" size="small">确 定</el-button>
+				  </span>
+				</el-dialog>
+
 				<!-- Pegination -->
 				 <el-pagination
 					      @current-change="handleCurrentChange"
@@ -112,9 +142,6 @@
 					      :total="classTotalNum">
 					      <slot ><span style='font-weight: 400;'># 本班级共 {{classTotalNum}} 条数据，当前展示 {{startRow}} 到 {{endRow}} 条数据</span></slot>
 			    </el-pagination>
-
-
-
 
 	 	</div>
 </template>
@@ -126,7 +153,6 @@ import qs from 'qs';
 				data () {
 					return {
 						options: [],
-						// selectedOptions: [2018, '计科1801'],
 						selectedOptions: [],
 						search_content_header: '',
 
@@ -146,8 +172,12 @@ import qs from 'qs';
 
 						is_search_result: false,
 						no_search_result: false,
-				      };
-					},
+
+						// dialog 展示volunteer all joined act
+						dialogVisible_act: false,
+						volunteer_joined_actlist: [],
+				    };
+				},
 
 					mounted(){
 						this.getLevelList();
@@ -188,23 +218,13 @@ import qs from 'qs';
 					     * @param {[type]} index [description]
 					     */
 					    Delete_one_volunteer(index){
-					      		//1 judge authority
 
-					      		// this.$notify.error({
-					      		// 		title: '权限不足',
-					      		// 		message: '本帐号无权进行删除操作 : (',
-					      		// 		offset: 45
-					      		// });
-
-					      		this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+					      		this.$confirm('此操作将删除该志愿者, 是否继续?', '提示', {
 								           confirmButtonText: '确定',
 								           cancelButtonText: '取消',
 								           type: 'warning'
 							        	}).then(() => {
-
-							        		// 删除志愿者
-							        		this.deleteVolunteer(this.classStudentList[index].studentNum);
-								            
+							        		this.deleteVolunteer(this.classStudentList[index].studentNum);								            
 							        	}).catch(() => {
 
 								            this.$message({
@@ -230,7 +250,6 @@ import qs from 'qs';
 										'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 									}
 					      		}).then((data) => {
-					      			// console.log(data);
 					      			for(let i = 0; i < data.data.data.length; i++){
 					      				var pushobj = {
 					      						value: '',
@@ -243,9 +262,7 @@ import qs from 'qs';
 					      				// 获取该届的所有班级列表
 					      				this.getClassesBylevel(data.data.data[i].level, i);
 					      			}
-
 					      			this.selectedOptions = [this.options[data.data.data.length - 1].label];
-
 					      		}).catch(err => {
 									console.log(err);
 								})
@@ -269,17 +286,14 @@ import qs from 'qs';
 										'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 									}
 					      		}).then((data) => {
-					      			// console.log(data);
 					      			var pushclass = [];
 					      			for(let i = 0; i < data.data.data.length; i++){
 					      				let child = {};
 					      				child.value = data.data.data[i];
 					      				child.label = data.data.data[i];
 					      				pushclass.push(child);
-
 					      				if(i == data.data.data.length -1){
 					      					this.selectedOptions.push(child.value);
-
 					      					// 开始第一次获取班级数据
 					      					this.currentClass = child.value;
 					      					this.getVolunteerByClassName(child.value, this.pageSize, this.currentPage);
@@ -335,9 +349,9 @@ import qs from 'qs';
 					      		}).catch((err) => {
 									console.log(err);
 								})
-
 					      		return ;
 					    },
+
 
 
 					    /**
@@ -355,7 +369,6 @@ import qs from 'qs';
 										'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 									}
 					      		}).then((data) => {
-					      			console.log(data);
 					      			if(data.data.status == 0){
 					      				this.$message({
 									            type: 'success',
@@ -395,7 +408,6 @@ import qs from 'qs';
 										'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 									}
 					      		}).then((data) => {
-					      			console.log(data.data.data);
 					      			if(data.data.data.length >= 1){  					// 查询的结果不为空
 					      				this.is_search_result = true;
 					      				this.no_search_result = false;
@@ -411,11 +423,40 @@ import qs from 'qs';
 
 					    },
 		      			
+		      			showJoinedAct: function(stuNum){
+		      				this.dialogVisible_act = true;
+		      				this.getActivityDetail(stuNum);
+		      			},
+
+
+		      			/**
+						 * [getActivityDetail 获取志愿者参加的所有活动]
+						 * @return {[type]} [description] [15]
+						 */
+						getActivityDetail: function(stuNum){
+							let data = {
+					      			stuNum: stuNum,
+					      			pageSize: this.pageSize,
+					      			pageNum: this.currentPage
+					      		};
+
+							this.axios.post('/WustVolunteer/college/getActivityDetail.do',qs.stringify(data),{
+								headers:{
+										'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+								}
+							}).then((data) => {
+								console.log(data);
+								this.volunteer_joined_actlist = data.data.data.list;
+							}).catch(err => {
+								console.log(err);
+							})
+						},
+
 					}
 				}
 
 </script>
 
 <style type="text/css">
-		@import '../../static/css/volunteerlist.css'
+		@import '../../static/css/volunteerlist.css';
 </style>

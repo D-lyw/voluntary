@@ -112,10 +112,9 @@ import qs from 'qs';
 				show_err_msg: '',
 
 				imgList: [
-					// {url: '../../static/img/s1.jpg'},
-					{url: '../../static/img/s5.jpg'},
-					{url: '../../static/img/s4.jpg'},
-					{url: '../../static/img/s2.jpg'},
+					{url: '/static/img/s5.jpg'},
+					{url: '/static/img/s4.jpg'},
+					{url: '/static/img/s2.jpg'},
 				]
 			}
 		},
@@ -142,7 +141,6 @@ import qs from 'qs';
 				})
 				.then((data) =>{
 					if(data.data.status == 0){
-						alert("Login_Ok");
 						this.$router.push({path: '/home/introduce'});
 					}else if(data.data.msg == "用户名不存在"){
 						this.show_err_msg = "用户名不存在";
@@ -192,9 +190,6 @@ import qs from 'qs';
 
 	}
 	
-	.layui-this{
-		/*box-shadow: 10px 10px 5px #eee;*/
-	}
 
 	#btn_login{
 		/*border:1px solid red;*/

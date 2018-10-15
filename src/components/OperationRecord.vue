@@ -1,11 +1,5 @@
 <template>
 	<div class="content-wrapper" style="height:800px;overflow-y:auto;overflow-x:hidden;" id="operationR">
-		<!-- <span class="layui-breadcrumb navigoto" >
-		  <i class="fa fa-home" style="opacity:0.8;color:#333;font-size:16px;"></i>&nbsp;
-		  <router-link to="/">&nbsp;&nbsp;主页</router-link>
-		  <router-link to="">系统操作</router-link>
-		  <router-link to=""><cite>操作日志</cite></router-link>
-		</span> -->
 		<div  >
 			<el-breadcrumb separator-class="el-icon-arrow-right">
 				 <el-breadcrumb-item :to="{ path: '/home/introduce' }"><i class="fa fa-home" style="opacity:0.8;color:#333;"></i>&nbsp;主页</el-breadcrumb-item>
@@ -23,10 +17,8 @@
 				    <el-select v-model="select" slot="prepend" placeholder="请选择">
 				      <el-option label="姓名" value="1"></el-option>
 				      <el-option label="学号" value="2"></el-option>
-				      <el-option label="操作类型" value="3"></el-option>
-				      <el-option label="用户权限" value="4"></el-option>
 				    </el-select>
-				    <el-button slot="append" icon="el-icon-search"></el-button>
+				    <el-button slot="append" icon="el-icon-search" @click="searchOperationRecord"></el-button>
 				  </el-input>
 				  </div>
 				  <!-- <el-button type="info" plain @click="exportFile()" size='mini'>导出</el-button> -->
@@ -75,7 +67,7 @@
 						</tr>
 					</thead>
 					<tbody class="table-condensed">
-						<tr v-for="item in record_list">
+						<tr v-for="(item,index) in record_list" :key="index">
 							<td><input type="checkbox" name=""></td>
 							<td>{{item.stuName}}</td>
 							<td>{{item.stuNum}}</td>
@@ -89,18 +81,7 @@
 				</table>
 				<p style="font-size:12px; opacity:1;"># 当前显示 {{startRow}} 到 {{endRow}} 条操作记录</p>
 			</div>
-
-		<!-- <input type="file"  @change="importFile($event)" class="inportFILE"> -->
-
 		</div>
-
-
-
-
-		<!-- <MainFooter></MainFooter> -->
-
-
-
  	</div>
 </template>
 
@@ -108,11 +89,6 @@
 	import qs from 'qs';
 	
 	import xlsx from 'xlsx';				//引入xlsx插件
-
-	// import TableExport from 'tableexport';	// tableexport插件
-	// import FileSaver from 'file-saverjs';
-
-	// const xlsx = require('xlsx');    	//引入xlsx插件
 
 	export default{
 		name:'OperationRecord',
@@ -128,7 +104,10 @@
 		        list_total: 0,
 		        pageSize: 15,
 		        startRow: 0,
-		        endRow: 0,
+				endRow: 0,
+				
+				currentPage_search: 1,
+				isSearching: false,
 			}
 		},
 		mounted(){
@@ -137,11 +116,11 @@
 		},
 		methods:{
 			/**
-			     * [importFile 导入文件]
-			     * @param  {[type]} event [description]
-			     * @return {[type]}       [description]
-			     */
-			    importFile: function (event){
+			 * [importFile 导入文件]
+			 * @param  {[type]} event [description]
+			 * @return {[type]}       [description]
+			 */
+			importFile: function (event){
 				if(!event.target.files){
 					return
 				}
@@ -170,18 +149,18 @@
 				}else{
 					reader.readAsBinaryString(f);
 				}
-				},
+			},
 
-				fixdata: function(data){
-					var o = "",
-					l = 0,
-					w = 10240;
-					for(; l < data.byteLength / w; ++l)
-						o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w, l * w + w)));
-	                o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w)));
-	                return o;
+			fixdata: function(data){
+				var o = "",
+				l = 0,
+				w = 10240;
+				for(; l < data.byteLength / w; ++l)
+					o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w, l * w + w)));
+				o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w)));
+				return o;
 
-				},
+			},
 
 			// 利用tableexport插件导出文件
 			exportFile: function(){
@@ -240,7 +219,6 @@
 								'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 						}
 				}).then((data) => {
-					console.log(data);
 					this.record_list = data.data.data.list;
 					this.list_total = data.data.data.total;
 				})
@@ -248,6 +226,10 @@
 
 
 		    getOperatinoRecord: function(){
+				if(this.isSearching){
+					this.searchOperationRecord();
+					return ;
+				}
 		    	var sendmsg = {
 					pageNum: this.currentPage1,
 					pageSize: this.pageSize
@@ -257,7 +239,6 @@
 								'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 						}
 				}).then((data) => {
-					console.log(data);
 					this.record_list = data.data.data.list;
 					this.list_total = data.data.data.total;
 					this.startRow = data.data.data.startRow;
@@ -265,14 +246,47 @@
 				})
 		    },
 
+			/**
+			 * @description 搜索操作记录
+			 * @param msg 姓名或学号
+			 */
+			searchOperationRecord: function(){
+
+				let data = {
+					pageNum: this.currentPage_search,
+					pageSize: this.pageSize,
+					msg: this.input_value
+				};
+
+				this.axios.post('/WustVolunteer/college/searchOperationRecord.do', qs.stringify(data),{
+						headers:{
+								'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+						}
+				}).then((data) => {
+					if(data.data.data.hasNextPage){
+						this.isSearching = true;
+						this.currentPage_search++;
+					}else{
+						this.isSearching = false;
+					}
+					this.record_list = data.data.data.list;
+					this.list_total = data.data.data.total;
+					this.startRow = data.data.data.startRow;
+					this.endRow = data.data.data.endRow;
+				})
+
+			},
+
 		    refreshData: function(){
+				this.currentPage_search = 1;
+				this.input_value = "";
 		    	this.getOperatinoRecord();
 		    	this.$message({
 			            type: 'success',
-			             message: '刷新成功！',
-			             offset: '35px',
-			             customClass: 'user_sytle_for_volunteerlist',
-			             duration: 2000
+						message: '刷新成功！',
+						offset: '35px',
+						customClass: 'user_sytle_for_volunteerlist',
+						duration: 2000
 		          	});    
 		    	}
 
@@ -282,7 +296,5 @@
 </script>	
 
 <style type="text/css">
-
 	@import '../../static/css/operationrecord.css';
-
 </style>

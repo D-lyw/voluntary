@@ -1,12 +1,5 @@
 <template>
-	<div class="content-wrapper" style="height:800px;overflow-y:auto;overflow-x:hidden;">	
-		<!-- <span class="layui-breadcrumb navigoto " >
-		  <i class="fa fa-home" style="opacity:0.8;color:#333;font-size:16px;"></i>&nbsp;
-		  <router-link to="/">&nbsp;&nbsp;主页</router-link>
-		  <router-link to=""></router-link>
-		  <router-link to=""><cite>人员权限</cite></router-link>
-		</span>
-		 -->
+	<div class="content-wrapper" style="height:100%;overflow-y:auto;overflow-x:hidden;">	
 		<div  >
 			<el-breadcrumb separator-class="el-icon-arrow-right">
 				 <el-breadcrumb-item :to="{ path: '/home/introduce' }"><i class="fa fa-home" style="opacity:0.8;color:#333;"></i>&nbsp;主页</el-breadcrumb-item>
@@ -17,8 +10,7 @@
 
 		<div class="contenter panel panel-default">
 			<div class="panel-heading" style="background:#e8edf0;bordre:1px solid #e8edf0;height:45px;line-height:25px;">
-				<em sty>#{{organizationName}}{{collegeAdmimlevel}}届负责人#</em>  - {{collegeAdmim}}<!-- <br>#院队工时管理员#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-size:13px;display:inline-block; margin-top:10px;"> &nbsp;&nbsp; 现共有 {{count_list - 1}} 名 </span> -->
-				<!-- <p>dkj dskfajidsajfdsjfkdjs dsfaj;d</p>      -->
+				<em sty>#{{organizationName}}{{collegeAdmimlevel}}届负责人#</em>  - {{collegeAdmim}}
 			</div>
 			<div class="panel-body">
 				<div class="btn_group">
@@ -34,26 +26,11 @@
 						删除
 					</button>
 					<div style="display:inline-block;float:right;">
-						<el-input v-model="input_search" placeholder="请输入内容" size="small" clearable style="width:50%;display:inline-block;border-radius:0px;" class="input-with-select">
+						<el-input v-model="input_search" placeholder="请输入内容" size="small" clearable style="width:70%;display:inline-block;border-radius:0px;" class="input-with-select">
 						</el-input>
 
 						<el-button type="info" size="small"><i class="fa fa-search" title="搜索"></i></el-button>
-						&nbsp;&nbsp;
-						&nbsp;&nbsp;	
 
-						<!-- Split button -->
-						<div class="btn-group" style="display:inline-block;margin-top:-1px;">
-						  <button type="button" class="btn btn-sm" ><i class="glyphicon glyphicon-export icon-share"></i>&nbsp;&nbsp;导出</button>
-						  <button type="button" class="btn btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						    <span class="caret"></span>
-						    <span class="sr-only">Toggle Dropdown</span>
-						  </button>
-						  <ul class="dropdown-menu dropdown-menu-right" style="width:70%;padding:3px 10px;">
-						    <li><a href="#">JSON格式</a></li>
-						    <li><a href="#">XLSX格式</a></li>
-						    <li><a href="#">TXT格式</a></li>
-						  </ul>
-						</div>
 					</div>
 				</div>
 				
@@ -87,51 +64,50 @@
 							<span>没有找到符合条件的志愿者信息 : (</span>
 						</tbody>
 					</table>
+
 				    <el-form-item label="授予权限" :label-width="formLabelWidth">
 				      <el-select v-model="form.region" placeholder="请选择授予权限类别">
 				        <el-option label="学院管理员" value="1" disabled></el-option>
 				        <el-option label="工时管理员" value="2"></el-option>
 				      </el-select>
 				    </el-form-item>
-
 				  </el-form>
 				  <div slot="footer" class="dialog-footer">
-				    <el-button @click="dialogFormVisible = false;input_key = '';adminlist = []">取 消</el-button>
+				    <el-button @click="dialogFormVisible = false;input_key = '';adminlist = []; result_obj = {}">取 消</el-button>
 				    <el-button type="primary" @click="addAdmin(result_obj.studentNum)" >确 定</el-button>
 				  </div>
 				</el-dialog>
 
+
+
+
 				<table class="table table-bordered table-hover">
 					<thead>
 						<tr>
-							<td><el-checkbox ></el-checkbox></td>
 							<td>ID</td>
 							<td>姓名</td>
 							<td>学号</td>
 							<td>年级</td>
 							<td>权限</td>
+							<td>所属组织</td>
 							<td>上次登陆</td>
 							<td>状态</td>
 							<td>操作</td>
 						</tr>
 					</thead>
 					<tbody>
-						<tr v-for="item in adminlist">
-							<td><el-checkbox v-model="checkone"	> </el-checkbox></td>
+						<tr v-for="item in adminlist" :key="item.id">
 							<td>{{item.id}}</td>
 							<td>{{item.stuName}}</td>
 							<td>{{item.stuNum}}</td>
 							<td>{{item.level}}</td>
 							<td>{{item.roll}}</td>
+							<td>某某学院</td>
 							<td>{{item.lastLogin}} </td>
 							
 							
 							<td><span class="layui-badge-dot layui-bg-green" size="big"></span><span style="color:green;">&nbsp;正常</span></td>
 							<td>
-								<span class="layui-badge layui-bg-green" >
-									<i class="el-icon-edit"></i>
-								</span>
-
 								<span class="layui-badge layiui-bg-red btn_del" @click='deleteAdmin(item.id)' >
 									<i class="el-icon-delete"></i>
 								</span>
@@ -191,6 +167,7 @@ import qs from 'qs'
 				collegeAdmimId: '',
 				organizationName: '',
 				collegeAdmimlevel: '',
+
 			}
 		},
 		mounted(){
@@ -199,35 +176,36 @@ import qs from 'qs'
 		      			headers:{
 							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 						}
-		      		}).then((data) => {
-		      			this.adminlist = data.data.data;
-		      			this.count_list = data.data.data.length;
-		      			for(var i = 0; i < this.count_list; i++){
-		      				if(data.data.data[i].roll == 1){
-		      					data.data.data[i].roll = '院队管理员';
-		      					this.collegeAdmim = data.data.data[i].stuName; // mounted额外添加的代码
-		      					this.collegeAdmimId = data.data.data[i].id;
-		      					this.organizationName = data.data.data[i].organizationName;
-		      					this.collegeAdmimlevel = data.data.data[i].level;
- 		      				}else if(data.data.data[i].roll == 4){
-		      					data.data.data[i].roll = '院队工时管理员'
-		      				}
-		      			}
-		      			
+			}).then((data) => {
+				this.adminlist = data.data.data;
+				this.count_list = data.data.data.length;
+					
+				for(var i = 0; i < this.count_list; i++){
+					if(data.data.data[i].roll == 1){
+						data.data.data[i].roll = '院队管理员';
+						this.collegeAdmim = data.data.data[i].stuName; // mounted额外添加的代码
+						this.collegeAdmimId = data.data.data[i].id;
+						this.organizationName = data.data.data[i].organizationName;
+						this.collegeAdmimlevel = data.data.data[i].level;
+					}else if(data.data.data[i].roll == 4){
+						data.data.data[i].roll = '院队工时管理员'
+					}
+				}
+				
 
-		      		}).catch((err) => {
-						this.$message({
-				            type: 'error',
-				            message: '获取管理员列表失败!',
-				            customClass: 'user_sytle_for_volunteerlist',
-				        });
-					})
+			}).catch((err) => {
+				this.$message({
+					type: 'error',
+					message: '获取管理员列表失败!',
+					customClass: 'user_sytle_for_volunteerlist',
+				});
+			})
 
 		},
 		methods:{
-			addManager: function(){
-				alert("show");
-			},
+			/**
+			 * 刷新
+			 */
 			refresh: function(){
 				this.getAmdinList();
 				this.$notify({      			//刷新提示框
@@ -238,17 +216,6 @@ import qs from 'qs'
 		          offset:40
 		        });
 			},
-			savePerson: function(){			 // 在赋予人员权限，点击确实后触发
-				this.$message({
-		          message: '<i class="fa fa-check"></i>&nbsp;添加管理员操作成功！',
-		          dangerouslyUseHTMLString: true,
-		          iconClass: 'fa fa-right',
-		          duration: 2000,
-		          showClose: true,
-		          customClass: 'user_style_savePerson'
-		        });
-			},
- 
 
 			/**
 		       * [getAmdinList 获取管理员列表]
@@ -296,7 +263,7 @@ import qs from 'qs'
 				        });
 		    		return ;
 		    	}
-		    	this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+		    	this.$confirm('此操作将删除该人员的权限, 是否继续?', '提示', {
 			          confirmButtonText: '确定',
 			          cancelButtonText: '取消',
 			          type: 'warning'
@@ -310,7 +277,6 @@ import qs from 'qs'
 								'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 							}
 			      		}).then((data) => {
-			      			console.log(data);
 			      			if (data.data.status == 0) {
 			      				this.$message({
 						            type: 'success',
@@ -322,7 +288,7 @@ import qs from 'qs'
 			      			}else if(data.data.status == 1){
 			      				this.$message({
 						            type: 'error',
-						            message: '删除失败!,无权限进行此操作',
+						            message: data.data.msg,
 						            customClass: 'user_sytle_for_volunteerlist',
 						            duration: 2000
 						        });
@@ -363,7 +329,6 @@ import qs from 'qs'
 							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 						}
 		      		}).then((data) => {
-		      			console.log(data);
 		      			if(data.data.data.length == 1){  					// 查询的结果不为空
 		      				this.show_search_result = true;
 		      				this.show_search_error_result = false;
@@ -386,7 +351,13 @@ import qs from 'qs'
 		    addAdmin: function(stuNum){
 		    		// 关闭对话框
 		    		this.dialogFormVisible = false;
-		    		if(stuNum == undefined){
+		    		if(stuNum == undefined || stuNum == ''){
+						this.$message({
+							type: 'info',
+							message: '请将数据填写完整',
+							customClass: 'user_sytle_for_volunteerlist',
+							duration: 2000
+						});   
 		    			return ;
 		    		}
 		      		let data = {
@@ -398,14 +369,20 @@ import qs from 'qs'
 							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 						}
 		      		}).then((data) => {
-		      			console.log(data);
 		      			if(data.data.status == 0){
-		      				this.savePerson();
+		      				this.$message({
+								message: '<i class="fa fa-check"></i>&nbsp;添加管理员操作成功！',
+								dangerouslyUseHTMLString: true,
+								iconClass: 'fa fa-right',
+								duration: 2000,
+								showClose: true,
+								customClass: 'user_style_savePerson'
+							});
 		      				this.getAmdinList();
 		      			}else {
 		      				this.$message({
 					            type: 'error',
-					            message: '删除失败!无权限进行此操作或该账户已存在',
+					            message: '添加失败!无权限进行此操作或该账户已存在',
 					            customClass: 'user_sytle_for_volunteerlist',
 					            duration: 2000,
 				        	});
@@ -414,7 +391,7 @@ import qs from 'qs'
 						console.log(err);
 						this.$message({
 				            type: 'error',
-				            message: '删除失败!',
+				            message: '添加失败!',
 				            customClass: 'user_sytle_for_volunteerlist',
 				            duration: 2000,
 				        });
@@ -430,5 +407,5 @@ import qs from 'qs'
 	}
 </script>
 <style>
-	@import '../../static/css/peopleauthority.css'
+	@import '../../static/css/peopleauthority.css';
 </style>

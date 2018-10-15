@@ -1,5 +1,5 @@
 <template>
-		 	<div class="content-wrapper" style="height:800px;overflow-y:auto;overflow-x:hidden;">
+		 	<div class="content-wrapper" style="height:100%;overflow-y:auto;overflow-x:hidden;">
 			<div style="margin-bottom:20px;">
 				<el-breadcrumb separator-class="el-icon-arrow-right">
 					 <el-breadcrumb-item :to="{ path: '/home/introduce' }"><i class="fa fa-home" style="opacity:0.8;color:#333;"></i>&nbsp;主页</el-breadcrumb-item>
@@ -58,13 +58,13 @@
 					                        </div>
 					                        <div class="form-group" id="form_group_btn">
 						                            <button  class="btn btn-success" @click="dialogVisible = true">修改密码</button>
-						                            <el-popover
+						                           <!--  <el-popover
 														  placement="buttom-start"
 														  width="500"
 														  trigger="click"
 														  content="如遇转专业、留级等需要 修改学院、班级的情况，需院队管理员进行操作">
 														    <el-button slot="reference" size="small" >更多</el-button>
-						                        	</el-popover>
+						                        	</el-popover> -->
 					                        </div>
 											</div>
 											
@@ -88,7 +88,7 @@
 								    						</tr>
 								    				</thead>
 								    				<tbody>
-								    						<tr v-for="item in show_list_msg">
+								    						<tr v-for="item in show_list_msg" :key="item.id">
 								    							<td>{{item.id}}</td>
 								    							<td>{{item.stuName}}</td>
 								    							<td>{{item.time}}</td>
@@ -109,7 +109,7 @@
 							  
 							<div class="row"> 
 									<div class="col-md-2">原密码:</div>
-									<div class="col-md-8"><input text="password" class="form-control" v-model='old_pw'></div>
+									<div class="col-md-8"><input type="password" class="form-control" v-model='old_pw'></div>
 									<!-- 未提供判断原密码正确与否的接口，暂不能判断 -->
 									<!-- <div class="col-md-2" v-show="show_old_pw">
 											<span><i class="fa fa-check"></i></span>
@@ -118,12 +118,12 @@
 							</div><br/>
 							<div class="row"> 
 									<div class="col-md-2">新密码:</div>
-									<div class="col-md-8"><input text="password" class="form-control" v-model="i_new_pw"></div>
+									<div class="col-md-8"><input type="password" class="form-control" v-model="i_new_pw"></div>
 									
 							</div><br/>
 							<div class="row"> 
 									<div class="col-md-2" style="width:100px;margin-left:-12px;">确认密码:</div>
-									<div class="col-md-8"><input text="password" class="form-control" v-model="i_check_new_pw"></div>
+									<div class="col-md-8"><input type="password" class="form-control" v-model="i_check_new_pw"></div>
 									<div class="col-md-2" v-show="check_new_pw">
 											<span><i class="fa fa-check"></i></span>
 											<span><i class="fa fa-error"></i></span>
@@ -144,37 +144,36 @@ import qs from 'qs'
 		export default{
 				name: 'PersonerCenter',
 				data () {
-						return {
-								dialogVisible: false,
-								show_old_pw: false,
-								check_new_pw: false,
-								i_new_pw: '',
-								i_check_new_pw: '',
-								old_pw: '',
+					return {
+						dialogVisible: false,
+						show_old_pw: false,
+						check_new_pw: false,
+						i_new_pw: '',
+						i_check_new_pw: '',
+						old_pw: '',
 
 
-								last_login: '',
-								show_list_num: 0,
-								show_list_msg: [],
+						last_login: '',
+						show_list_num: 0,
+						show_list_msg: [],
 
-								//基本信息
-								userName: '',
-								userNum: '',
-								authority: '',
-								connectWay: '',
-								userWorkTime: '',
-								userCollegeName: '',
-								userClassName: ''
-						}
+						//基本信息
+						userName: '',
+						userNum: '',
+						authority: '',
+						connectWay: '',
+						userWorkTime: '',
+						userCollegeName: '',
+						userClassName: ''
+					}
 				},
 				mounted(){
 					// 判断是否已登陆
 					this.axios.post('/WustVolunteer/college/checkLogin.do')
 							.then((data) => {
-								console.log(data);
 								// 转跳登陆页面
 								if(data.data.status == 1){
-									this.$router.push({path: '/login'});
+									this.$router.push({path: '/'});
 								}
 
 								if(data.data.data.roll == 1){
@@ -194,7 +193,6 @@ import qs from 'qs'
 										'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 									}
 								}).then((data) => {
-									console.log(data);
 									this.userName = data.data.data[0].name;
 									this.connectWay = data.data.data[0].phone;
 									this.userNum = data.data.data[0].studentNum;
@@ -213,23 +211,18 @@ import qs from 'qs'
 										'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 									}
 								}).then((data) => {
-									console.log(data);
 									for(var i = 0; i < data.data.data.list.length; i++){
 										if(data.data.data.list[i].stuNum == this.userNum){
 											this.show_list_num += 1;
 											var obj = data.data.data.list[i];
 											obj.id = i;
 											this.show_list_msg.push(obj);
-
 										}
 										if(this.show_list_num >= 7){
 											break ;
 										}
 									}
-									console.log(this.show_list_msg);
 								})
-
-
 					})
 
 				},
@@ -237,7 +230,6 @@ import qs from 'qs'
 				methods:{
 						// -----修改密码-----
 						UpdatePW: function(){
-
 							// 判断三个输入框是否填写完整
 							if(this.old_pw == '' || this.i_new_pw == '' || this.i_check_new_pw == ''){
 								this.dialogVisible = false;    // 将操作面板隐藏
@@ -247,14 +239,11 @@ import qs from 'qs'
 						        }); 
 								return ;
 							}
-
 							// 核对原密码是否正确     （接口暂未提供）
 							// this.axios.post('/WustVolunteer/college/checkLogin.do')
 							// .then((data) => {
 							// 	console.log(data);
 							// })
-
-
 
 							// 判断两次输入的新密码是否相同  (时间有限判断新密码是否正确的小图标提示未实现 @9月7号)
 							if(this.i_check_new_pw != this.i_new_pw){
@@ -273,7 +262,6 @@ import qs from 'qs'
 					          type: 'warning'
 					        }).then(() => {					//确认删除的回调
 						        	this.dialogVisible = false;    // 将操作面板隐藏
-
 						        	// 将更新后的密码传给后台
 						        	var data = {
 						        		passwordNew: this.i_new_pw
@@ -283,7 +271,6 @@ import qs from 'qs'
 											'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 										}
 						        	}).then((data) =>{
-						        		console.log(data);
 						        		if(data.data.status == 0){
 						        			this.$message({
 									            type: 'success',
@@ -305,11 +292,42 @@ import qs from 'qs'
 						        });          
 					        });
 						},
-
 				}
 		}
 </script>
 
 <style type="text/css">
-		@import '../../static/css/personercenter.css'
+.content-wrapper{
+background: #f1f4f6;
+padding: 15px 20px;
+}
+
+#form_group_btn{
+	text-align:right;
+}
+
+.col-md-2{
+	text-align: right;
+	line-height: 35px;
+}
+
+#personerCenterTable{
+	text-align: center;
+}
+
+#personBox{
+	background: white;
+	border-top: 2.5px solid #00a65a;
+	border-radius: 4px;
+}
+
+#show_recent_record{
+	font-size: 14px;
+}
+
+#last_login{
+	float:right;
+	margin-right: 0px;
+	font-size: 13px;
+}
 </style>

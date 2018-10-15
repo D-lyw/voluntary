@@ -4,14 +4,12 @@
 				<div id="navigoto_div" >
 					<el-breadcrumb separator-class="el-icon-arrow-right">
 						 <el-breadcrumb-item :to="{ path: '/home/introduce' }"><i class="fa fa-home" style="opacity:0.8;color:#333;"></i>&nbsp;主页</el-breadcrumb-item>
-						 <el-breadcrumb-item>志愿者管理</el-breadcrumb-item>
+						 <el-breadcrumb-item>志愿者概览</el-breadcrumb-item>
 						 <el-breadcrumb-item>志愿者操作</el-breadcrumb-item>
 					</el-breadcrumb>
 				</div>
 				
-
 				<el-tabs v-model="activeName" @tab-click="handleClick" id="tabs_body">
-
 				    <el-tab-pane label="信息编辑" name="first">
 						
 						<el-input placeholder="请输入学号查找学生信息" v-model="search_stuNum" class="input-with-select" style="width:50%;margin-left:4.5%;margin-top:5px;">
@@ -23,7 +21,7 @@
 
 						<el-form :label-position="labelPosition" label-width="200px" :model="stuMsg" size="small" id="msg_edit">
 							  <el-form-item label="所属学院">
-							    	<el-input v-model="stuMsg.collegeName" placeholder="暂不支持修改所属学院" :disabled="true"></el-input>
+							    	<el-input v-model="stuMsg.collegeName" placeholder="院队无权限修改所属学院"  disabled></el-input>
 							  </el-form-item>
 							  <el-form-item label="所属班级">
 							    	<el-select v-model="stuMsg.className" placeholder="请选择所属班级" style="width:100%;">
@@ -31,7 +29,7 @@
 								    </el-select>
 							  </el-form-item>
 							  <el-form-item label="学号" >
-							    	<el-input v-model="stuMsg.studentNum" placeholder="学号不可更改" :disabled="true"></el-input>
+							    	<el-input v-model="stuMsg.studentNum" placeholder="学号不可更改" disabled></el-input>
 							  </el-form-item>
 							  <el-form-item label="姓名">
 							    	<el-input v-model="stuMsg.name"></el-input>
@@ -42,11 +40,9 @@
 							    	</el-select>
 							  </el-form-item>
 							  <el-form-item label="职务" >
-							    	<!-- <el-input v-model="stuMsg.roll" placeholder="志愿者的职务"></el-input> -->
 							    	<el-select v-model="stuMsg.roll" placeholder="志愿者的职务" style="width:100%;">
-							    		  <el-option  label="志愿者" value="0"></el-option>
-							    		  <el-option  label="班级小助手" value="1"></el-option>
-							    		  <el-option  label="委员"  value="2"></el-option>
+							    		  <el-option  label="志愿者" :value="0"></el-option>
+							    		  <el-option  label="班级小助手" :value="1"></el-option>
 							    	</el-select>
 							  </el-form-item>
 							  <el-form-item label="联系方式" >
@@ -72,15 +68,16 @@
 						      <el-option v-for="(item,index) in collapse_levellist" :label='item.level' :value="item.level" :key="index" ></el-option>
 						    </el-select>
 						    <el-button slot="append" @click="addClass()" icon="el-icon-plus" style="width:150px;">添加班级</el-button>
-						</el-input>
+						</el-input> 
 						<!-- 折叠面板 -->
-				    	<el-collapse v-model="selectCollapse" accordion id="el_collapse" style="width:95%;margin:auto;margin-top:30px;">
+
+				    	<el-collapse v-model="selectCollapse" accordion id="el_collapse" style="width:97%;margin:auto;margin-top:15px;">
 							 
 							  <el-collapse-item v-for="(item, index) in collapse_levellist" :title="item.level + '届 班级列表'" :name="index" :key="index" >
 							  		<!-- <span v-for="i in levelClassList" :key = "index">{{i.name}}</span> -->
 								  		 <el-table
 									      :data="levelClassList[index]"
-									      style="width: 100%; height:auto;max-height:500px;overflow:auto;" 
+									      style="width: 100%; height:auto;max-height:480px;overflow:auto;" 
 									      size="small" 
 									      :stripe="true"
 									      :default-sort = "{prop: 'id',  order: 'descending'}" >
@@ -134,7 +131,6 @@
 						<p style="font-size:12px;margin-top:8px;opacity:0.8;">
 						# 该文件共有 {{inputdataLength}} 条数据, 成功导入 {{successNum}} 条志愿者信息</p>
 				    </el-tab-pane>
-
 				</el-tabs>
 		</div>
 </template>
@@ -177,6 +173,9 @@ import xlsx from 'xlsx';
 			 		select_add_level: '',
 			 		add_class_input: '',
 
+			 		selected_dept: '',
+			 		options_selected_dept: [],
+
 			 		// part 3
 			 		inputdataLength: 0,
 			 		successNum: 0,
@@ -185,38 +184,33 @@ import xlsx from 'xlsx';
   			},
 
   			mounted(){
-  				 this.clearStuMsg();
   				 this.getLevelList();
-  				 // this.alterVolunteer('201613136023', '刘元旺', '网络1601', '1826789310', 0);
   			},
 
   			methods: {
 
   				handleClick(tab, event) {
-
   					// 切换tab时，清除tab0 输入框中的内容
 			  		this.clearStuMsg();
-
 			        if(tab.index == 1){
 			        	for(var i = 0; i < this.collapse_levellist.length; i++){
 			        		this.getClassMsgForCollapse(this.collapse_levellist[i].level, i);
 			        	}
 			        }
-			    },
+				},
+				/**
+				 * 更新志愿者信息
+				 */
   				saveStuMsg: function(){
   					// 确认更新
   					this.$confirm('此操作将更新此志愿者信息, 是否继续?', '提示', {
-					           confirmButtonText: '确定',
-					           cancelButtonText: '取消',
-					           type: 'warning'
+					            confirmButtonText: '确定',
+					            cancelButtonText: '取消',
+					            type: 'warning'
 				        	}).then(() => {
-				        		// 更新志愿者信息
-				        		// console.log(this);
 				        		console.log(this.stuMsg);
 				        		this.alterVolunteer(this.stuMsg.studentNum, this.stuMsg.name, this.stuMsg.className, this.stuMsg.phone, this.stuMsg.roll);
-					            
 				        	}).catch(() => {
-
 					            this.$message({
 						            type: 'info',
 						             message: '已取消删除',
@@ -228,6 +222,9 @@ import xlsx from 'xlsx';
 							});
   				},
 
+				/**
+				 * 清空信息填写框的内容
+				 */
   				clearStuMsg: function(){
   					 this.stuMsg.collegeName = ''
 					 this.stuMsg.className = ''
@@ -290,11 +287,10 @@ import xlsx from 'xlsx';
 							             customClass: 'user_sytle_for_volunteerlist',
 							             duration: 2000
 								});
-
 			      				// 获取班级列表
 			      				this.getClassInfo(this.stuMsg.level);
 			      				// 获取届别列表
-			      				this.getLevelList();
+			      				// this.getLevelList();
 			      			}else{
 			      				this.$message({
 							             type: 'info',
@@ -349,9 +345,7 @@ import xlsx from 'xlsx';
 								'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 							}
 			      		}).then((data) => {
-			      			// console.log(data);
 			      			this.levelClassList[i] = data.data.data.list;
-
 			      		}).catch((err) => {
 							console.log(err);
 						})
@@ -400,7 +394,6 @@ import xlsx from 'xlsx';
 								'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 							}
 			      		}).then((data) => {
-			      			console.log(data);
 			      			if(data.data.status == 0){
 			      				this.$notify.success({
 					      				title: '更新成功',
@@ -441,18 +434,15 @@ import xlsx from 'xlsx';
 			    			this.select_add_level = "";
 			    			return ;
 			    		}
-
 			      		let data = {
 			      			level: this.select_add_level,
 			      			className: this.add_class_input
 			      		};
-
 			      		this.axios.post('/WustVolunteer/college/addClass.do',qs.stringify(data),{
 			      			headers:{
 								'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 							}
 			      		}).then((data) => {
-			      			// console.log(data);
 			      			if(data.data.status == 0){
 			      				this.$message({
 						            type: 'success',
@@ -508,7 +498,6 @@ import xlsx from 'xlsx';
 											'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 										}
 						      		}).then((data) => {
-						      			// console.log(data);
 						      			if(data.data.status == 0){
 						      				this.$message({
 									            type: 'success',
@@ -657,11 +646,11 @@ import xlsx from 'xlsx';
 						             duration: 2000
 					        	});    
 						})
-			    },
+				},
   			}
    		}
 </script>
 
 <style type="text/css">
-		@import '../../static/css/volunteeroperation.css'
+		@import '../../static/css/volunteeroperation.css';
 </style>

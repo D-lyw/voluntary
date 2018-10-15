@@ -1,4 +1,5 @@
 <!-- MainSidebar 模块 -->
+
 <template>
 
 	<!-- Left side column. contains the logo and sidebar -->
@@ -29,7 +30,7 @@
 	        <li class="treeview">
 		          <a href="#">
 			            <i class="glyphicon glyphicon-stats" aria-hidden="true" ></i>
-			            <span>志愿者管理</span>
+			            <span>志愿者概览</span>
 			            <span class="pull-right-container">
 			              <i class="fa fa-angle-left pull-right"></i>
 			            </span>
@@ -50,7 +51,7 @@
 	          </a>
 	          <ul class="treeview-menu">
 	            <li class="active"><router-link to="/home/peopleauthority"><i class="fa fa-users"></i> 人员权限</router-link></li>
-	            <li ><router-link to="/home/memberlist"><i class="fa fa-hand-spock-o" aria-hidden="true"></i>委员列表</router-link></li>
+	            <li><router-link to="/home/memberlist"><i class="fa fa-hand-spock-o" aria-hidden="true"></i>委员列表</router-link></li>
 	            <li><router-link to="/home/operationrecord"><i class="fa fa-list-alt" aria-hidden="true"></i> 操作日志</router-link></li>
 	          </ul>
 	        </li>
@@ -68,11 +69,3 @@
 		name: 'MainSidebar'
 	}
 </script>
-
-<style>
-	@import '../../static/bootstrap-3.3.7/css/bootstrap.min.css'
-    @import '../../static/font-awesome-4.7.0/css/font-awesome.min.css'
-    @import '../../static/layui/css/layui.css'
-    @import '../../static/css/all_skins.css'
-    @import '../../static/css/AdminLTE.css'
-</style>
