@@ -12,7 +12,7 @@ import ActivityList from '@/components/ActivityList'
 import Volunteerlist from '@/components/Volunteerlist'
 import VolunteerOperation from '@/components/VolunteerOperation'
 import PersonerCenter from '@/components/PersonerCenter'
-
+import MemberList from '@/components/MemberList'
 
 Vue.use(Router)
 
@@ -52,6 +52,10 @@ export default new Router({
          path: 'personercenter',          // 个人中心
          name: 'personercenter',
          component: PersonerCenter
+      },{
+         path: 'memberlist',
+         name: 'memberlist',
+         component: MemberList
       },{
          path: 'introduce',                   // 平台首页
          name: 'introduce',

@@ -4,7 +4,7 @@
           <MainHeader></MainHeader>
           <MainSidebar></MainSidebar>
           <router-view></router-view>
-          <MainFooter></MainFooter>
+          <!-- <MainFooter></MainFooter> -->
       </div>   
 </template>
 

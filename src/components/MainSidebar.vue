@@ -1,5 +1,4 @@
 <!-- MainSidebar 模块 -->
-
 <template>
 
 	<!-- Left side column. contains the logo and sidebar -->
@@ -51,6 +50,7 @@
 	          </a>
 	          <ul class="treeview-menu">
 	            <li class="active"><router-link to="/home/peopleauthority"><i class="fa fa-users"></i> 人员权限</router-link></li>
+	            <li ><router-link to="/home/memberlist"><i class="fa fa-hand-spock-o" aria-hidden="true"></i>委员列表</router-link></li>
 	            <li><router-link to="/home/operationrecord"><i class="fa fa-list-alt" aria-hidden="true"></i> 操作日志</router-link></li>
 	          </ul>
 	        </li>
