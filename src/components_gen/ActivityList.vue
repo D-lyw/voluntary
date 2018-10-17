@@ -1232,7 +1232,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 					volunteerTime: volunteerTime
 				};
 
-				this.axios.post('/WustVolunteer/college/addActivityMember.do',qs.stringify(data),{
+				this.axios.post('/WustVolunteer/general/addActivityMember.do',qs.stringify(data),{
 					headers:{
 						'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 					}

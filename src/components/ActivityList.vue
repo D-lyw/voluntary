@@ -895,7 +895,7 @@ import qs from 'qs';		// 将穿给后台的数据拼成url字符串
 					pageNum: 1,
 					pageSize: 1000
 				};
-				this.axios.post('/WustVolunteer/general/getActivityMember.do',qs.stringify(data),{
+				this.axios.post('/WustVolunteer/college/getActivityMember.do',qs.stringify(data),{
 					headers:{
 						'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 					}
