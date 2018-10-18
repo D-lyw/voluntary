@@ -10,7 +10,9 @@
     "unit": "jest --config test/unit/jest.conf.js --coverage",
     "e2e": "node test/e2e/runner.js",
     "test": "npm run unit && npm run e2e",
-    "build": "node build/build.js"
+    "build": "node build/build.js",
+    "cover": "./node_modules/.bin/istanbul cover _mocha",
+    "coveralls": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | ./node_modules/.bin/coveralls"
   },
   "dependencies": {
     "ajv": "^6.5.2",
