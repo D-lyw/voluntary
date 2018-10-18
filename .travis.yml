@@ -4,10 +4,11 @@ node_js:
   - 6.0.0
   
 install:
-  - npm install -g codecov
+  - npm install -g codecov istanbul
   
 script:
-  - jest &&  codecov
+  - istanbul cover ./node_modules/mocha/bin/_mocha --reporter lcovonly -- -R spec
+  - codecov
   
 after_success:
   - bash <(curl -s https://codecov.io/bash)
