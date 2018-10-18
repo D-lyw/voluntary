@@ -2,6 +2,8 @@
 
 > A volunteer management platform based on Vue.js and ElementUI. 
 
+![](https://github.com/D-lyw/Notes/blob/master/img/volunteer_img1.png?raw=true)
+
 ## Project Structure
 
   + 控制台
