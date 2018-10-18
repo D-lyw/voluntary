@@ -129,7 +129,6 @@ import qs from 'qs';
 					stuNum: this.userid,
 					password: this.userpw
 				}
-				console.log(this.userid+' '+ this.userpw);
 				this.axios.post('/WustVolunteer/college/login.do',qs.stringify(data),{
 					headers:{
 						'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
