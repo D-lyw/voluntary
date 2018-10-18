@@ -1,5 +1,6 @@
-# voluntary
-
+# voluntary  
+![](https://img.shields.io/crates/l/rustc-serialize.svg)
+![](https://img.shields.io/badge/version-v3.0.0-green.svg)
 > A volunteer management platform based on Vue.js and ElementUI. 
 
 ![](https://github.com/D-lyw/Notes/blob/master/img/volunteer_img1.png?raw=true)
