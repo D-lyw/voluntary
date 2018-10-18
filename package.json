@@ -11,12 +11,7 @@
     "e2e": "node test/e2e/runner.js",
     "test": "npm run unit && npm run e2e",
     "build": "node build/build.js",
-    "cover": "./node_modules/.bin/istanbul cover _mocha",
-    "coveralls": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | ./node_modules/.bin/coveralls"
-  },
-  "jest": {
-    "coverageDirectory": "./coverage/",
-    "collectCoverage": true
+    "report-coverage": "codecov"
   },
   "dependencies": {
     "ajv": "^6.5.2",
@@ -48,8 +43,8 @@
     "babel-register": "^6.22.0",
     "chalk": "^2.0.1",
     "chromedriver": "^2.27.2",
+    "codecov": "^3.1.0",
     "copy-webpack-plugin": "^4.0.1",
-    "coveralls": "^3.0.2",
     "cross-spawn": "^5.0.1",
     "css-loader": "^0.28.0",
     "extract-text-webpack-plugin": "^3.0.0",
@@ -60,6 +55,7 @@
     "istanbul": "^0.4.5",
     "jest": "^22.0.4",
     "jest-serializer-vue": "^0.3.0",
+    "karma-coverage": "^1.1.2",
     "mocha": "^5.2.0",
     "mocha-lcov-reporter": "^1.3.0",
     "nightwatch": "^0.9.12",
