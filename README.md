@@ -1,5 +1,7 @@
 # voluntary
 
+> A volunteer management platform based on Vue.js and ElementUI. 
+
 ## Project Structure
 
   + 控制台
@@ -28,9 +30,6 @@
     - 操作日志
 
 
-
-
-A Vue.js project
 
 ## Start To Use It
 
