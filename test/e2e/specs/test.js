@@ -11,7 +11,7 @@ module.exports = {
     browser
       .url(devServer)
       // .waitForElementVisible('#app', 15000)
-      .setValue('input[type=text]', 'nightwatch')
+      // .setValue('input[type=text]', 'nightwatch')
       // .assert.containsText('h1', 'Welcome to Your Vue.js App')
       // .assert.elementCount('img', 1)
       .end()
