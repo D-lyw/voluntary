@@ -2,6 +2,7 @@
 ![](https://img.shields.io/crates/l/rustc-serialize.svg)
 ![](https://img.shields.io/badge/version-v3.0.0-green.svg)
 [![Build Status](https://travis-ci.org/D-lyw/voluntary.svg?branch=master)](https://travis-ci.org/D-lyw/voluntary)
+[![codecov](https://codecov.io/gh/D-lyw/voluntary/branch/master/graph/badge.svg)](https://codecov.io/gh/D-lyw/voluntary)
 
 > A volunteer management platform based on Vue.js and ElementUI. 
 
