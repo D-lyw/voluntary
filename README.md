@@ -1,15 +1,48 @@
 # voluntary
 
+## Project Structure
+
+  + 控制台
+  
+    - 首页
+    - 总队志愿活动
+    - 全体志愿活动
+    - 认证活动
+    
+  + 志愿者概览
+  
+    - 志愿者信息
+    - 志愿者操作
+    
+  + 用户管理
+  
+    - 人员权限
+    - 委员列表
+    - 个人中心
+    
+  + 系统记录
+  
+    - 消息公告
+    - 组织信息
+    - 组织管理
+    - 操作日志
+
+
+
+
 A Vue.js project
 
-## Build Setup
+## Start To Use It
 
 ``` bash
+# download it to your local
+git clone https://github.com/D-lyw/voluntary.git
+
 # install dependencies
 npm install
 
 # serve with hot reload at localhost:8080
-npm run dev
+npm run dev || npm start
 
 # build for production with minification
 npm run build
@@ -27,4 +60,11 @@ npm run e2e
 npm test
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+
+## TodoLists
+```
+* [x] 单元测试&自动化测试
+* [x] 移动端优化与适配
+* [  ] 性能、代码优化
+
+```
