@@ -250,8 +250,8 @@ import qs from 'qs'
 						this.startRow = data.data.data.startRow;
 						this.endRow = data.data.data.endRow;
 						this.adminlist = data.data.data.list;
-						this.count_list = data.data.data.list.length;
-		      			for(var i = 0; i < this.count_list; i++){
+						this.count_list = data.data.data.total;
+		      			for(var i = 0; i < data.data.data.list.length; i++){
 							switch(data.data.data.list[i].roll) {
 								case 0: this.adminlist[i].roll = '超级管理员'; break;
 								case 1: this.adminlist[i].roll = '院队管理员'; break;
