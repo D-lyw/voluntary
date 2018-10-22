@@ -554,8 +554,8 @@ export default {
           // this.inputdataLength = inputData.length;
           for (var i = 0; i < inputData.length; i++) {
             that.addVolunteer(
-              inputData[i].姓名,
               inputData[i].学号,
+              inputData[i].姓名,
               inputData[i].班级,
               inputData[i].联系方式,
               inputData[i].权限

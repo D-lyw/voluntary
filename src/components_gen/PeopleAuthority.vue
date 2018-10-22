@@ -213,7 +213,7 @@ import qs from 'qs'
 			}
 		},
 		mounted(){
-			this.getAmdinList();
+			this.getAdminList();
 			this.getOrganization();
 		},
 		methods:{
@@ -221,7 +221,7 @@ import qs from 'qs'
 			 * @description 刷新提示框
 			 */
 			refresh: function(){
-				this.getAmdinList();
+				this.getAdminList();
 				this.$notify({      			
 		          type: 'success',
 		          message: '刷新成功！',
@@ -232,11 +232,11 @@ import qs from 'qs'
 			},
    
 			/**
-		       * [getAmdinList 获取总队管理员列表]
+		       * [getAdminList 获取总队管理员列表]
 		       * @enum {[type]}   
 		       * @return {[type]}
 		       */
-		    getAmdinList: function(){
+		    getAdminList: function(){
 					let data = {
 						pageNum: this.pageNum,
 						pageSize: this.pageSize
@@ -305,7 +305,7 @@ import qs from 'qs'
 						            customClass: 'user_sytle_for_volunteerlist',
 						            duration: 2000
 						        });
-						        this.getAmdinList();
+						        this.getAdminList();
 			      			}else if(data.data.status == 1){
 			      				this.$message({
 						            type: 'error',
@@ -394,7 +394,7 @@ import qs from 'qs'
 								showClose: true,
 								customClass: 'user_style_savePerson'
 							});
-		      				this.getAmdinList();
+		      				this.getAdminList();
 		      			}else {
 		      				this.$message({
 					            type: 'error',

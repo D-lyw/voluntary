@@ -550,43 +550,43 @@ import xlsx from 'xlsx';
 			    	this.inputdataLength = 0;
 			    	this.successNum = 0;
 
-				if(!event.target.files){
-					return
-				}
-				var f = event.target.files[0];
-				var that = this;
-				var reader = new FileReader();
-				reader.onload = function(e){
-					var data = e.target.result;
+					if(!event.target.files){
+						return
+					}
+					var f = event.target.files[0];
+					var that = this;
+					var reader = new FileReader();
+					reader.onload = function(e){
+						var data = e.target.result;
+						if(this.rABS){
+							this.wb = xlsx.read(btoa(fixdata(data)),{
+								type:'base64'
+							});
+						}else{
+							this.wb = xlsx.read(data, {
+								type: 'binary'
+							});
+						}
+						// wb.SheetNames[0] 是获取sheets中第一个sheet的名字
+						// wb.Sheets[Sheet名]获取第一个Sheet的数据
+						// console.log(JSON.stringify(xlsx.utils.sheet_to_json(this.wb.Sheets[this.wb.SheetNames[0]])));//转化为字符串
+						// console.log(event.target.files);
+						
+						// console.log(xlsx.utils.sheet_to_json(this.wb.Sheets[this.wb.SheetNames[0]]));  		
+						var inputData = xlsx.utils.sheet_to_json(this.wb.Sheets[this.wb.SheetNames[0]]);
+						// console.log(this.inputdataLength)
+						// this.inputdataLength = inputData.length;
+						for(var i = 0; i < inputData.length; i++){
+							that.addVolunteer(inputData[i].学号,inputData[i].姓名, inputData[i].班级, inputData[i].联系方式, inputData[i].权限);
+							// console.log(inputData[i].姓名,inputData[i].学号, inputData[i].班级, inputData[i].联系方式, inputData[i].权限)
+						}
+						
+					};
 					if(this.rABS){
-						this.wb = xlsx.read(btoa(fixdata(data)),{
-							type:'base64'
-						});
+						reader.readAsArrayBuffer(f);
 					}else{
-						this.wb = xlsx.read(data, {
-							type: 'binary'
-						});
+						reader.readAsBinaryString(f);
 					}
-					// wb.SheetNames[0] 是获取sheets中第一个sheet的名字
-					// wb.Sheets[Sheet名]获取第一个Sheet的数据
-					// console.log(JSON.stringify(xlsx.utils.sheet_to_json(this.wb.Sheets[this.wb.SheetNames[0]])));//转化为字符串
-					// console.log(event.target.files);
-					
-					// console.log(xlsx.utils.sheet_to_json(this.wb.Sheets[this.wb.SheetNames[0]]));  		
-					var inputData = xlsx.utils.sheet_to_json(this.wb.Sheets[this.wb.SheetNames[0]]);
-					// console.log(this.inputdataLength)
-					// this.inputdataLength = inputData.length;
-					for(var i = 0; i < inputData.length; i++){
-						that.addVolunteer(inputData[i].姓名,inputData[i].学号, inputData[i].班级, inputData[i].联系方式, inputData[i].权限);
-						// console.log(inputData[i].姓名,inputData[i].学号, inputData[i].班级, inputData[i].联系方式, inputData[i].权限)
-					}
-					
-				};
-				if(this.rABS){
-					reader.readAsArrayBuffer(f);
-				}else{
-					reader.readAsBinaryString(f);
-				}
 				},
 
 				fixdata: function(data){

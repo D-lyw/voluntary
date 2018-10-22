@@ -33,11 +33,11 @@
 					                        <div class="row form-group ">
 					                        		<div class="col-md-6">
 					                        				<label for="username" class="control-label">学号:</label>
-					                           				<input type="text" class="form-control" value="201613136023" readonly style="text-align: center; background: transparent;">
+					                           				<input type="text" class="form-control" v-model="userNum" value="" readonly style="text-align: center; background: transparent;">
 					                        		</div>
 					                        		<div class="col-md-6">
 					                        				<label for="username" class="control-label">工时:</label>
-					                            			<input type="text" class="form-control"  value="13"  style="text-align: center;background: transparent;" readonly v-model="userWorkTime">
+					                            			<input type="text" class="form-control"  value=""  style="text-align: center;background: transparent;" readonly v-model="userWorkTime">
 					                        		</div>
 					                        </div>
 					                        <div class="form-group has-success">

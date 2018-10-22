@@ -138,6 +138,12 @@
 								<el-form-item label="负责人">
 									<el-input v-model="selectObj.admin" size="small"></el-input>
 								</el-form-item>
+								<el-form-item label="所属学院">
+									<el-select v-model="selectObj.collegeId" placeholder="请选择组织所属学院，默认无所属学院" size="small" style="width:100%;">
+										<el-option label=" 青年志愿者总队 (默认) " value="0"></el-option>
+										<el-option v-for="item in collegeList" :label="item.name" :value="item.id" :key="item.id"></el-option>
+									</el-select>
+								</el-form-item>
 								<el-form-item label="总活动数">
 									<el-input v-model="selectObj.activityNum" size="small" disabled></el-input>
 								</el-form-item>
@@ -147,11 +153,13 @@
 							</el-form>
 					
 							<span slot="footer" class="dialog-footer">
-								<el-button @click="dialogVisible_edit = false">取 消</el-button>
-								<el-button type="primary" @click="dialogVisible_edit = false" >确 定</el-button>
+								<el-button @click="dialogVisible_edit = false" size="mini">取 消</el-button>
+								<el-button type="primary" @click="alterOrganization" size="mini">确 定</el-button>
 							</span>
 					</el-dialog>
 
+				
+				
 				<!-- Pegination -->
 				 <el-pagination
 					      @current-change="getOrganizationList"
@@ -255,12 +263,13 @@ import qs from 'qs';
 			 * (修改组织信息)
 			 */
 			alterOrganization: function(){
+				this.dialogVisible_edit = false;
 				let data = {
 					organizationId: this.selectObj.organizationId,
 					name: this.selectObj.name,
-					admin: this.selectObj.amdin
-					// collegeId: this.,
-					// level: 
+					admin: this.selectObj.admin,
+					collegeId: this.selectObj.collegeId,
+					level: this.selectObj.level
 				};
 				this.axios.post('/WustVolunteer/general/alterOrganization.do',qs.stringify(data),{
 						headers:{
@@ -278,13 +287,14 @@ import qs from 'qs';
 							this.getOrganizationList();
 						}else{
 							this.$message({
-								message: '修改组织信息失败!',
+								message: data.data.msg,
 								type: "error",
 								duration: 2000,
 								showClose: true,
 								customClass: 'user_sytle_for_volunteerlist',
 							});
 						}
+						this.selectObj = {};
 					}).catch(err => {
 						console.log(err);
 						this.$message({
@@ -293,7 +303,8 @@ import qs from 'qs';
 								duration: 2000,
 								showClose: true,
 								customClass: 'user_sytle_for_volunteerlist',
-							});
+						});
+						this.selectObj = {};
 					})
 			},
 
